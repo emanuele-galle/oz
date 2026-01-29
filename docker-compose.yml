@@ -7,6 +7,7 @@ services:
     restart: unless-stopped
     networks:
       - panel-internal
+      - traefik-public
     env_file:
       - .env
     labels:
@@ -24,4 +25,6 @@ services:
 
 networks:
   panel-internal:
+    external: true
+  traefik-public:
     external: true
