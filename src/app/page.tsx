@@ -1,5 +1,5 @@
 import { HeroSection } from '@/components/sections/HeroSection';
-import { BrandStory } from '@/components/sections/BrandStory';
+import { BrandStoryAnimated } from '@/components/sections/BrandStoryAnimated';
 import { ProductsSection } from '@/components/sections/ProductsSection';
 import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
 import { InstagramFeed } from '@/components/sections/InstagramFeed';
@@ -10,7 +10,7 @@ export default function Home() {
     <>
       <OrganizationSchema />
       <HeroSection />
-      <BrandStory />
+      <BrandStoryAnimated />
       <ProductsSection />
       <TestimonialsSection />
       <InstagramFeed />

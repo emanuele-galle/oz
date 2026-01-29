@@ -1,8 +1,13 @@
+'use client';
+
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useScrollReveal, useStaggerReveal } from '@/hooks/useScrollAnimation';
 
 export function InstagramFeed() {
+  const headerRef = useScrollReveal({ delay: 0 });
+  const gridRef = useStaggerReveal(0.08);
   const instagramPosts = [
     {
       image: '/uploads/images/Cristallo-man.jpeg',
@@ -40,7 +45,7 @@ export function InstagramFeed() {
     <section className="section-padding bg-black">
       <div className="container-luxury">
         {/* Header */}
-        <div className="text-center mb-16">
+        <div ref={headerRef as any} className="text-center mb-16">
           <div className="flex items-center justify-center gap-3 mb-4">
             <svg
               className="w-8 h-8 text-gold"
@@ -70,7 +75,7 @@ export function InstagramFeed() {
         </div>
 
         {/* Instagram Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div ref={gridRef as any} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
           {instagramPosts.map((post, index) => (
             <a
               key={index}

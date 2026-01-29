@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { Product } from '@/data/products';
 import { Button } from '@/components/ui';
+import { useCartStore } from '@/store/cartStore';
 
 interface ProductHeroProps {
   product: Product;
@@ -12,8 +13,13 @@ interface ProductHeroProps {
 export function ProductHero({ product }: ProductHeroProps) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
+  const { addItem } = useCartStore();
 
   const currentSize = product.sizes[selectedSize];
+
+  const handleAddToCart = () => {
+    addItem(product, currentSize, 1);
+  };
 
   return (
     <section className="pt-32 pb-16 bg-black">
@@ -107,7 +113,12 @@ export function ProductHero({ product }: ProductHeroProps) {
 
             {/* Add to Cart */}
             <div className="pt-6">
-              <Button variant="primary" size="xl" className="w-full">
+              <Button
+                variant="primary"
+                size="xl"
+                className="w-full"
+                onClick={handleAddToCart}
+              >
                 Aggiungi al Carrello - €{currentSize.price}
               </Button>
             </div>

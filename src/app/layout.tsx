@@ -3,6 +3,7 @@ import { Cinzel, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header, Footer } from "@/components/layout";
+import { CartDrawer } from "@/components/cart/CartDrawer";
 
 // Luxury serif for headings
 const cinzel = Cinzel({
@@ -90,6 +91,7 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <Footer />
+          <CartDrawer />
         </SmoothScroll>
       </body>
     </html>

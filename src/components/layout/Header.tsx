@@ -3,10 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { useCartStore } from '@/store/cartStore';
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openCart, getTotalItems } = useCartStore();
+  const totalItems = getTotalItems();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -56,8 +59,12 @@ export function Header() {
             ))}
           </nav>
 
-          {/* Cart Icon (placeholder) */}
-          <button className="hidden md:block group">
+          {/* Cart Icon */}
+          <button
+            onClick={openCart}
+            className="hidden md:block group relative"
+            aria-label="Open cart"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 text-white/80 group-hover:text-gold transition-colors duration-300"
@@ -72,6 +79,11 @@ export function Header() {
                 d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
               />
             </svg>
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-gold text-black rounded-full flex items-center justify-center text-xs font-bold">
+                {totalItems}
+              </span>
+            )}
           </button>
 
           {/* Mobile Menu Button */}

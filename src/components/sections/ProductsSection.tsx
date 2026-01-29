@@ -1,13 +1,19 @@
+'use client';
+
 import React from 'react';
 import { products } from '@/data/products';
 import { ProductCard } from '@/components/ui/ProductCard';
+import { useScrollReveal, useStaggerReveal } from '@/hooks/useScrollAnimation';
 
 export function ProductsSection() {
+  const headerRef = useScrollReveal({ delay: 0 });
+  const gridRef = useStaggerReveal(0.15);
+
   return (
     <section id="products" className="section-padding bg-black">
       <div className="container-luxury">
         {/* Section Header */}
-        <div className="text-center mb-16">
+        <div ref={headerRef as any} className="text-center mb-16">
           <h2 className="font-cinzel text-display text-gold mb-4">
             Le Nostre Creazioni
           </h2>
@@ -20,7 +26,7 @@ export function ProductsSection() {
         </div>
 
         {/* Product Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div ref={gridRef as any} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} />
           ))}
