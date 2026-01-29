@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Product } from '@/data/products';
+import { Product } from '@/types/product';
 import { Button } from './Button';
 
 interface ProductCardProps {

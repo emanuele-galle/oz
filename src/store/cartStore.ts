@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { Product, ProductSize } from '@/data/products';
+import { Product, ProductSize } from '@/types/product';
 
 export interface CartItem {
   product: Product;
@@ -24,6 +24,7 @@ interface CartStore {
   // Computed
   getTotalItems: () => number;
   getTotalPrice: () => number;
+  total: () => number; // Alias for getTotalPrice
 }
 
 export const useCartStore = create<CartStore>()(
@@ -98,6 +99,10 @@ export const useCartStore = create<CartStore>()(
 
       getTotalPrice: () => {
         return get().items.reduce((total, item) => total + item.size.price * item.quantity, 0);
+      },
+
+      total: () => {
+        return get().getTotalPrice();
       },
     }),
     {

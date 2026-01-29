@@ -1,19 +1,27 @@
 import { notFound } from 'next/navigation';
-import { getProductBySlug, getAllProductSlugs } from '@/data/products';
+import { getProductBySlug, getAllProductSlugs } from '@/data/products-db';
 import { ProductHero } from '@/components/sections/ProductHero';
 import { ProductInfo } from '@/components/sections/ProductInfo';
 import { OlfactoryJourney } from '@/components/sections/OlfactoryJourney';
-import { Ingredients } from '@/components/sections/Ingredients';
+// import { Ingredients } from '@/components/sections/Ingredients'; // TODO: Fase 3 - aggiungi ingredients al DB
 import { ProductSchema, BreadcrumbSchema } from '@/components/JsonLd';
 
+export const revalidate = 3600; // Rivalidare ogni ora (ISR)
+export const dynamic = 'force-dynamic'; // Skip SSG during build, use ISR at runtime
+
 export async function generateStaticParams() {
-  const slugs = getAllProductSlugs();
+  // Return empty array durante build per skip SSG
+  if (process.env.SKIP_BUILD_STATIC_GENERATION === '1') {
+    return [];
+  }
+
+  const slugs = await getAllProductSlugs();
   return slugs.map((slug) => ({ slug }));
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     return {
@@ -22,7 +30,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${product.name} - ${product.tagline} | OZ Extrait`,
+    title: `${product.name} - ${product.tagline || ''} | OZ Extrait`,
     description: product.description,
     openGraph: {
       title: `${product.name} - OZ Extrait`,
@@ -34,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const product = await getProductBySlug(slug);
 
   if (!product) {
     notFound();
@@ -61,7 +69,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
       <ProductHero product={product} />
       <ProductInfo product={product} />
       <OlfactoryJourney product={product} />
-      <Ingredients product={product} />
+      {/* <Ingredients product={product} /> */}
     </div>
   );
 }

@@ -1,7 +1,10 @@
 import { MetadataRoute } from 'next';
-import { getAllProductSlugs } from '@/data/products';
+import { getAllProductSlugs } from '@/data/products-db';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export const dynamic = 'force-dynamic';
+export const revalidate = 3600;
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://oz.fodivps2.cloud';
   const currentDate = new Date();
 
@@ -21,8 +24,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 
-  // Product pages
-  const productSlugs = getAllProductSlugs();
+  // Product pages (da database)
+  const productSlugs = await getAllProductSlugs();
   const productPages = productSlugs.map((slug) => ({
     url: `${baseUrl}/products/${slug}`,
     lastModified: currentDate,

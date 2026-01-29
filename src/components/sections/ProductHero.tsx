@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { Product } from '@/data/products';
+import { Product } from '@/types/product';
 import { Button } from '@/components/ui';
 import { useCartStore } from '@/store/cartStore';
 
