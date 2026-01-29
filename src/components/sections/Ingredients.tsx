@@ -1,11 +1,16 @@
 import React from 'react';
-import { Product } from '@/data/products';
+import { Product } from '@/types/product';
 
 interface IngredientsProps {
   product: Product;
 }
 
 export function Ingredients({ product }: IngredientsProps) {
+  // Skip se non ci sono ingredients (campo legacy non ancora popolato)
+  if (!product.ingredients || product.ingredients.length === 0) {
+    return null;
+  }
+
   return (
     <section className="section-padding bg-midnight">
       <div className="container-luxury">
@@ -16,7 +21,7 @@ export function Ingredients({ product }: IngredientsProps) {
           <div className="h-1 w-24 bg-gold mx-auto mb-12" />
 
           <div className="grid sm:grid-cols-2 gap-6">
-            {product.ingredients.map((ingredient, index) => (
+            {product.ingredients?.map((ingredient, index) => (
               <div
                 key={index}
                 className="glass-card p-6 flex items-start gap-4 group hover:border-gold/30 transition-all"
@@ -50,21 +55,23 @@ export function Ingredients({ product }: IngredientsProps) {
           </div>
 
           {/* Best For Section */}
-          <div className="mt-16 text-center">
-            <h3 className="font-cinzel text-2xl text-gold mb-6">
-              Ideale Per
-            </h3>
-            <div className="flex flex-wrap justify-center gap-3">
-              {product.bestFor.map((occasion, index) => (
+          {product.bestFor && product.bestFor.length > 0 && (
+            <div className="mt-16 text-center">
+              <h3 className="font-cinzel text-2xl text-gold mb-6">
+                Ideale Per
+              </h3>
+              <div className="flex flex-wrap justify-center gap-3">
+                {product.bestFor?.map((occasion, index) => (
                 <span
                   key={index}
                   className="px-6 py-2 border border-gold/30 text-gold font-inter text-sm uppercase tracking-wide hover:bg-gold/10 transition-colors"
                 >
-                  {occasion}
-                </span>
-              ))}
+                    {occasion}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

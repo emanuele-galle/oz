@@ -1,11 +1,15 @@
 'use client';
 
 import React from 'react';
-import { products } from '@/data/products';
+import { type Product } from '@/types/product';
 import { ProductCard } from '@/components/ui/ProductCard';
 import { useScrollReveal, useStaggerReveal } from '@/hooks/useScrollAnimation';
 
-export function ProductsSection() {
+interface ProductsSectionProps {
+  products: Product[];
+}
+
+export function ProductsSection({ products }: ProductsSectionProps) {
   const headerRef = useScrollReveal({ delay: 0 });
   const gridRef = useStaggerReveal(0.15);
 
@@ -19,7 +23,7 @@ export function ProductsSection() {
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-6" />
           <p className="font-playfair text-xl text-white/70 max-w-2xl mx-auto">
-            Tre fragranze uniche, tre storie da scoprire.
+            {products.length} fragranze uniche, {products.length} storie da scoprire.
             <br />
             <span className="text-gold-light">Extrait de Parfum 40%</span>
           </p>
