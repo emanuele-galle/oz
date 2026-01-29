@@ -33,30 +33,34 @@ export function Header() {
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
         isScrolled
-          ? 'bg-black/80 backdrop-blur-md border-b border-white/10 py-4'
-          : 'bg-transparent py-6'
+          ? 'bg-black/95 backdrop-blur-xl border-b border-gold/20 py-3 shadow-2xl shadow-gold/5'
+          : 'bg-gradient-to-b from-black/80 to-transparent py-6'
       )}
     >
       <div className="container-luxury">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="group">
+          <Link href="/" className="group relative">
             <img
               src="/uploads/images/logo.png"
               alt="OZ Extrait"
-              className="h-12 md:h-16 w-auto transition-opacity duration-300 group-hover:opacity-80"
+              className={cn(
+                "w-auto transition-all duration-500 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]",
+                isScrolled ? "h-14" : "h-16 md:h-20"
+              )}
             />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden md:flex items-center gap-10">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-inter text-sm uppercase tracking-wide text-white/80 hover:text-gold transition-colors duration-300"
+                className="font-inter text-sm uppercase tracking-widest text-white/90 hover:text-gold transition-all duration-300 relative group"
               >
                 {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gold group-hover:w-full transition-all duration-300" />
               </Link>
             ))}
           </nav>
