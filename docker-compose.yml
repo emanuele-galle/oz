@@ -1,0 +1,27 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: oz-app
+    restart: unless-stopped
+    networks:
+      - panel-internal
+    env_file:
+      - .env
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.oz.rule=Host(`oz.fodivps2.cloud`)"
+      - "traefik.http.routers.oz.entrypoints=websecure"
+      - "traefik.http.routers.oz.tls.certresolver=letsencrypt"
+      - "traefik.http.services.oz.loadbalancer.server.port=3000"
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000', (r) => process.exit(r.statusCode === 200 ? 0 : 1))"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  panel-internal:
+    external: true
