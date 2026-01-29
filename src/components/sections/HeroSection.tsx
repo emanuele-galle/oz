@@ -35,30 +35,33 @@ export function HeroSection() {
       {/* Content */}
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         {/* Animated logo/brand name */}
-        <div className="mb-8 animate-fade-in">
-          <h1 className="font-cinzel text-hero font-bold text-gold tracking-wider mb-4 text-shadow-luxury">
+        <div className="mb-12 animate-fade-in">
+          <h1 className="font-cinzel text-6xl md:text-8xl lg:text-9xl font-bold text-gold tracking-widest mb-6 drop-shadow-[0_0_30px_rgba(212,175,55,0.5)]">
             OZ EXTRAIT
           </h1>
-          <div className="h-px w-64 mx-auto bg-gradient-to-r from-transparent via-gold to-transparent" />
+          <div className="h-1 w-80 mx-auto bg-gradient-to-r from-transparent via-gold to-transparent shadow-[0_0_20px_rgba(212,175,55,0.6)]" />
         </div>
 
         {/* Tagline */}
-        <p className="font-playfair text-2xl md:text-4xl text-white/90 mb-8 max-w-3xl animate-slide-up animation-delay-200">
+        <p className="font-playfair text-3xl md:text-5xl lg:text-6xl text-white mb-10 max-w-4xl animate-slide-up animation-delay-200 leading-tight">
           L'Arte della Profumeria
           <br />
-          <span className="text-gold-light">Extrait de Parfum</span>
+          <span className="text-gold text-4xl md:text-6xl lg:text-7xl font-semibold tracking-wide">Extrait de Parfum</span>
         </p>
 
         {/* Description */}
-        <p className="font-inter text-base md:text-lg text-white/70 mb-12 max-w-2xl leading-relaxed animate-slide-up animation-delay-400">
-          Fragranze artigianali di lusso con concentrazione 40%. Creato con passione da Zoe Cristofoli.
+        <p className="font-inter text-lg md:text-xl lg:text-2xl text-white/80 mb-16 max-w-3xl leading-relaxed animate-slide-up animation-delay-400">
+          Fragranze artigianali di lusso con concentrazione 40%
+          <br />
+          <span className="text-gold-light">Creato con passione da Zoe Cristofoli</span>
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 animate-slide-up animation-delay-600">
+        <div className="flex flex-col sm:flex-row gap-6 animate-slide-up animation-delay-600">
           <Button
             variant="primary"
-            size="lg"
+            size="xl"
+            className="text-lg px-16 py-6 shadow-[0_0_40px_rgba(212,175,55,0.4)] hover:shadow-[0_0_60px_rgba(212,175,55,0.6)]"
             onClick={() => {
               document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
             }}
@@ -67,7 +70,8 @@ export function HeroSection() {
           </Button>
           <Button
             variant="outline"
-            size="lg"
+            size="xl"
+            className="text-lg px-16 py-6 border-3"
             onClick={() => {
               window.location.href = '/about';
             }}
