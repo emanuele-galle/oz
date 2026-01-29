@@ -130,7 +130,7 @@ export function ProductCard({ product }: ProductCardProps) {
           </p>
 
           {/* Price */}
-          <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <div className="flex items-center justify-between pt-4 border-t border-white/10 mb-4">
             <span className="text-2xl font-cinzel text-white">
               €{product.price}
             </span>
@@ -138,6 +138,22 @@ export function ProductCard({ product }: ProductCardProps) {
               {product.concentration}
             </span>
           </div>
+
+          {/* CTA - Always Visible */}
+          <Button
+            variant="primary"
+            size="md"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // TODO: Implement add to cart logic
+              console.log('Add to cart:', product.slug);
+              alert(`"${product.name}" aggiunto al carrello!`);
+            }}
+            className="w-full"
+          >
+            Aggiungi al Carrello
+          </Button>
         </motion.div>
       </motion.div>
     </Link>

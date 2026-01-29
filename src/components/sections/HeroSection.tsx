@@ -61,17 +61,17 @@ export function HeroSection() {
           <Button
             variant="primary"
             size="xl"
-            className="text-lg px-16 py-6 shadow-[0_0_40px_rgba(212,175,55,0.4)] hover:shadow-[0_0_60px_rgba(212,175,55,0.6)]"
+            className="text-lg px-16 py-6 font-bold shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:shadow-[0_0_80px_rgba(212,175,55,0.8)] hover:scale-105 transition-all"
             onClick={() => {
               document.getElementById('products')?.scrollIntoView({ behavior: 'smooth' });
             }}
           >
-            Scopri le Fragranze
+            Esplora i Profumi
           </Button>
           <Button
             variant="outline"
             size="xl"
-            className="text-lg px-16 py-6 border-3"
+            className="text-lg px-16 py-6 border-2 hover:border-gold-light hover:text-gold-light transition-all"
             onClick={() => {
               window.location.href = '/about';
             }}

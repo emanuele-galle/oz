@@ -80,6 +80,23 @@ export function TestimonialsSection() {
 
               {/* Author Info */}
               <div className="text-center">
+                {/* Avatar */}
+                <div className="mb-4 flex justify-center">
+                  {current.avatar ? (
+                    <img
+                      src={current.avatar}
+                      alt={current.name}
+                      className="w-16 h-16 rounded-full object-cover border-2 border-gold/30"
+                    />
+                  ) : (
+                    <div className="w-16 h-16 rounded-full bg-gold/10 border-2 border-gold/30 flex items-center justify-center">
+                      <span className="font-cinzel text-xl text-gold">
+                        {current.initials || current.name.charAt(0)}
+                      </span>
+                    </div>
+                  )}
+                </div>
+
                 <div className="font-cinzel text-xl text-gold mb-1">
                   {current.name}
                 </div>
