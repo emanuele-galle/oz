@@ -41,9 +41,11 @@ export function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="group">
-            <h1 className="font-cinzel text-2xl md:text-3xl font-bold text-gold tracking-wider hover:text-gold-light transition-colors duration-300">
-              OZ EXTRAIT
-            </h1>
+            <img
+              src="/uploads/images/logo.png"
+              alt="OZ Extrait"
+              className="h-12 md:h-16 w-auto transition-opacity duration-300 group-hover:opacity-80"
+            />
           </Link>
 
           {/* Desktop Navigation */}
