@@ -15,8 +15,14 @@ export async function generateStaticParams() {
     return [];
   }
 
-  const slugs = await getAllProductSlugs();
-  return slugs.map((slug) => ({ slug }));
+  try {
+    const slugs = await getAllProductSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch (error) {
+    // Fallback to empty array if DB unavailable (build time)
+    console.warn('generateStaticParams: DB unavailable, using empty array fallback');
+    return [];
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
