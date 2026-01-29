@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import { Product } from '@/types/product';
 import { Button } from '@/components/ui';
+import { ProductGallery } from '@/components/media';
 import { useCartStore } from '@/store/cartStore';
 
 interface ProductHeroProps {
@@ -11,7 +11,6 @@ interface ProductHeroProps {
 }
 
 export function ProductHero({ product }: ProductHeroProps) {
-  const [selectedImage, setSelectedImage] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
   const { addItem } = useCartStore();
 
@@ -25,40 +24,12 @@ export function ProductHero({ product }: ProductHeroProps) {
     <section className="pt-32 pb-16 bg-black">
       <div className="container-luxury">
         <div className="grid lg:grid-cols-2 gap-16">
-          {/* Image Gallery */}
-          <div className="space-y-4">
-            {/* Main Image */}
-            <div className="relative aspect-[3/4] rounded-lg overflow-hidden bg-midnight">
-              <Image
-                src={product.images[selectedImage].url}
-                alt={product.images[selectedImage].alt}
-                fill
-                className="object-cover"
-              />
-            </div>
-
-            {/* Thumbnails */}
-            <div className="grid grid-cols-5 gap-2">
-              {product.images.slice(0, 5).map((image, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`relative aspect-square rounded overflow-hidden border-2 transition-all ${
-                    selectedImage === index
-                      ? 'border-gold scale-105'
-                      : 'border-white/10 hover:border-gold/50'
-                  }`}
-                >
-                  <Image
-                    src={image.url}
-                    alt={image.alt}
-                    fill
-                    className="object-cover"
-                  />
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Enhanced Product Gallery */}
+          <ProductGallery
+            images={product.images}
+            videoUrl={product.videoUrl}
+            productName={product.name}
+          />
 
           {/* Product Info */}
           <div className="space-y-6">
