@@ -7,12 +7,15 @@ export interface Testimonial {
   comment: string;
   product: string;
   verified: boolean;
+  avatar?: string; // Optional: URL to avatar image or initials
+  initials?: string; // Auto-generated from name if avatar not provided
 }
 
 export const testimonials: Testimonial[] = [
   {
     id: '1',
     name: 'Giulia M.',
+    initials: 'GM',
     location: 'Milano',
     rating: 5,
     date: '2025-12-15',
@@ -23,6 +26,7 @@ export const testimonials: Testimonial[] = [
   {
     id: '2',
     name: 'Marco R.',
+    initials: 'MR',
     location: 'Roma',
     rating: 5,
     date: '2025-11-28',
@@ -33,6 +37,7 @@ export const testimonials: Testimonial[] = [
   {
     id: '3',
     name: 'Alessandra T.',
+    initials: 'AT',
     location: 'Verona',
     rating: 5,
     date: '2025-12-01',
@@ -43,6 +48,7 @@ export const testimonials: Testimonial[] = [
   {
     id: '4',
     name: 'Luca B.',
+    initials: 'LB',
     location: 'Torino',
     rating: 5,
     date: '2025-11-10',
@@ -53,6 +59,7 @@ export const testimonials: Testimonial[] = [
   {
     id: '5',
     name: 'Sofia L.',
+    initials: 'SL',
     location: 'Firenze',
     rating: 5,
     date: '2025-10-22',
@@ -63,6 +70,7 @@ export const testimonials: Testimonial[] = [
   {
     id: '6',
     name: 'Francesco P.',
+    initials: 'FP',
     location: 'Napoli',
     rating: 5,
     date: '2025-12-08',
