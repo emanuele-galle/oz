@@ -1,29 +1,26 @@
-import { HomepageHero } from '@/components/sections/heroes';
-import { TrustFeaturesSection } from '@/components/sections/TrustFeaturesSection';
-import { BrandStoryAnimated } from '@/components/sections/BrandStoryAnimated';
-import { ProductsSection } from '@/components/sections/ProductsSection';
-import { TestimonialsSection } from '@/components/sections/TestimonialsSection';
-import { InstagramFeed } from '@/components/sections/InstagramFeed';
-import { EnhancedNewsletter } from '@/components/sections/EnhancedNewsletter';
+import { HomepageHeroLuxury } from '@/components/sections/heroes/HomepageHeroLuxury';
+import { TrustFeaturesLuxury } from '@/components/sections/TrustFeaturesLuxury';
+import { ProductsShowcaseLuxury } from '@/components/sections/ProductsShowcaseLuxury';
+import { Craftsmanship } from '@/components/sections/Craftsmanship';
+import { FounderStoryLuxury } from '@/components/sections/FounderStoryLuxury';
+import { TestimonialsLuxury } from '@/components/sections/TestimonialsLuxury';
+import { NewsletterLuxury } from '@/components/sections/NewsletterLuxury';
 import { OrganizationSchema } from '@/components/JsonLd';
-import { getFeaturedProducts } from '@/data/products-db';
 
-export const revalidate = 3600; // Rivalidare ogni ora
-export const dynamic = 'force-dynamic'; // Skip SSG during build
+export const revalidate = 3600;
+export const dynamic = 'force-dynamic';
 
 export default async function Home() {
-  const products = await getFeaturedProducts();
-
   return (
     <>
       <OrganizationSchema />
-      <HomepageHero />
-      <TrustFeaturesSection />
-      <BrandStoryAnimated />
-      <ProductsSection products={products} />
-      <TestimonialsSection />
-      <InstagramFeed />
-      <EnhancedNewsletter />
+      <HomepageHeroLuxury />
+      <TrustFeaturesLuxury />
+      <ProductsShowcaseLuxury />
+      <Craftsmanship />
+      <FounderStoryLuxury />
+      <TestimonialsLuxury />
+      <NewsletterLuxury />
     </>
   );
 }
