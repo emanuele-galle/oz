@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import Image from 'next/image';
+import { ImageReveal } from '@/components/effects/ImageReveal';
+import { TextReveal } from '@/components/effects/TextReveal';
 import { useScrollReveal, useCountUp } from '@/hooks/useScrollAnimation';
 
 export function BrandStoryAnimated() {
@@ -67,21 +68,21 @@ export function BrandStoryAnimated() {
             </div>
           </div>
 
-          {/* Image */}
+          {/* Image with Reveal Effect */}
           <div ref={imageRef as any} className="relative">
-            <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
-              <Image
-                src="/uploads/images/Zoe-Cristofoli.jpeg"
-                alt="Zoe Cristofoli - Founder OZ Extrait"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-            </div>
+            <ImageReveal
+              src="/uploads/images/Zoe-Cristofoli.jpeg"
+              alt="Zoe Cristofoli - Founder OZ Extrait"
+              className="relative aspect-[3/4] rounded-lg"
+              fill
+            />
 
-            {/* Decorative Element */}
-            <div className="absolute -top-8 -left-8 w-32 h-32 border-2 border-gold/30 -z-10" />
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 border-2 border-gold/30 -z-10" />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg pointer-events-none" />
+
+            {/* Decorative Elements with animation */}
+            <div className="absolute -top-8 -left-8 w-32 h-32 border-2 border-gold/30 -z-10 animate-float" />
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 border-2 border-gold/30 -z-10 animate-float" style={{ animationDelay: '1s' }} />
           </div>
         </div>
       </div>

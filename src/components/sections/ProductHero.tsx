@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Product } from '@/types/product';
-import { Button } from '@/components/ui';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import { ProductGallery } from '@/components/media';
 import { useCartStore } from '@/store/cartStore';
+import { toast } from 'sonner';
 
 interface ProductHeroProps {
   product: Product;
@@ -18,6 +20,9 @@ export function ProductHero({ product }: ProductHeroProps) {
 
   const handleAddToCart = () => {
     addItem(product, currentSize, 1);
+    toast.success('Aggiunto al carrello', {
+      description: `${product.name} - ${currentSize.volume}`,
+    });
   };
 
   return (
@@ -32,16 +37,25 @@ export function ProductHero({ product }: ProductHeroProps) {
           />
 
           {/* Product Info */}
-          <div className="space-y-6">
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="space-y-6"
+          >
             {/* Title */}
-            <div>
-              <h1 className="font-cinzel text-5xl md:text-6xl text-gold mb-3">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+            >
+              <h1 className="font-cinzel text-5xl md:text-6xl text-gradient-gold mb-3">
                 {product.name}
               </h1>
               <p className="font-playfair text-2xl text-white/70 italic">
                 {product.tagline}
               </p>
-            </div>
+            </motion.div>
 
             {/* Price */}
             <div className="py-6 border-y border-white/10">
@@ -60,27 +74,33 @@ export function ProductHero({ product }: ProductHeroProps) {
             </p>
 
             {/* Size Selector */}
-            <div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
               <label className="block text-sm font-inter font-medium text-white/80 mb-3 uppercase tracking-wide">
                 Seleziona Formato
               </label>
               <div className="flex gap-3">
                 {product.sizes.map((size, index) => (
-                  <button
+                  <motion.button
                     key={index}
                     onClick={() => setSelectedSize(index)}
-                    className={`px-6 py-3 border-2 transition-all font-inter text-sm uppercase tracking-wide ${
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`px-6 py-3 border-2 rounded-lg transition-all font-inter text-sm uppercase tracking-wide ${
                       selectedSize === index
-                        ? 'border-gold bg-gold text-black'
+                        ? 'border-gold bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]'
                         : 'border-white/20 text-white hover:border-gold hover:bg-gold/10'
                     }`}
                   >
                     {size.volume}
                     {size.isTester && ' Tester'}
-                  </button>
+                  </motion.button>
                 ))}
               </div>
-            </div>
+            </motion.div>
 
             {/* Stock Status Badge */}
             {currentSize.stockQuantity !== undefined && (
@@ -117,56 +137,55 @@ export function ProductHero({ product }: ProductHeroProps) {
             )}
 
             {/* Add to Cart */}
-            <div className="pt-6">
-              <Button
-                variant="primary"
-                size="xl"
-                className="w-full"
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="pt-6"
+            >
+              <MagneticButton
                 onClick={handleAddToCart}
-                disabled={currentSize.stockQuantity === 0}
+                intensity={0.3}
+                className={`w-full py-6 rounded-full font-inter font-bold text-lg uppercase tracking-wider transition-all duration-300 ${
+                  currentSize.stockQuantity === 0
+                    ? 'bg-white/10 text-white/40 cursor-not-allowed'
+                    : 'bg-gold text-black shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:shadow-[0_0_60px_rgba(212,175,55,0.7)] hover:bg-gold-light'
+                }`}
               >
                 {currentSize.stockQuantity === 0
                   ? 'Non Disponibile'
                   : `Aggiungi al Carrello - €${currentSize.price}`}
-              </Button>
-            </div>
+              </MagneticButton>
+            </motion.div>
 
             {/* Product Details */}
-            <div className="grid grid-cols-2 gap-4 pt-6">
-              <div className="glass-card p-4">
-                <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1">
-                  Concentrazione
-                </div>
-                <div className="text-lg font-cinzel text-gold">
-                  {product.concentration}
-                </div>
-              </div>
-              <div className="glass-card p-4">
-                <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1">
-                  Longevità
-                </div>
-                <div className="text-lg font-cinzel text-gold">
-                  {product.longevity}
-                </div>
-              </div>
-              <div className="glass-card p-4">
-                <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1">
-                  Sillage
-                </div>
-                <div className="text-lg font-cinzel text-gold">
-                  {product.sillage}
-                </div>
-              </div>
-              <div className="glass-card p-4">
-                <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1">
-                  SKU
-                </div>
-                <div className="text-sm font-inter text-white">
-                  {currentSize.sku}
-                </div>
-              </div>
-            </div>
-          </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.9 }}
+              className="grid grid-cols-2 gap-4 pt-6"
+            >
+              {[
+                { label: 'Concentrazione', value: product.concentration },
+                { label: 'Longevità', value: product.longevity },
+                { label: 'Sillage', value: product.sillage },
+                { label: 'SKU', value: currentSize.sku },
+              ].map((detail, index) => (
+                <motion.div
+                  key={index}
+                  className="glass-card-premium p-4 group hover:bg-white/5 transition-all duration-300"
+                  whileHover={{ scale: 1.02, y: -2 }}
+                >
+                  <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1 group-hover:text-gold/70 transition-colors">
+                    {detail.label}
+                  </div>
+                  <div className="text-lg font-cinzel text-gold group-hover:text-gold-light transition-colors">
+                    {detail.value}
+                  </div>
+                </motion.div>
+              ))}
+            </motion.div>
+          </motion.div>
         </div>
       </div>
     </section>
