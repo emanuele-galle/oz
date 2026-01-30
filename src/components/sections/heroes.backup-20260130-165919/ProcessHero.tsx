@@ -21,7 +21,7 @@ export function ProcessHero() {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-stone-50">
+    <section className="relative h-screen w-full overflow-hidden bg-midnight">
       {/* Video Background */}
       <video ref={videoRef} autoPlay loop muted playsInline onLoadedData={() => setIsVideoLoaded(true)} className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-100' : 'opacity-0'}`}>
         <source src="/uploads/videos/cristallo-background.mp4" type="video/mp4" />
@@ -38,7 +38,7 @@ export function ProcessHero() {
           </div>
 
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
-            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[84px] leading-[1.1] tracking-tight text-stone-900 mb-6">
+            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[84px] leading-[1.1] tracking-tight text-white mb-6">
               Il Nostro
               <br />
               <span className="text-gold-500">Processo</span>
@@ -55,7 +55,7 @@ export function ProcessHero() {
           </div>
 
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '1200ms', animationFillMode: 'forwards' }}>
-            <p className="font-inter text-base md:text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="font-inter text-base md:text-lg text-white/70 leading-relaxed max-w-2xl mx-auto">
               Ogni fragranza OZ Extrait attraversa 5 fasi di creazione artigianale,
               dalla selezione degli ingredienti al controllo qualità finale.
               <br className="hidden md:block" />
@@ -68,7 +68,7 @@ export function ProcessHero() {
               {['Selezione', 'Blending', 'Macerazione', 'Imbottigliamento', 'QA'].map((step, index) => (
                 <div key={index} className="p-3 md:p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300">
                   <div className="font-cinzel text-xl md:text-2xl text-gold-500 mb-1">{index + 1}</div>
-                  <div className="font-inter text-[10px] md:text-xs text-stone-600 uppercase tracking-wide">{step}</div>
+                  <div className="font-inter text-[10px] md:text-xs text-white/60 uppercase tracking-wide">{step}</div>
                 </div>
               ))}
             </div>

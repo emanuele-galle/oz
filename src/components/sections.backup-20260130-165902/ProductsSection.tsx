@@ -21,7 +21,7 @@ export function ProductsSection({ products }: ProductsSectionProps) {
           <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
             Le Nostre Creazioni
           </h2>
-          <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
+          <div className="h-1 w-24 bg-gold mx-auto mb-6" />
           <p className="font-playfair text-xl text-stone-700/70 max-w-2xl mx-auto">
             {products.length} fragranze uniche, {products.length} storie da scoprire.
             <br />

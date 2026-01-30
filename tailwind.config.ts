@@ -31,10 +31,6 @@ const config: Config = {
           800: '#5C4709',
           900: '#2E2305',
         },
-        midnight: {
-          DEFAULT: '#0A0A0A',
-          lighter: '#1A1A1A',
-        },
 
         // Secondary
         cream: {

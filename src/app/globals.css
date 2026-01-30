@@ -1,13 +1,20 @@
 @import "tailwindcss";
 
-/* GLOBAL OVERRIDE: Force light color scheme */
+/**
+ * GLOBAL STYLES — OZ Extrait
+ * Design Philosophy: Clean luxury, Byredo-inspired
+ * Color Scheme: Light backgrounds, dark text, gold accents
+ */
+
+/* Force light color scheme globally */
 body {
-  background: #FEFDFB !important;
-  color: #0A0A0A !important;
+  background: #FFFFFF;
+  color: #1C1917;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Utility classes */
+/* Container utility */
 .container-luxury {
   max-width: 80rem;
   margin-left: auto;
@@ -16,22 +23,43 @@ body {
   padding-right: 1.5rem;
 }
 
+/* Section padding utility */
 .section-padding {
-  padding-top: 6rem;
-  padding-bottom: 6rem;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
 @media (min-width: 768px) {
+  .section-padding {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
   .section-padding {
     padding-top: 8rem;
     padding-bottom: 8rem;
   }
 }
 
-/* Text gold gradient */
+/* Gold gradient text utility */
 .text-gold-gradient {
-  background: linear-gradient(to right, #D4AF37, #B8941F);
+  background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* Smooth transitions */
+* {
+  transition-property: color, background-color, border-color;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Remove transitions for animations and transforms */
+*[class*="animate-"],
+*[class*="transition-transform"] {
+  transition-property: transform, opacity;
 }

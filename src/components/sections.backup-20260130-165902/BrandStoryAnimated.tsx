@@ -24,7 +24,7 @@ export function BrandStoryAnimated() {
               <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600">
                 L'Essenza del Lusso
               </h2>
-              <div className="h-1 w-24 bg-gold-500 mt-4" />
+              <div className="h-1 w-24 bg-gold mt-4" />
             </div>
 
             <div ref={textRef as any}>
@@ -81,8 +81,8 @@ export function BrandStoryAnimated() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent rounded-lg pointer-events-none" />
 
             {/* Decorative Elements with animation */}
-            <div className="absolute -top-8 -left-8 w-32 h-32 border-2 border-gold-500/30 -z-10 animate-float" />
-            <div className="absolute -bottom-8 -right-8 w-32 h-32 border-2 border-gold-500/30 -z-10 animate-float" style={{ animationDelay: '1s' }} />
+            <div className="absolute -top-8 -left-8 w-32 h-32 border-2 border-gold/30 -z-10 animate-float" />
+            <div className="absolute -bottom-8 -right-8 w-32 h-32 border-2 border-gold/30 -z-10 animate-float" style={{ animationDelay: '1s' }} />
           </div>
         </div>
       </div>
