@@ -27,7 +27,7 @@ export function NewsletterSection() {
   };
 
   return (
-    <section className="section-padding bg-gradient-to-b from-midnight to-black border-t border-white/10">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-midnight to-black border-t border-white/10">
       <div className="container-luxury">
         <div ref={containerRef as any} className="max-w-4xl mx-auto">
           {/* Newsletter Form */}

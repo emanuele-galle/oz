@@ -1,9 +1,9 @@
 import { notFound } from 'next/navigation';
 import { getProductBySlug, getAllProductSlugs } from '@/data/products-db';
-import { ProductHero } from '@/components/sections/ProductHero';
+import { ProductHeroGallery } from '@/components/sections/heroes';
+import { ProductStoryBlock } from '@/components/product';
 import { ProductInfo } from '@/components/sections/ProductInfo';
 import { OlfactoryJourney } from '@/components/sections/OlfactoryJourney';
-// import { Ingredients } from '@/components/sections/Ingredients'; // TODO: Fase 3 - aggiungi ingredients al DB
 import { ProductSchema, BreadcrumbSchema } from '@/components/JsonLd';
 
 export const revalidate = 3600; // Rivalidare ogni ora (ISR)
@@ -72,10 +72,23 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           { name: product.name, url: `/products/${product.slug}` },
         ]}
       />
-      <ProductHero product={product} />
+      <ProductHeroGallery product={product} />
+
+      {/* Product Story — Long-form narrative */}
+      {product.story && (
+        <ProductStoryBlock
+          title={`La Storia di ${product.name}`}
+          story={product.story}
+          pullQuote={{
+            text: `Ogni fragranza è un pezzo di me. ${product.name} rappresenta una parte della mia anima.`,
+            author: 'Zoe Cristofoli'
+          }}
+          variant="light"
+        />
+      )}
+
       <ProductInfo product={product} />
       <OlfactoryJourney product={product} />
-      {/* <Ingredients product={product} /> */}
     </div>
   );
 }

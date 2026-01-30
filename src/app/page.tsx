@@ -1,4 +1,4 @@
-import { EnhancedHero } from '@/components/sections/EnhancedHero';
+import { HomepageHero } from '@/components/sections/heroes';
 import { TrustFeaturesSection } from '@/components/sections/TrustFeaturesSection';
 import { BrandStoryAnimated } from '@/components/sections/BrandStoryAnimated';
 import { ProductsSection } from '@/components/sections/ProductsSection';
@@ -17,7 +17,7 @@ export default async function Home() {
   return (
     <>
       <OrganizationSchema />
-      <EnhancedHero />
+      <HomepageHero />
       <TrustFeaturesSection />
       <BrandStoryAnimated />
       <ProductsSection products={products} />

@@ -54,7 +54,7 @@ export function TrustFeaturesSection() {
   const gridRef = useStaggerReveal(0.1);
 
   return (
-    <section className="section-padding bg-gradient-to-b from-black to-midnight">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-black to-midnight">
       <div className="container-luxury">
         {/* Section Header */}
         <div ref={headerRef as any} className="text-center mb-12">

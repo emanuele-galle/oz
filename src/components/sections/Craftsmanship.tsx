@@ -28,10 +28,10 @@ export function Craftsmanship() {
   ];
 
   return (
-    <section className="section-padding bg-black">
+    <section className="py-16 md:py-24 bg-black">
       <div className="container-luxury">
         <div className="text-center mb-16">
-          <h2 className="font-cinzel text-display text-gold mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-4">
             Il Processo Artigianale
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-6" />
