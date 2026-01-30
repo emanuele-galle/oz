@@ -41,10 +41,10 @@ export function BrandPhilosophy() {
   ];
 
   return (
-    <section className="section-padding bg-midnight">
+    <section className="py-16 md:py-24 bg-midnight">
       <div className="container-luxury">
         <div className="text-center mb-16">
-          <h2 className="font-cinzel text-display text-gold mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-4">
             La Nostra Filosofia
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-6" />

@@ -26,7 +26,7 @@ export function EnhancedNewsletter() {
   };
 
   return (
-    <section className="relative section-padding bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
+    <section className="relative py-16 md:py-24 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute top-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
       <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
@@ -41,12 +41,12 @@ export function EnhancedNewsletter() {
             transition={{ duration: 0.8 }}
             className="mb-12"
           >
-            <h2 className="font-cinzel text-5xl md:text-6xl text-gold mb-6">
+            <h2 className="font-cinzel text-5xl md:text-6xl text-gold-600 mb-6">
               Scopri il Lusso
             </h2>
             <div className="h-1 w-32 bg-gold mx-auto mb-8" />
             <TextReveal
-              className="font-playfair text-xl md:text-2xl text-white/80 leading-relaxed"
+              className="font-playfair text-xl md:text-2xl text-stone-700/80 leading-relaxed"
               delay={0.2}
             >
               Iscriviti alla nostra newsletter per ricevere novità esclusive fragranze in anteprima e
@@ -74,7 +74,7 @@ export function EnhancedNewsletter() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="La tua email"
                   required
-                  className="w-full px-8 py-5 bg-white/5 backdrop-blur-sm border-2 border-gold/30 rounded-full text-white placeholder-white/40 font-inter focus:outline-none focus:border-gold transition-all duration-300"
+                  className="w-full px-8 py-5 bg-white/5 backdrop-blur-sm border-2 border-gold/30 rounded-full text-stone-700 placeholder-white/40 font-inter focus:outline-none focus:border-gold transition-all duration-300"
                   disabled={isSubmitting}
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gold/20 to-transparent opacity-0 hover:opacity-100 transition-opacity pointer-events-none" />
@@ -106,7 +106,7 @@ export function EnhancedNewsletter() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5 }}
-              className="mt-6 text-sm text-white/50 font-inter"
+              className="mt-6 text-sm text-stone-700/50 font-inter"
             >
               Rispettiamo la tua privacy. Nessuno spam, solo eleganza.
             </motion.p>
@@ -134,8 +134,8 @@ export function EnhancedNewsletter() {
                 className="text-center"
               >
                 <div className="text-4xl mb-3">{benefit.icon}</div>
-                <h3 className="font-cinzel text-lg text-gold mb-2">{benefit.title}</h3>
-                <p className="text-sm text-white/60 font-inter">{benefit.desc}</p>
+                <h3 className="font-cinzel text-lg text-gold-600 mb-2">{benefit.title}</h3>
+                <p className="text-sm text-stone-700/60 font-inter">{benefit.desc}</p>
               </motion.div>
             ))}
           </motion.div>

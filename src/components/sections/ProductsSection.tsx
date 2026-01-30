@@ -14,18 +14,18 @@ export function ProductsSection({ products }: ProductsSectionProps) {
   const gridRef = useStaggerReveal(0.15);
 
   return (
-    <section id="products" className="section-padding bg-black">
+    <section id="products" className="py-16 md:py-24 bg-cream-50">
       <div className="container-luxury">
         {/* Section Header */}
         <div ref={headerRef as any} className="text-center mb-16">
-          <h2 className="font-cinzel text-display text-gold mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
             Le Nostre Creazioni
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-6" />
-          <p className="font-playfair text-xl text-white/70 max-w-2xl mx-auto">
+          <p className="font-playfair text-xl text-stone-700/70 max-w-2xl mx-auto">
             {products.length} fragranze uniche, {products.length} storie da scoprire.
             <br />
-            <span className="text-gold-light">Extrait de Parfum 40%</span>
+            <span className="text-gold-600-light">Extrait de Parfum 40%</span>
           </p>
         </div>
 

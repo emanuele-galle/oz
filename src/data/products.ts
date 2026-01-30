@@ -126,10 +126,10 @@ export const products: Product[] = [
       { volume: '10ml', price: 50, sku: 'POT-10', isTester: true },
     ],
     images: [
-      { url: '/uploads/images/Potion d\'amour.jpeg', alt: 'Potion d\'Amour Extrait de Parfum', isPrimary: true },
+      { url: '/uploads/images/Potion-damour.jpeg', alt: 'Potion d\'Amour Extrait de Parfum', isPrimary: true },
       { url: '/uploads/images/Potion-d-amour-1.jpeg', alt: 'Potion d\'Amour vista 2' },
-      { url: '/uploads/images/Potion d\'amour con tester cristallo.jpeg', alt: 'Potion d\'Amour con tester Cristallo' },
-      { url: '/uploads/images/Potion d\'amour con tester scintilla.jpeg', alt: 'Potion d\'Amour con tester Scintilla' },
+      { url: '/uploads/images/Potion-damour-con-tester-cristallo.jpeg', alt: 'Potion d\'Amour con tester Cristallo' },
+      { url: '/uploads/images/Potion-damour-con-tester-scintilla.jpeg', alt: 'Potion d\'Amour con tester Scintilla' },
     ],
     olfactoryNotes: {
       top: ['Lampone Rosso', 'Bergamotto', 'Liquore di Amaretto'],

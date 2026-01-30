@@ -3,12 +3,12 @@ import Image from 'next/image';
 
 export function BrandStory() {
   return (
-    <section className="section-padding bg-midnight">
+    <section className="py-16 md:py-24 bg-midnight">
       <div className="container-luxury">
         <div className="grid md:grid-cols-2 gap-16 items-center">
           {/* Text Content */}
           <div className="space-y-6">
-            <h2 className="font-cinzel text-display text-gold">
+            <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold">
               L'Essenza del Lusso
             </h2>
             <div className="h-1 w-24 bg-gold" />

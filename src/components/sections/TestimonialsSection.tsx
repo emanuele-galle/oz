@@ -22,10 +22,10 @@ export function TestimonialsSection() {
   const current = testimonials[currentIndex];
 
   return (
-    <section className="section-padding bg-midnight">
+    <section className="py-16 md:py-24 bg-cream-50 text-stone-700">
       <div className="container-luxury">
         <div className="text-center mb-16">
-          <h2 className="font-cinzel text-display text-gold mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
             Cosa Dicono i Clienti
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-6" />
@@ -36,18 +36,18 @@ export function TestimonialsSection() {
               {[...Array(5)].map((_, i) => (
                 <svg
                   key={i}
-                  className="w-6 h-6 text-gold fill-current"
+                  className="w-6 h-6 text-gold-600 fill-current"
                   viewBox="0 0 20 20"
                 >
                   <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                 </svg>
               ))}
             </div>
-            <span className="font-inter text-white/80 text-lg">
+            <span className="font-inter text-stone-700/80 text-lg">
               {averageRating.toFixed(1)} / 5.0
             </span>
           </div>
-          <p className="font-inter text-white/60 text-sm">
+          <p className="font-inter text-stone-700/60 text-sm">
             Basato su {testimonials.length} recensioni verificate
           </p>
         </div>
@@ -62,7 +62,7 @@ export function TestimonialsSection() {
                 {[...Array(current.rating)].map((_, i) => (
                   <svg
                     key={i}
-                    className="w-5 h-5 text-gold fill-current"
+                    className="w-5 h-5 text-gold-600 fill-current"
                     viewBox="0 0 20 20"
                   >
                     <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
@@ -72,8 +72,8 @@ export function TestimonialsSection() {
 
               {/* Quote */}
               <blockquote className="relative mb-8">
-                <div className="absolute -top-6 -left-4 text-7xl text-gold/20 font-cinzel">&ldquo;</div>
-                <p className="font-playfair text-2xl text-white/90 leading-relaxed text-center relative z-10">
+                <div className="absolute -top-6 -left-4 text-7xl text-gold-600/20 font-cinzel">&ldquo;</div>
+                <p className="font-playfair text-2xl text-stone-700/90 leading-relaxed text-center relative z-10">
                   {current.comment}
                 </p>
               </blockquote>
@@ -90,29 +90,29 @@ export function TestimonialsSection() {
                     />
                   ) : (
                     <div className="w-16 h-16 rounded-full bg-gold/10 border-2 border-gold/30 flex items-center justify-center">
-                      <span className="font-cinzel text-xl text-gold">
+                      <span className="font-cinzel text-xl text-gold-600">
                         {current.initials || current.name.charAt(0)}
                       </span>
                     </div>
                   )}
                 </div>
 
-                <div className="font-cinzel text-xl text-gold mb-1">
+                <div className="font-cinzel text-xl text-gold-600 mb-1">
                   {current.name}
                 </div>
-                <div className="font-inter text-white/60 text-sm mb-2">
+                <div className="font-inter text-stone-700/60 text-sm mb-2">
                   {current.location}
                 </div>
                 <div className="flex items-center justify-center gap-2">
                   {current.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs text-gold border border-gold/30 px-2 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-xs text-gold-600 border border-gold/30 px-2 py-1 rounded-full">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
                       Acquisto Verificato
                     </span>
                   )}
-                  <span className="text-xs text-white/40 font-inter">
+                  <span className="text-xs text-stone-700/40 font-inter">
                     {current.product}
                   </span>
                 </div>
@@ -123,7 +123,7 @@ export function TestimonialsSection() {
             <div className="flex items-center justify-between">
               <button
                 onClick={prevTestimonial}
-                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold"
+                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold-600"
                 aria-label="Previous testimonial"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -149,7 +149,7 @@ export function TestimonialsSection() {
 
               <button
                 onClick={nextTestimonial}
-                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold"
+                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold-600"
                 aria-label="Next testimonial"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -12,10 +12,10 @@ export function Ingredients({ product }: IngredientsProps) {
   }
 
   return (
-    <section className="section-padding bg-midnight">
+    <section className="py-16 md:py-24 bg-midnight">
       <div className="container-luxury">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-cinzel text-display text-gold mb-8 text-center">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-8 text-center">
             Ingredienti d'Eccellenza
           </h2>
           <div className="h-1 w-24 bg-gold mx-auto mb-12" />
