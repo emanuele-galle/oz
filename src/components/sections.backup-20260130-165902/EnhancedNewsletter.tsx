@@ -28,8 +28,8 @@ export function EnhancedNewsletter() {
   return (
     <section className="relative py-16 md:py-24 bg-gradient-to-br from-zinc-900 via-black to-zinc-900 overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-gold-500/5 rounded-full blur-[120px]" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold-500/5 rounded-full blur-[120px]" />
+      <div className="absolute top-0 left-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
 
       <div className="container-luxury relative z-10">
         <div className="max-w-4xl mx-auto text-center">
@@ -44,7 +44,7 @@ export function EnhancedNewsletter() {
             <h2 className="font-cinzel text-5xl md:text-6xl text-gold-600 mb-6">
               Scopri il Lusso
             </h2>
-            <div className="h-1 w-32 bg-gold-500 mx-auto mb-8" />
+            <div className="h-1 w-32 bg-gold mx-auto mb-8" />
             <TextReveal
               className="font-playfair text-xl md:text-2xl text-stone-700/80 leading-relaxed"
               delay={0.2}
@@ -74,7 +74,7 @@ export function EnhancedNewsletter() {
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="La tua email"
                   required
-                  className="w-full px-8 py-5 bg-white/5 backdrop-blur-sm border-2 border-gold-500/30 rounded-full text-stone-700 placeholder-white/40 font-inter focus:outline-none focus:border-gold-500 transition-all duration-300"
+                  className="w-full px-8 py-5 bg-white/5 backdrop-blur-sm border-2 border-gold/30 rounded-full text-stone-700 placeholder-white/40 font-inter focus:outline-none focus:border-gold transition-all duration-300"
                   disabled={isSubmitting}
                 />
                 <div className="absolute inset-0 rounded-full bg-gradient-to-r from-gold/20 to-transparent opacity-0 hover:opacity-100 transition-opacity pointer-events-none" />
@@ -82,7 +82,7 @@ export function EnhancedNewsletter() {
 
               <MagneticButton
                 intensity={0.4}
-                className="px-12 py-5 bg-gold-500 text-black font-inter font-bold rounded-full uppercase tracking-wider shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:bg-gold-light transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-12 py-5 bg-gold text-black font-inter font-bold rounded-full uppercase tracking-wider shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:bg-gold-light transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={() => {}}
               >
                 {isSubmitting ? (

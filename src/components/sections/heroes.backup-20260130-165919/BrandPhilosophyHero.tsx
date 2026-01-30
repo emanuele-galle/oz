@@ -10,7 +10,7 @@ import React from 'react';
 
 export function BrandPhilosophyHero() {
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-stone-50">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-midnight">
       {/* Subtle background pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{ backgroundImage: `radial-gradient(circle at 1px 1px, rgba(212, 175, 55, 0.15) 1px, transparent 1px)`, backgroundSize: '40px 40px' }} />
@@ -28,13 +28,13 @@ export function BrandPhilosophyHero() {
 
           {/* Main Statement */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
-            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[96px] leading-[1] tracking-tight text-stone-900 mb-8">
+            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[96px] leading-[1] tracking-tight text-white mb-8">
               Extrait de Parfum.
               <br />
               <span className="text-gold-500">Extrait d'Âme.</span>
             </h1>
 
-            <p className="font-playfair text-xl md:text-2xl lg:text-3xl text-stone-600 leading-[1.5] italic max-w-3xl mx-auto">
+            <p className="font-playfair text-xl md:text-2xl lg:text-3xl text-white/70 leading-[1.5] italic max-w-3xl mx-auto">
               Estratto di Profumo. Estratto d'Anima.
             </p>
           </div>
@@ -50,7 +50,7 @@ export function BrandPhilosophyHero() {
 
           {/* Body text */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '1200ms', animationFillMode: 'forwards' }}>
-            <p className="font-inter text-base md:text-lg text-stone-700 leading-relaxed max-w-3xl mx-auto">
+            <p className="font-inter text-base md:text-lg text-white/80 leading-relaxed max-w-3xl mx-auto">
               Non creiamo profumi. Creiamo <strong className="text-gold-400 font-semibold">esperienze sensoriali</strong> che
               trascendono il tempo, <strong className="text-gold-400 font-semibold">opere d'arte liquide</strong> che vivono
               sulla pelle e nell'anima.

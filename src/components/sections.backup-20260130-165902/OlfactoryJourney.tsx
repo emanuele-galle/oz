@@ -13,12 +13,12 @@ export function OlfactoryJourney({ product }: OlfactoryJourneyProps) {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-black">
       <div className="container-luxury">
-        <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-8 text-center">
+        <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-8 text-center">
           Viaggio Olfattivo
         </h2>
-        <div className="h-1 w-24 bg-gold-500 mx-auto mb-16" />
+        <div className="h-1 w-24 bg-gold mx-auto mb-16" />
 
         <div className="grid md:grid-cols-3 gap-8">
           {notes.map((note, index) => (
@@ -33,14 +33,14 @@ export function OlfactoryJourney({ product }: OlfactoryJourneyProps) {
               </div>
 
               {/* Title */}
-              <h3 className="font-cinzel text-2xl text-gold-600 mb-6">
+              <h3 className="font-cinzel text-2xl text-gold mb-6">
                 {note.title}
               </h3>
 
               {/* Notes List */}
               <ul className="space-y-3">
                 {note.items.map((item, i) => (
-                  <li key={i} className="font-inter text-stone-600">
+                  <li key={i} className="font-inter text-white/70">
                     {item}
                   </li>
                 ))}
@@ -55,15 +55,15 @@ export function OlfactoryJourney({ product }: OlfactoryJourneyProps) {
           <div className="absolute inset-0 flex justify-between items-center px-4">
             <div className="text-center">
               <div className="w-4 h-4 bg-gold-light rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">0-15 min</span>
+              <span className="text-xs font-inter text-white/50">0-15 min</span>
             </div>
             <div className="text-center">
-              <div className="w-4 h-4 bg-gold-500 rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">15 min - 4 ore</span>
+              <div className="w-4 h-4 bg-gold rounded-full mb-2" />
+              <span className="text-xs font-inter text-white/50">15 min - 4 ore</span>
             </div>
             <div className="text-center">
               <div className="w-4 h-4 bg-gold-dark rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">4 - 12+ ore</span>
+              <span className="text-xs font-inter text-white/50">4 - 12+ ore</span>
             </div>
           </div>
         </div>

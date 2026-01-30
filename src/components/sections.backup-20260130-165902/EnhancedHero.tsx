@@ -69,7 +69,7 @@ export function EnhancedHero() {
             className="mb-12"
           >
             <motion.h1
-              className="font-cinzel text-6xl md:text-8xl lg:text-9xl font-bold text-gold-600 tracking-[0.3em] mb-6"
+              className="font-cinzel text-6xl md:text-8xl lg:text-9xl font-bold text-gold tracking-[0.3em] mb-6"
               style={{
                 textShadow:
                   '0 0 30px rgba(212,175,55,0.5), 0 0 60px rgba(212,175,55,0.3), 0 0 90px rgba(212,175,55,0.2)',
@@ -114,7 +114,7 @@ export function EnhancedHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
           >
-            <span className="font-playfair text-4xl md:text-6xl lg:text-7xl text-gold-600 font-semibold tracking-wide block mt-2">
+            <span className="font-playfair text-4xl md:text-6xl lg:text-7xl text-gold font-semibold tracking-wide block mt-2">
               Extrait de Parfum
             </span>
           </motion.div>
@@ -125,7 +125,7 @@ export function EnhancedHero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.3 }}
-          className="font-inter text-lg md:text-xl lg:text-2xl text-stone-700 mb-16 max-w-3xl leading-relaxed"
+          className="font-inter text-lg md:text-xl lg:text-2xl text-white/80 mb-16 max-w-3xl leading-relaxed"
         >
           Fragranze artigianali di lusso con concentrazione 40%
           <br />
@@ -142,7 +142,7 @@ export function EnhancedHero() {
           <MagneticButton
             onClick={scrollToProducts}
             intensity={0.5}
-            className="px-16 py-6 bg-gold-500 text-black font-inter font-bold text-lg rounded-full uppercase tracking-wider shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:shadow-[0_0_80px_rgba(212,175,55,0.8)] hover:bg-gold-light transition-all duration-300"
+            className="px-16 py-6 bg-gold text-black font-inter font-bold text-lg rounded-full uppercase tracking-wider shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:shadow-[0_0_80px_rgba(212,175,55,0.8)] hover:bg-gold-light transition-all duration-300"
           >
             Esplora i Profumi
           </MagneticButton>
@@ -150,7 +150,7 @@ export function EnhancedHero() {
           <MagneticButton
             onClick={navigateToAbout}
             intensity={0.5}
-            className="px-16 py-6 bg-transparent border-2 border-gold-500 text-gold-600 font-inter font-bold text-lg rounded-full uppercase tracking-wider hover:border-gold-light hover:text-gold-light hover:bg-gold-500/10 transition-all duration-300"
+            className="px-16 py-6 bg-transparent border-2 border-gold text-gold font-inter font-bold text-lg rounded-full uppercase tracking-wider hover:border-gold-light hover:text-gold-light hover:bg-gold/10 transition-all duration-300"
           >
             La Nostra Storia
           </MagneticButton>
@@ -175,7 +175,7 @@ export function EnhancedHero() {
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-gold-600/60"
+              className="h-8 w-8 text-gold/60"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"

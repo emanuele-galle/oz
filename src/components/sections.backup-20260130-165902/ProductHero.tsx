@@ -52,7 +52,7 @@ export function ProductHero({ product }: ProductHeroProps) {
               <h1 className="font-cinzel text-5xl md:text-6xl text-gradient-gold mb-3">
                 {product.name}
               </h1>
-              <p className="font-playfair text-2xl text-stone-600 italic">
+              <p className="font-playfair text-2xl text-white/70 italic">
                 {product.tagline}
               </p>
             </motion.div>
@@ -62,14 +62,14 @@ export function ProductHero({ product }: ProductHeroProps) {
               <span className="font-cinzel text-4xl text-white">
                 €{currentSize.price}
               </span>
-              <span className="ml-3 text-stone-500 font-inter text-sm uppercase">
+              <span className="ml-3 text-white/50 font-inter text-sm uppercase">
                 {currentSize.volume}
                 {currentSize.isTester && ' (Tester)'}
               </span>
             </div>
 
             {/* Description */}
-            <p className="font-inter text-stone-700 text-lg leading-relaxed">
+            <p className="font-inter text-white/80 text-lg leading-relaxed">
               {product.description}
             </p>
 
@@ -79,7 +79,7 @@ export function ProductHero({ product }: ProductHeroProps) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <label className="block text-sm font-inter font-medium text-stone-700 mb-3 uppercase tracking-wide">
+              <label className="block text-sm font-inter font-medium text-white/80 mb-3 uppercase tracking-wide">
                 Seleziona Formato
               </label>
               <div className="flex gap-3">
@@ -91,8 +91,8 @@ export function ProductHero({ product }: ProductHeroProps) {
                     whileTap={{ scale: 0.95 }}
                     className={`px-6 py-3 border-2 rounded-lg transition-all font-inter text-sm uppercase tracking-wide ${
                       selectedSize === index
-                        ? 'border-gold-500 bg-gold-500 text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]'
-                        : 'border-white/20 text-white hover:border-gold-500 hover:bg-gold-500/10'
+                        ? 'border-gold bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]'
+                        : 'border-white/20 text-white hover:border-gold hover:bg-gold/10'
                     }`}
                   >
                     {size.volume}
@@ -149,7 +149,7 @@ export function ProductHero({ product }: ProductHeroProps) {
                 className={`w-full py-6 rounded-full font-inter font-bold text-lg uppercase tracking-wider transition-all duration-300 ${
                   currentSize.stockQuantity === 0
                     ? 'bg-white/10 text-white/40 cursor-not-allowed'
-                    : 'bg-gold-500 text-black shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:shadow-[0_0_60px_rgba(212,175,55,0.7)] hover:bg-gold-light'
+                    : 'bg-gold text-black shadow-[0_0_40px_rgba(212,175,55,0.5)] hover:shadow-[0_0_60px_rgba(212,175,55,0.7)] hover:bg-gold-light'
                 }`}
               >
                 {currentSize.stockQuantity === 0
@@ -176,10 +176,10 @@ export function ProductHero({ product }: ProductHeroProps) {
                   className="glass-card-premium p-4 group hover:bg-white/5 transition-all duration-300"
                   whileHover={{ scale: 1.02, y: -2 }}
                 >
-                  <div className="text-xs text-stone-500 font-inter uppercase tracking-wide mb-1 group-hover:text-gold-600/70 transition-colors">
+                  <div className="text-xs text-white/50 font-inter uppercase tracking-wide mb-1 group-hover:text-gold/70 transition-colors">
                     {detail.label}
                   </div>
-                  <div className="text-lg font-cinzel text-gold-600 group-hover:text-gold-light transition-colors">
+                  <div className="text-lg font-cinzel text-gold group-hover:text-gold-light transition-colors">
                     {detail.value}
                   </div>
                 </motion.div>

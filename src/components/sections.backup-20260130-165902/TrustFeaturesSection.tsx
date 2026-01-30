@@ -58,11 +58,11 @@ export function TrustFeaturesSection() {
       <div className="container-luxury">
         {/* Section Header */}
         <div ref={headerRef as any} className="text-center mb-12">
-          <h2 className="font-cinzel text-4xl md:text-5xl text-gold-600 mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl text-gold mb-4">
             Perché OZ Extrait
           </h2>
-          <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
-          <p className="font-playfair text-lg text-stone-600 max-w-2xl mx-auto">
+          <div className="h-1 w-24 bg-gold mx-auto mb-6" />
+          <p className="font-playfair text-lg text-white/60 max-w-2xl mx-auto">
             La tua esperienza olfattiva è la nostra priorità
           </p>
         </div>
@@ -99,10 +99,10 @@ export function TrustFeaturesSection() {
                   whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <div className="p-4 rounded-full bg-gold-500/10 group-hover:bg-gold-500/20 transition-colors duration-300 glow-gold">
+                  <div className="p-4 rounded-full bg-gold/10 group-hover:bg-gold/20 transition-colors duration-300 glow-gold">
                     <IconComponent
                       size={40}
-                      className="text-gold-600 group-hover:text-gold-light transition-colors duration-300"
+                      className="text-gold group-hover:text-gold-light transition-colors duration-300"
                     />
                   </div>
                 </motion.div>
@@ -113,7 +113,7 @@ export function TrustFeaturesSection() {
                 </h3>
 
                 {/* Description */}
-                <p className="font-inter text-sm text-stone-600 group-hover:text-stone-700 transition-colors duration-300">
+                <p className="font-inter text-sm text-white/60 group-hover:text-white/80 transition-colors duration-300">
                   {feature.description}
                 </p>
 

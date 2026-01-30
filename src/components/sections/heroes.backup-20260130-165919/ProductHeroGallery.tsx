@@ -59,7 +59,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
 
               {/* Image counter */}
               <div className="absolute top-6 right-6 px-4 py-2 bg-black/40 backdrop-blur-sm rounded-full">
-                <span className="font-inter text-sm text-stone-900">
+                <span className="font-inter text-sm text-white">
                   {selectedImageIndex + 1} / {product.images.length}
                 </span>
               </div>

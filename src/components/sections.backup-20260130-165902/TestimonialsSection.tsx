@@ -28,7 +28,7 @@ export function TestimonialsSection() {
           <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
             Cosa Dicono i Clienti
           </h2>
-          <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
+          <div className="h-1 w-24 bg-gold mx-auto mb-6" />
 
           {/* Average Rating */}
           <div className="flex items-center justify-center gap-4 mb-4">
@@ -86,10 +86,10 @@ export function TestimonialsSection() {
                     <img
                       src={current.avatar}
                       alt={current.name}
-                      className="w-16 h-16 rounded-full object-cover border-2 border-gold-500/30"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-gold/30"
                     />
                   ) : (
-                    <div className="w-16 h-16 rounded-full bg-gold-500/10 border-2 border-gold-500/30 flex items-center justify-center">
+                    <div className="w-16 h-16 rounded-full bg-gold/10 border-2 border-gold/30 flex items-center justify-center">
                       <span className="font-cinzel text-xl text-gold-600">
                         {current.initials || current.name.charAt(0)}
                       </span>
@@ -105,7 +105,7 @@ export function TestimonialsSection() {
                 </div>
                 <div className="flex items-center justify-center gap-2">
                   {current.verified && (
-                    <span className="inline-flex items-center gap-1 text-xs text-gold-600 border border-gold-500/30 px-2 py-1 rounded-full">
+                    <span className="inline-flex items-center gap-1 text-xs text-gold-600 border border-gold/30 px-2 py-1 rounded-full">
                       <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                       </svg>
@@ -123,7 +123,7 @@ export function TestimonialsSection() {
             <div className="flex items-center justify-between">
               <button
                 onClick={prevTestimonial}
-                className="w-12 h-12 flex items-center justify-center border border-gold-500/30 hover:bg-gold-500 hover:text-black transition-all duration-300 text-gold-600"
+                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold-600"
                 aria-label="Previous testimonial"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -139,7 +139,7 @@ export function TestimonialsSection() {
                     onClick={() => goToTestimonial(index)}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
                       index === currentIndex
-                        ? 'bg-gold-500 w-8'
+                        ? 'bg-gold w-8'
                         : 'bg-white/20 hover:bg-white/40'
                     }`}
                     aria-label={`Go to testimonial ${index + 1}`}
@@ -149,7 +149,7 @@ export function TestimonialsSection() {
 
               <button
                 onClick={nextTestimonial}
-                className="w-12 h-12 flex items-center justify-center border border-gold-500/30 hover:bg-gold-500 hover:text-black transition-all duration-300 text-gold-600"
+                className="w-12 h-12 flex items-center justify-center border border-gold/30 hover:bg-gold hover:text-black transition-all duration-300 text-gold-600"
                 aria-label="Next testimonial"
               >
                 <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">

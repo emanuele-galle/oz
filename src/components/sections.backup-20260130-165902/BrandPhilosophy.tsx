@@ -41,14 +41,14 @@ export function BrandPhilosophy() {
   ];
 
   return (
-    <section className="py-16 md:py-24 bg-stone-50">
+    <section className="py-16 md:py-24 bg-midnight">
       <div className="container-luxury">
         <div className="text-center mb-16">
-          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
+          <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-4">
             La Nostra Filosofia
           </h2>
-          <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
-          <p className="font-playfair text-xl text-stone-600 max-w-3xl mx-auto">
+          <div className="h-1 w-24 bg-gold mx-auto mb-6" />
+          <p className="font-playfair text-xl text-white/70 max-w-3xl mx-auto">
             Quattro pilastri che guidano ogni nostra creazione
           </p>
         </div>
@@ -57,15 +57,15 @@ export function BrandPhilosophy() {
           {values.map((value, index) => (
             <div
               key={index}
-              className="glass-card p-8 text-center hover:border-gold-500/30 transition-all duration-500 group"
+              className="glass-card p-8 text-center hover:border-gold/30 transition-all duration-500 group"
             >
-              <div className="text-gold-600 mb-6 flex justify-center group-hover:scale-110 transition-transform duration-500">
+              <div className="text-gold mb-6 flex justify-center group-hover:scale-110 transition-transform duration-500">
                 {value.icon}
               </div>
-              <h3 className="font-cinzel text-2xl text-gold-600 mb-4">
+              <h3 className="font-cinzel text-2xl text-gold mb-4">
                 {value.title}
               </h3>
-              <p className="font-inter text-stone-600 leading-relaxed">
+              <p className="font-inter text-white/70 leading-relaxed">
                 {value.description}
               </p>
             </div>

@@ -11,7 +11,7 @@ import Image from 'next/image';
 
 export function BrandStoryHero() {
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-stone-50">
+    <section className="relative h-screen w-full overflow-hidden bg-midnight">
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image src="/uploads/images/Zoe-Cristofoli.jpeg" alt="Zoe Cristofoli — Founder & Creative Director" fill className="object-cover object-center" priority quality={95} sizes="100vw" />
@@ -28,7 +28,7 @@ export function BrandStoryHero() {
               </span>
             </div>
 
-            <h1 className="font-cinzel text-[56px] md:text-[72px] lg:text-[96px] leading-[0.95] text-stone-900 tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
+            <h1 className="font-cinzel text-[56px] md:text-[72px] lg:text-[96px] leading-[0.95] text-white tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.6)]">
               Zoe
               <br />
               <span className="text-gold-500">Cristofoli</span>
@@ -42,7 +42,7 @@ export function BrandStoryHero() {
               all'universo della profumeria di lusso
             </p>
 
-            <p className="font-inter text-base md:text-lg text-stone-600 leading-relaxed max-w-lg">
+            <p className="font-inter text-base md:text-lg text-white/70 leading-relaxed max-w-lg">
               Influencer, artista, visionaria. Con OZ Extrait, Zoe porta
               la sua autenticità e audacia nel mondo della profumeria
               artigianale italiana.

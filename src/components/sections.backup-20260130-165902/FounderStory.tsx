@@ -5,16 +5,16 @@ import Image from 'next/image';
 
 export function FounderStory() {
   return (
-    <section className="py-16 md:py-24 bg-white">
+    <section className="py-16 md:py-24 bg-black">
       <div className="container-luxury">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold-600 mb-4">
+            <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-gold mb-4">
               Una Storia di Passione
             </h2>
-            <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
-            <p className="font-playfair text-xl text-stone-600 max-w-3xl mx-auto">
+            <div className="h-1 w-24 bg-gold mx-auto mb-6" />
+            <p className="font-playfair text-xl text-white/70 max-w-3xl mx-auto">
               Da Verona al mondo: il viaggio di Zoe Cristofoli nell'universo del lusso
             </p>
           </div>
@@ -24,15 +24,15 @@ export function FounderStory() {
             {/* Chapter 1 */}
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="order-2 md:order-1">
-                <h3 className="font-cinzel text-3xl text-gold-600 mb-6">
+                <h3 className="font-cinzel text-3xl text-gold mb-6">
                   Le Origini
                 </h3>
-                <p className="font-inter text-stone-700 leading-relaxed mb-4">
+                <p className="font-inter text-white/80 leading-relaxed mb-4">
                   Nata a Verona, città dell'amore e dell'arte, Zoe Cristofoli ha sempre avuto una
                   personalità forte e distintiva. Il suo percorso nel mondo dell'immagine e della moda
                   l'ha portata a diventare una delle influencer più seguite in Italia.
                 </p>
-                <p className="font-inter text-stone-700 leading-relaxed">
+                <p className="font-inter text-white/80 leading-relaxed">
                   Con i suoi tatuaggi iconici e il suo stile inconfondibile, Zoe ha sempre cercato modi
                   per esprimere la propria identità, trovando nell'arte olfattiva la forma di espressione
                   più pura e intima.
@@ -59,15 +59,15 @@ export function FounderStory() {
                 />
               </div>
               <div>
-                <h3 className="font-cinzel text-3xl text-gold-600 mb-6">
+                <h3 className="font-cinzel text-3xl text-gold mb-6">
                   La Visione
                 </h3>
-                <p className="font-inter text-stone-700 leading-relaxed mb-4">
+                <p className="font-inter text-white/80 leading-relaxed mb-4">
                   &quot;Volevo creare qualcosa che andasse oltre l'immagine, qualcosa che rimanesse sulla pelle
                   e nell'anima,&quot; racconta Zoe. &quot;I profumi hanno il potere di evocare ricordi, emozioni,
                   momenti. Volevo che le mie fragranze raccontassero storie.&quot;
                 </p>
-                <p className="font-inter text-stone-700 leading-relaxed">
+                <p className="font-inter text-white/80 leading-relaxed">
                   Dopo anni di ricerca e collaborazioni con i migliori nasi della profumeria francese e
                   italiana, nasce OZ Extrait: tre fragranze che incarnano forza, sensualità e autenticità.
                 </p>
@@ -77,7 +77,7 @@ export function FounderStory() {
             {/* Video Section */}
             <div className="glass-card p-8 md:p-12">
               <div className="max-w-4xl mx-auto">
-                <h3 className="font-cinzel text-3xl text-gold-600 mb-6 text-center">
+                <h3 className="font-cinzel text-3xl text-gold mb-6 text-center">
                   Zoe Racconta OZ Extrait
                 </h3>
                 <div className="aspect-video rounded-lg overflow-hidden bg-black/50">
@@ -96,12 +96,12 @@ export function FounderStory() {
             {/* Quote */}
             <div className="text-center max-w-4xl mx-auto">
               <blockquote className="relative">
-                <div className="absolute -top-8 -left-4 text-8xl text-gold-600/20 font-cinzel">&ldquo;</div>
+                <div className="absolute -top-8 -left-4 text-8xl text-gold/20 font-cinzel">&ldquo;</div>
                 <p className="font-playfair text-3xl text-white/90 leading-relaxed italic relative z-10 mb-6">
                   Ogni fragranza è un pezzo di me. Cristallo per la purezza che cerco, Scintilla per
                   l'energia che porto, Potion d'Amour per la passione che vivo.
                 </p>
-                <footer className="font-inter text-gold-600 uppercase tracking-widest text-sm">
+                <footer className="font-inter text-gold uppercase tracking-widest text-sm">
                   — Zoe Cristofoli
                 </footer>
               </blockquote>

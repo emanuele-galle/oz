@@ -36,7 +36,7 @@ export function HeroSection() {
       <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-6">
         {/* Animated logo/brand name */}
         <div className="mb-12 animate-fade-in">
-          <h1 className="font-cinzel text-6xl md:text-8xl lg:text-9xl font-bold text-gold-600 tracking-widest mb-6 drop-shadow-[0_0_30px_rgba(212,175,55,0.5)]">
+          <h1 className="font-cinzel text-6xl md:text-8xl lg:text-9xl font-bold text-gold tracking-widest mb-6 drop-shadow-[0_0_30px_rgba(212,175,55,0.5)]">
             OZ EXTRAIT
           </h1>
           <div className="h-1 w-80 mx-auto bg-gradient-to-r from-transparent via-gold to-transparent shadow-[0_0_20px_rgba(212,175,55,0.6)]" />
@@ -46,11 +46,11 @@ export function HeroSection() {
         <p className="font-playfair text-3xl md:text-5xl lg:text-6xl text-white mb-10 max-w-4xl animate-slide-up animation-delay-200 leading-tight">
           L'Arte della Profumeria
           <br />
-          <span className="text-gold-600 text-4xl md:text-6xl lg:text-7xl font-semibold tracking-wide">Extrait de Parfum</span>
+          <span className="text-gold text-4xl md:text-6xl lg:text-7xl font-semibold tracking-wide">Extrait de Parfum</span>
         </p>
 
         {/* Description */}
-        <p className="font-inter text-lg md:text-xl lg:text-2xl text-stone-700 mb-16 max-w-3xl leading-relaxed animate-slide-up animation-delay-400">
+        <p className="font-inter text-lg md:text-xl lg:text-2xl text-white/80 mb-16 max-w-3xl leading-relaxed animate-slide-up animation-delay-400">
           Fragranze artigianali di lusso con concentrazione 40%
           <br />
           <span className="text-gold-light">Creato con passione da Zoe Cristofoli</span>
@@ -84,7 +84,7 @@ export function HeroSection() {
         <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-8 text-gold-600/60"
+            className="h-8 w-8 text-gold/60"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"

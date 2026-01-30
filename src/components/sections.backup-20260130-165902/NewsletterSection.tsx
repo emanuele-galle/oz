@@ -33,12 +33,12 @@ export function NewsletterSection() {
           {/* Newsletter Form */}
           <div className="glass-card p-12 mb-12">
             <div className="text-center mb-8">
-              <h2 className="font-cinzel text-4xl md:text-5xl text-gold-600 mb-4">
+              <h2 className="font-cinzel text-4xl md:text-5xl text-gold mb-4">
                 Offerte Esclusive
               </h2>
-              <div className="h-1 w-24 bg-gold-500 mx-auto mb-6" />
-              <p className="font-playfair text-lg text-stone-600">
-                Iscriviti alla newsletter e ricevi il <span className="text-gold-600">10% di sconto</span> sul primo ordine
+              <div className="h-1 w-24 bg-gold mx-auto mb-6" />
+              <p className="font-playfair text-lg text-white/70">
+                Iscriviti alla newsletter e ricevi il <span className="text-gold">10% di sconto</span> sul primo ordine
               </p>
             </div>
 
@@ -50,7 +50,7 @@ export function NewsletterSection() {
                 placeholder="La tua email"
                 required
                 disabled={isSubmitting}
-                className="flex-1 px-6 py-4 bg-black/30 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-gold-500 transition-colors font-inter"
+                className="flex-1 px-6 py-4 bg-black/30 border border-white/20 rounded text-white placeholder:text-white/40 focus:outline-none focus:border-gold transition-colors font-inter"
               />
               <Button
                 type="submit"
@@ -75,7 +75,7 @@ export function NewsletterSection() {
 
             <p className="text-center text-white/40 text-xs font-inter mt-4">
               Iscrivendoti accetti la nostra{' '}
-              <a href="/privacy" className="text-gold-600 hover:text-gold-light underline">
+              <a href="/privacy" className="text-gold hover:text-gold-light underline">
                 Privacy Policy
               </a>
             </p>
@@ -105,9 +105,9 @@ export function NewsletterSection() {
               {/* Email */}
               <a
                 href="mailto:info@ozextrait.com?subject=Richiesta Informazioni"
-                className="group flex items-center gap-3 px-8 py-4 bg-gold-500/10 border border-gold-500/30 rounded hover:bg-gold-500/20 hover:border-gold-500/50 transition-all"
+                className="group flex items-center gap-3 px-8 py-4 bg-gold/10 border border-gold/30 rounded hover:bg-gold/20 hover:border-gold/50 transition-all"
               >
-                <svg className="w-6 h-6 text-gold-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-6 h-6 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 <span className="font-inter text-white group-hover:text-gold-light transition-colors">
