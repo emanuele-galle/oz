@@ -4,6 +4,11 @@ import "./globals.css";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { Header, Footer } from "@/components/layout";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { CustomCursor } from "@/components/ui/CustomCursor";
+import { AnimatedMesh } from "@/components/effects/AnimatedMesh";
+import { ScrollProgress } from "@/components/ui/ScrollProgress";
+import { FloatingParticles } from "@/components/effects/FloatingParticles";
+import { Toaster } from "@/components/ui/Toaster";
 
 // Luxury serif for headings
 const cinzel = Cinzel({
@@ -87,6 +92,11 @@ export default function RootLayout({
   return (
     <html lang="it" className={`${cinzel.variable} ${playfair.variable} ${inter.variable}`}>
       <body className="font-inter antialiased scrollbar-gutter">
+        <ScrollProgress />
+        <AnimatedMesh />
+        <FloatingParticles />
+        <CustomCursor />
+        <Toaster />
         <SmoothScroll>
           <Header />
           <main>{children}</main>

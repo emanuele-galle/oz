@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { type Product } from '@/types/product';
-import { ProductCard } from '@/components/ui/ProductCard';
+import { Product3DCard } from '@/components/ui/Product3DCard';
 import { useScrollReveal, useStaggerReveal } from '@/hooks/useScrollAnimation';
 
 interface ProductsSectionProps {
@@ -32,7 +32,7 @@ export function ProductsSection({ products }: ProductsSectionProps) {
         {/* Product Grid */}
         <div ref={gridRef as any} className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <Product3DCard key={product.id} product={product} />
           ))}
         </div>
       </div>
