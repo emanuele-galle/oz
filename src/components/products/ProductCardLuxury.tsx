@@ -2,7 +2,7 @@
 
 /**
  * PRODUCT CARD LUXURY — OZ Extrait
- * Design: Dark & Bold — dark card with gold accents, image-dominant
+ * Design: Light Luxury — white card with subtle shadows, gold accents
  */
 
 import React, { useState } from 'react';
@@ -35,12 +35,12 @@ export function ProductCardLuxury({
   return (
     <Link href={`/products/${slug}`}>
       <div
-        className="group relative bg-stone-950 border border-gold-500/10 overflow-hidden cursor-pointer hover:border-gold-500/30 transition-all duration-500"
+        className="group relative bg-white border border-stone-200/60 overflow-hidden cursor-pointer hover:border-gold-500/40 hover:shadow-lg transition-all duration-500"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Image Container — tall aspect ratio */}
-        <div className="relative aspect-[2/3] overflow-hidden bg-stone-900">
+        <div className="relative aspect-[2/3] overflow-hidden bg-stone-100">
           {/* Primary Image */}
           <Image
             src={imageUrl}
@@ -65,8 +65,8 @@ export function ProductCardLuxury({
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/70 to-transparent" />
 
           {/* Badge */}
-          <div className="absolute top-4 right-4 px-3 py-1.5 bg-black/60 backdrop-blur-sm border border-gold-500/30">
-            <span className="font-inter text-[10px] uppercase tracking-[0.15em] text-gold-400 font-medium">
+          <div className="absolute top-4 right-4 px-3 py-1.5 bg-white/80 backdrop-blur-sm border border-gold-500/30">
+            <span className="font-inter text-[10px] uppercase tracking-[0.15em] text-gold-600 font-medium">
               Extrait {concentration}
             </span>
           </div>
@@ -89,20 +89,17 @@ export function ProductCardLuxury({
         </div>
 
         {/* Product Info */}
-        <div className="p-6 md:p-8 space-y-4 bg-stone-950">
+        <div className="p-6 md:p-8 space-y-4 bg-white">
           <div>
-            <h3 className="font-cinzel text-2xl md:text-3xl text-white mb-2 tracking-tight group-hover:text-gold-400 transition-colors duration-300">
+            <h3 className="font-cinzel text-2xl md:text-3xl text-stone-900 mb-2 tracking-tight group-hover:text-gold-600 transition-colors duration-300">
               {name}
             </h3>
             {tagline && (
-              <p className="font-playfair text-base text-white/50 italic leading-relaxed">
+              <p className="font-playfair text-base text-stone-500 italic leading-relaxed">
                 {tagline}
               </p>
             )}
           </div>
-
-          {/* Divider */}
-          <div className="h-px bg-gold-500/20" />
 
           {/* Price & Size */}
           <div className="flex items-end justify-between">
@@ -110,13 +107,13 @@ export function ProductCardLuxury({
               <div className="text-3xl font-cinzel text-gold-500 tracking-tight">
                 €{price}
               </div>
-              <div className="text-xs font-inter text-white/40 uppercase tracking-wide mt-1">
+              <div className="text-xs font-inter text-stone-400 uppercase tracking-wide mt-1">
                 {size}
               </div>
             </div>
 
             {/* Arrow */}
-            <div className="w-10 h-10 border border-gold-500/30 flex items-center justify-center group-hover:bg-gold-500 group-hover:border-gold-500 transition-all duration-300">
+            <div className="w-10 h-10 border border-stone-200 flex items-center justify-center group-hover:bg-gold-500 group-hover:border-gold-500 transition-all duration-300">
               <span className="text-gold-500 group-hover:text-stone-950 font-light text-xl transition-colors duration-300">
                 →
               </span>

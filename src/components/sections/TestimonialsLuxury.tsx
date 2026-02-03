@@ -2,15 +2,26 @@
 
 /**
  * TESTIMONIALS LUXURY — OZ Extrait
- * Design: Dark & Bold — multiple testimonials visible, auto-advance
+ * Design: Light Luxury — cream background, gold accents
+ * AnimatePresence for transitions, TextReveal heading, product thumbnails
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { TextReveal } from '@/components/effects/TextReveal';
+
+const fragranceImages: Record<string, string> = {
+  'Cristallo': '/uploads/images/Cristallo.jpeg',
+  'Scintilla': '/uploads/images/Scintilla.jpeg',
+  "Potion d'Amour": '/uploads/images/Potion-damour.jpeg',
+};
 
 export function TestimonialsLuxury() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [direction, setDirection] = useState(1);
 
   const testimonials = [
     {
@@ -45,22 +56,43 @@ export function TestimonialsLuxury() {
     },
   ];
 
-  const next = useCallback(() => {
+  const goNext = useCallback(() => {
+    setDirection(1);
     setCurrentIndex((prev) => (prev + 1) % testimonials.length);
   }, [testimonials.length]);
 
-  const prev = () => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  const goPrev = () => {
+    setDirection(-1);
+    setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
 
   // Auto-advance
   useEffect(() => {
     if (isPaused) return;
-    const timer = setInterval(next, 5000);
+    const timer = setInterval(goNext, 5000);
     return () => clearInterval(timer);
-  }, [isPaused, next]);
+  }, [isPaused, goNext]);
+
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 60 : -60,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -60 : 60,
+      opacity: 0,
+    }),
+  };
+
+  const current = testimonials[currentIndex];
 
   return (
     <section
-      className="py-24 md:py-32 bg-black bg-noise"
+      className="py-24 md:py-32 bg-[#FEFDFB]"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -68,46 +100,72 @@ export function TestimonialsLuxury() {
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16">
-            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-500/70 font-light">
+            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-600/80 font-light">
               Testimonianze
             </span>
-            <h2 className="font-cinzel text-4xl md:text-5xl text-white mt-4 tracking-tight">
+            <TextReveal className="font-cinzel text-4xl md:text-5xl text-stone-900 mt-4 tracking-tight justify-center">
               Le Voci dei Nostri Clienti
-            </h2>
+            </TextReveal>
           </div>
 
-          {/* Testimonials — show current prominently */}
+          {/* Testimonials — AnimatePresence */}
           <div className="relative">
-            <div className="glass-card p-10 md:p-16 text-center min-h-[320px] flex flex-col justify-center">
+            <div className="glass-card p-10 md:p-16 text-center min-h-[320px] flex flex-col justify-center overflow-hidden">
               {/* Quote mark */}
               <div className="mb-6">
-                <div className="inline-flex w-12 h-12 border border-gold-500/30 items-center justify-center">
+                <div className="inline-flex w-12 h-12 border border-stone-200 items-center justify-center">
                   <span className="font-playfair text-3xl text-gold-500 leading-none">&ldquo;</span>
                 </div>
               </div>
 
-              {/* Quote */}
-              <blockquote className="font-playfair text-xl md:text-2xl lg:text-3xl text-white/90 leading-relaxed italic mb-10 max-w-3xl mx-auto">
-                {testimonials[currentIndex].quote}
-              </blockquote>
+              {/* Quote with AnimatePresence */}
+              <AnimatePresence mode="wait" custom={direction}>
+                <motion.div
+                  key={currentIndex}
+                  custom={direction}
+                  variants={slideVariants}
+                  initial="enter"
+                  animate="center"
+                  exit="exit"
+                  transition={{ duration: 0.4, ease: [0.65, 0, 0.35, 1] }}
+                >
+                  <blockquote className="font-playfair text-xl md:text-2xl lg:text-3xl text-stone-700 leading-relaxed italic mb-10 max-w-3xl mx-auto">
+                    {current.quote}
+                  </blockquote>
 
-              {/* Author */}
-              <div className="space-y-2">
-                <div className="h-px w-12 bg-gold-500/40 mx-auto" />
-                <p className="font-cinzel text-base text-gold-400">
-                  {testimonials[currentIndex].author}
-                </p>
-                <p className="font-inter text-sm text-white/40">
-                  {testimonials[currentIndex].city} · {testimonials[currentIndex].fragrance}
-                </p>
-              </div>
+                  {/* Author with product thumbnail */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-center gap-4">
+                      {fragranceImages[current.fragrance] && (
+                        <div className="relative w-10 h-10 rounded-full overflow-hidden border border-stone-200 flex-shrink-0">
+                          <Image
+                            src={fragranceImages[current.fragrance]}
+                            alt={current.fragrance}
+                            fill
+                            className="object-cover"
+                            sizes="40px"
+                          />
+                        </div>
+                      )}
+                      <div>
+                        <p className="font-cinzel text-base text-gold-600">
+                          {current.author}
+                        </p>
+                        <p className="font-inter text-sm text-stone-400">
+                          {current.city} &middot; {current.fragrance}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
             {/* Navigation */}
             <div className="flex items-center justify-center gap-6 mt-10">
               <button
-                onClick={prev}
-                className="w-11 h-11 border border-gold-500/30 flex items-center justify-center hover:bg-gold-500 hover:border-gold-500 group transition-all duration-300"
+                onClick={goPrev}
+                className="w-11 h-11 border border-stone-300 flex items-center justify-center hover:bg-gold-500 hover:border-gold-500 group transition-all duration-300"
                 aria-label="Testimonianza precedente"
               >
                 <ChevronLeft className="w-5 h-5 text-gold-500 group-hover:text-stone-950 transition-colors" />
@@ -118,11 +176,14 @@ export function TestimonialsLuxury() {
                 {testimonials.map((_, index) => (
                   <button
                     key={index}
-                    onClick={() => setCurrentIndex(index)}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${
+                    onClick={() => {
+                      setDirection(index > currentIndex ? 1 : -1);
+                      setCurrentIndex(index);
+                    }}
+                    className={`h-2 rounded-full transition-all duration-300 ${
                       index === currentIndex
                         ? 'w-8 bg-gold-500'
-                        : 'w-1.5 bg-white/20 hover:bg-white/40'
+                        : 'w-2 bg-stone-400 hover:bg-gold-500/60'
                     }`}
                     aria-label={`Vai alla testimonianza ${index + 1}`}
                   />
@@ -130,8 +191,8 @@ export function TestimonialsLuxury() {
               </div>
 
               <button
-                onClick={next}
-                className="w-11 h-11 border border-gold-500/30 flex items-center justify-center hover:bg-gold-500 hover:border-gold-500 group transition-all duration-300"
+                onClick={goNext}
+                className="w-11 h-11 border border-stone-300 flex items-center justify-center hover:bg-gold-500 hover:border-gold-500 group transition-all duration-300"
                 aria-label="Testimonianza successiva"
               >
                 <ChevronRight className="w-5 h-5 text-gold-500 group-hover:text-stone-950 transition-colors" />
@@ -140,12 +201,18 @@ export function TestimonialsLuxury() {
           </div>
 
           {/* Bottom note */}
-          <div className="text-center mt-14">
-            <p className="font-inter text-sm text-white/30">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            className="text-center mt-14"
+          >
+            <p className="font-inter text-sm text-stone-400">
               Oltre <span className="text-gold-500/70 font-semibold">500+</span> clienti
               soddisfatti in tutta Italia
             </p>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>

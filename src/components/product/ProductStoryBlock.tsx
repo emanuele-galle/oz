@@ -111,7 +111,7 @@ export function ProductStoryBlock({
 
         {/* Pull Quote (se presente) */}
         {pullQuote && (
-          <figure className="relative my-16 py-12 border-y border-gold-500/20">
+          <figure className="relative my-16 py-12 border-y border-gold-500/30">
             {/* Quotation mark decorative */}
             <div className={cn(
               'absolute -top-8 left-0 text-[120px] font-cinzel leading-none select-none',

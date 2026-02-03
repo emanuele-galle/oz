@@ -2,10 +2,12 @@
 
 /**
  * TRUST FEATURES LUXURY — OZ Extrait
- * Design: Dark & Bold — gold icons on black background
+ * Design: Light Luxury — gold icons on cream background
+ * Animated with staggered whileInView and scale icon entrance
  */
 
 import React from 'react';
+import { motion } from 'framer-motion';
 import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants';
 
 export function TrustFeaturesLuxury() {
@@ -49,32 +51,43 @@ export function TrustFeaturesLuxury() {
   ];
 
   return (
-    <section className="py-14 md:py-16 bg-stone-950 border-y border-gold-500/10">
+    <section className="py-14 md:py-16 bg-[#FBF8F3]">
       <div className="container-luxury">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 max-w-6xl mx-auto">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-50px' }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="text-center group relative"
             >
-              {/* Vertical gold separator (between items on desktop) */}
-              {index > 0 && (
-                <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-px h-12 bg-gold-500/20" />
-              )}
-
-              {/* Icon */}
-              <div className="inline-flex items-center justify-center w-14 h-14 mb-4 border border-gold-500/30 text-gold-500 group-hover:border-gold-500 group-hover:bg-gold-500/10 group-hover:shadow-gold-subtle transition-all duration-300">
+              {/* Icon — scale entrance */}
+              <motion.div
+                initial={{ scale: 0.5, opacity: 0 }}
+                whileInView={{ scale: 1, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{
+                  duration: 0.5,
+                  delay: index * 0.1 + 0.15,
+                  type: 'spring',
+                  stiffness: 200,
+                  damping: 15,
+                }}
+                className="inline-flex items-center justify-center w-14 h-14 mb-4 border border-stone-200 text-gold-500 group-hover:border-gold-500/30 group-hover:bg-gold-50 transition-all duration-300"
+              >
                 {feature.icon}
-              </div>
+              </motion.div>
 
               {/* Text */}
-              <h3 className="font-cinzel text-base text-white mb-1 tracking-tight">
+              <h3 className="font-cinzel text-base text-stone-800 mb-1 tracking-tight">
                 {feature.title}
               </h3>
-              <p className="font-inter text-xs text-white/50 leading-relaxed">
+              <p className="font-inter text-xs text-stone-500 leading-relaxed">
                 {feature.description}
               </p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

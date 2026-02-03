@@ -2,8 +2,12 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
+
+// Pages with dark hero backgrounds need light header text
+const DARK_HERO_PAGES = ['/', '/il-brand/storia', '/il-brand/processo'];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -11,8 +15,10 @@ export function Header() {
   const [isBrandOpen, setIsBrandOpen] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const brandRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
   const { openCart, getTotalItems } = useCartStore();
   const totalItems = getTotalItems();
+  const isDarkHero = DARK_HERO_PAGES.includes(pathname);
 
   useEffect(() => {
     setIsMounted(true);
@@ -51,9 +57,11 @@ export function Header() {
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-500',
-        isScrolled
-          ? 'bg-black/95 backdrop-blur-xl border-b border-gold-500/15 py-3'
-          : 'bg-gradient-to-b from-black/80 to-transparent py-5'
+        isScrolled || isMobileMenuOpen
+          ? 'bg-white/95 backdrop-blur-xl border-b border-stone-200 py-3'
+          : isDarkHero
+            ? 'bg-gradient-to-b from-black/50 to-transparent py-5'
+            : 'bg-gradient-to-b from-[#FEFDFB]/90 to-transparent py-5'
       )}
     >
       <div className="container-luxury">
@@ -64,7 +72,7 @@ export function Header() {
               src="/uploads/images/logo.png"
               alt="OZ Extrait"
               className={cn(
-                "w-auto transition-all duration-500 drop-shadow-[0_0_15px_rgba(212,175,55,0.3)]",
+                "w-auto transition-all duration-500",
                 isScrolled ? "h-12" : "h-14 md:h-16"
               )}
             />
@@ -76,7 +84,10 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-inter text-sm uppercase tracking-widest text-white/80 hover:text-gold-500 transition-colors duration-300 relative group"
+                className={cn(
+                  "font-inter text-sm uppercase tracking-widest transition-colors duration-300 relative group",
+                  isScrolled || isMobileMenuOpen || !isDarkHero ? "text-stone-700 hover:text-gold-600" : "text-white/90 hover:text-gold-400"
+                )}
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 group-hover:w-full transition-all duration-300" />
@@ -87,7 +98,10 @@ export function Header() {
             <div ref={brandRef} className="relative">
               <button
                 onClick={() => setIsBrandOpen(!isBrandOpen)}
-                className="font-inter text-sm uppercase tracking-widest text-white/80 hover:text-gold-500 transition-colors duration-300 flex items-center gap-1"
+                className={cn(
+                  "font-inter text-sm uppercase tracking-widest transition-colors duration-300 flex items-center gap-1",
+                  isScrolled || isMobileMenuOpen || !isDarkHero ? "text-stone-700 hover:text-gold-600" : "text-white/90 hover:text-gold-400"
+                )}
               >
                 Il Brand
                 <svg
@@ -99,12 +113,12 @@ export function Header() {
               </button>
 
               {isBrandOpen && (
-                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-52 bg-stone-950 border border-gold-500/20 shadow-2xl">
+                <div className="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-52 bg-white border border-stone-200 shadow-lg">
                   {brandLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
-                      className="block px-5 py-3 font-inter text-sm text-white/70 hover:text-gold-400 hover:bg-white/5 transition-all duration-200"
+                      className="block px-5 py-3 font-inter text-sm text-stone-600 hover:text-gold-600 hover:bg-[#FBF8F3] transition-all duration-200"
                       onClick={() => setIsBrandOpen(false)}
                     >
                       {link.label}
@@ -116,7 +130,10 @@ export function Header() {
 
             <Link
               href="/guida/scegliere-fragranza"
-              className="font-inter text-sm uppercase tracking-widest text-white/80 hover:text-gold-500 transition-colors duration-300 relative group"
+              className={cn(
+                "font-inter text-sm uppercase tracking-widest transition-colors duration-300 relative group",
+                isScrolled || isMobileMenuOpen || !isDarkHero ? "text-stone-700 hover:text-gold-600" : "text-white/90 hover:text-gold-400"
+              )}
             >
               Guida
               <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold-500 group-hover:w-full transition-all duration-300" />
@@ -133,7 +150,10 @@ export function Header() {
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-white/70 group-hover:text-gold-500 transition-colors duration-300"
+                className={cn(
+                  "h-6 w-6 transition-colors duration-300",
+                  isScrolled || isMobileMenuOpen || !isDarkHero ? "text-stone-600 group-hover:text-gold-600" : "text-white/90 group-hover:text-gold-400"
+                )}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -186,7 +206,7 @@ export function Header() {
         <div
           className={cn(
             'md:hidden overflow-hidden transition-all duration-300',
-            isMobileMenuOpen ? 'max-h-96 mt-6 pb-6 border-t border-white/10 pt-6' : 'max-h-0'
+            isMobileMenuOpen ? 'max-h-96 mt-6 pb-6 border-t border-stone-200 pt-6' : 'max-h-0'
           )}
         >
           <nav className="flex flex-col gap-4">
@@ -194,28 +214,28 @@ export function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-inter text-sm uppercase tracking-wide text-white/70 hover:text-gold-500 transition-colors duration-300"
+                className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="h-px bg-white/10 my-1" />
+            <div className="h-px bg-stone-200 my-1" />
             <span className="font-inter text-xs uppercase tracking-wider text-gold-500/60">Il Brand</span>
             {brandLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
-                className="font-inter text-sm uppercase tracking-wide text-white/70 hover:text-gold-500 transition-colors duration-300 pl-3"
+                className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300 pl-3"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.label}
               </Link>
             ))}
-            <div className="h-px bg-white/10 my-1" />
+            <div className="h-px bg-stone-200 my-1" />
             <Link
               href="/guida/scegliere-fragranza"
-              className="font-inter text-sm uppercase tracking-wide text-white/70 hover:text-gold-500 transition-colors duration-300"
+              className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Guida

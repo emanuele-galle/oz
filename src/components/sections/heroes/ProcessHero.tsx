@@ -38,10 +38,10 @@ export function ProcessHero() {
           </div>
 
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '400ms', animationFillMode: 'forwards' }}>
-            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[84px] leading-[1.1] tracking-tight text-stone-900 mb-6">
+            <h1 className="font-cinzel text-[48px] md:text-[72px] lg:text-[84px] leading-[1.1] tracking-tight text-white mb-6 drop-shadow-[0_2px_12px_rgba(0,0,0,0.5)]">
               Il Nostro
               <br />
-              <span className="text-gold-500">Processo</span>
+              <span className="text-gold-400">Processo</span>
             </h1>
             <div className="h-[2px] w-20 mx-auto bg-gold-500" />
           </div>
@@ -55,7 +55,7 @@ export function ProcessHero() {
           </div>
 
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '1200ms', animationFillMode: 'forwards' }}>
-            <p className="font-inter text-base md:text-lg text-stone-600 leading-relaxed max-w-2xl mx-auto">
+            <p className="font-inter text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
               Ogni fragranza OZ Extrait attraversa 5 fasi di creazione artigianale,
               dalla selezione degli ingredienti al controllo qualità finale.
               <br className="hidden md:block" />
@@ -68,7 +68,7 @@ export function ProcessHero() {
               {['Selezione', 'Blending', 'Macerazione', 'Imbottigliamento', 'QA'].map((step, index) => (
                 <div key={index} className="p-3 md:p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm hover:bg-white/10 hover:border-gold-500/30 transition-all duration-300">
                   <div className="font-cinzel text-xl md:text-2xl text-gold-500 mb-1">{index + 1}</div>
-                  <div className="font-inter text-[10px] md:text-xs text-stone-600 uppercase tracking-wide">{step}</div>
+                  <div className="font-inter text-[10px] md:text-xs text-white/70 uppercase tracking-wide">{step}</div>
                 </div>
               ))}
             </div>

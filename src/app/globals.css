@@ -2,14 +2,14 @@
 
 /**
  * GLOBAL STYLES — OZ Extrait
- * Design Philosophy: Dark & Bold luxury, Tom Ford / YSL inspired
- * Color Scheme: Dark backgrounds, gold accents, white text
+ * Design Philosophy: Light Luxury — Chanel / Dior inspired
+ * Color Scheme: Cream/ivory backgrounds, gold accents, dark text
  */
 
-/* Dark base */
+/* Light cream base */
 body {
-  background: #0C0A09;
-  color: #FAFAF9;
+  background: #FEFDFB;
+  color: #1C1917;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -51,11 +51,11 @@ body {
   color: transparent;
 }
 
-/* Glass card for dark backgrounds */
+/* Glass card for light backgrounds */
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(212, 175, 55, 0.15);
-  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(212, 175, 55, 0.12);
+  backdrop-filter: blur(16px);
 }
 
 /* Subtle noise texture */
@@ -66,7 +66,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  opacity: 0.03;
+  opacity: 0.02;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   pointer-events: none;
 }
@@ -76,7 +76,7 @@ body {
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #0C0A09;
+  background: #FBF8F3;
 }
 ::-webkit-scrollbar-thumb {
   background: rgba(212, 175, 55, 0.3);
@@ -97,4 +97,27 @@ body {
 *[class*="animate-"],
 *[class*="transition-transform"] {
   transition-property: transform, opacity;
+}
+
+/* Ken Burns zoom animation for hero video */
+@keyframes ken-burns {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* StarBorder animated star movement — React Bits */
+@keyframes star-movement-bottom {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(-100%, 0%); opacity: 0; }
+}
+@keyframes star-movement-top {
+  0% { transform: translate(0%, 0%); opacity: 1; }
+  100% { transform: translate(100%, 0%); opacity: 0; }
+}
+.animate-star-movement-bottom {
+  animation: star-movement-bottom linear infinite alternate;
+}
+.animate-star-movement-top {
+  animation: star-movement-top linear infinite alternate;
 }

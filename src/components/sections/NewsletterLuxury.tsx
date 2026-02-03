@@ -2,11 +2,14 @@
 
 /**
  * NEWSLETTER LUXURY — OZ Extrait
- * Design: Dark & Bold — gold accents on deep black
+ * Design: Dark accent section — stands out against light homepage
+ * Background image, TextReveal heading, motion form
  */
 
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
+import { TextReveal } from '@/components/effects/TextReveal';
 
 export function NewsletterLuxury() {
   const [email, setEmail] = useState('');
@@ -37,33 +40,55 @@ export function NewsletterLuxury() {
   };
 
   return (
-    <section id="newsletter" className="py-24 md:py-32 bg-stone-950 border-t border-gold-500/10">
-      <div className="container-luxury">
+    <section id="newsletter" className="relative py-24 md:py-32 bg-stone-900 overflow-hidden">
+      {/* Background image at low opacity */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-[0.10]"
+        style={{ backgroundImage: "url('/uploads/images/Scintilla-background.jpeg')" }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-stone-900 via-transparent to-stone-900" />
+
+      <div className="container-luxury relative z-10">
         <div className="max-w-4xl mx-auto text-center">
           {/* Header */}
           <div className="mb-12">
-            <div className="inline-flex items-center justify-center w-14 h-14 border border-gold-500/30 mb-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center justify-center w-14 h-14 border border-gold-500/30 mb-8"
+            >
               <svg className="w-6 h-6 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
               </svg>
-            </div>
+            </motion.div>
 
-            <h2 className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight">
-              L'Arte della Fragranza
-              <br />
-              <span className="text-gold-500 text-[0.6em] font-playfair italic font-light">
-                direttamente nella tua inbox
-              </span>
-            </h2>
+            <TextReveal className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-white mb-6 tracking-tight justify-center">
+              L&apos;Arte della Fragranza direttamente nella tua inbox
+            </TextReveal>
 
-            <p className="font-inter text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mx-auto">
-              Storie olfattive, lanci esclusivi, e l'universo OZ Extrait.
+            <motion.p
+              initial={{ opacity: 0, y: 15 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="font-inter text-base md:text-lg text-white/60 leading-relaxed max-w-2xl mx-auto"
+            >
+              Storie olfattive, lanci esclusivi, e l&apos;universo OZ Extrait.
               Iscriviti alla nostra newsletter mensile.
-            </p>
+            </motion.p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="max-w-xl mx-auto">
+          {/* Form — motion fade-up */}
+          <motion.form
+            onSubmit={handleSubmit}
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="max-w-xl mx-auto"
+          >
             <div className="flex flex-col sm:flex-row gap-3">
               <div className="relative flex-1">
                 <input
@@ -85,7 +110,7 @@ export function NewsletterLuxury() {
                 {status === 'loading' ? (
                   <span>Invio...</span>
                 ) : status === 'success' ? (
-                  <span>✓ Iscritto!</span>
+                  <span>&#10003; Iscritto!</span>
                 ) : (
                   <>
                     <span>Iscriviti</span>
@@ -106,14 +131,7 @@ export function NewsletterLuxury() {
                 Qualcosa è andato storto. Riprova più tardi.
               </p>
             )}
-          </form>
-
-          {/* Decorative */}
-          <div className="mt-16 flex items-center justify-center gap-3">
-            <div className="w-12 h-px bg-gold-500/20" />
-            <div className="w-1.5 h-1.5 bg-gold-500/30 rotate-45" />
-            <div className="w-12 h-px bg-gold-500/20" />
-          </div>
+          </motion.form>
         </div>
       </div>
     </section>

@@ -24,7 +24,7 @@ export function ImageReveal({ src, alt, className = '', fill, width, height }: I
         initial={{ scaleX: 1 }}
         animate={isInView ? { scaleX: 0 } : { scaleX: 1 }}
         transition={{ duration: 1, ease: [0.65, 0, 0.35, 1] }}
-        className="absolute inset-0 bg-gold z-10 origin-right"
+        className="absolute inset-0 bg-[#FBF8F3] z-10 origin-right"
       />
 
       {/* Image */}

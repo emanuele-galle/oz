@@ -2,7 +2,7 @@
 
 /**
  * FOOTER — Immersive Luxury Design
- * Background gradient, depth, interactive elements
+ * Dark warm background (stone-900), logo image, gradient divider
  */
 
 import React from 'react';
@@ -14,7 +14,7 @@ export function Footer() {
   const router = useRouter();
 
   return (
-    <footer className="relative bg-black border-t border-gold-500/10 overflow-hidden">
+    <footer className="relative bg-stone-900 overflow-hidden">
       {/* Decorative gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-gold-500/5 to-transparent pointer-events-none" />
 
@@ -26,9 +26,7 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16">
           {/* Brand Column */}
           <div className="md:col-span-5 space-y-6">
-            <h2 className="font-cinzel text-4xl font-bold text-gold-500">
-              OZ EXTRAIT
-            </h2>
+            <img src="/uploads/images/logo.png" alt="OZ Extrait" className="h-16 w-auto mb-4" />
             <p className="font-playfair text-lg text-white/80 leading-relaxed max-w-md">
               Extrait de Parfum artigianale italiano.
               <br />
@@ -117,12 +115,22 @@ export function Footer() {
             <p className="font-inter text-sm text-white/70 mb-4 leading-relaxed">
               Anteprime esclusive, offerte riservate, guide premium.
             </p>
-            <button
-              onClick={() => router.push('/#newsletter')}
-              className="w-full px-6 py-3 bg-gold-500/20 border border-gold-500/50 text-gold-400 font-inter text-sm font-semibold uppercase tracking-wide rounded-sm hover:bg-gold-500 hover:text-midnight hover:border-gold-500 transition-all duration-300"
+            <form
+              onSubmit={(e) => { e.preventDefault(); router.push('/#newsletter'); }}
+              className="flex flex-col gap-3"
             >
-              Iscriviti
-            </button>
+              <input
+                type="email"
+                placeholder="la.tua@email.it"
+                className="w-full px-4 py-3 bg-white/10 border border-white/20 text-white/90 font-inter text-sm placeholder:text-white/40 focus:outline-none focus:border-gold-500/60 transition-colors duration-300"
+              />
+              <button
+                type="submit"
+                className="w-full px-6 py-3 bg-gold-500/20 border border-gold-500/50 text-gold-400 font-inter text-sm font-semibold uppercase tracking-wide rounded-sm hover:bg-gold-500 hover:text-midnight hover:border-gold-500 transition-all duration-300"
+              >
+                Iscriviti
+              </button>
+            </form>
           </div>
         </div>
 

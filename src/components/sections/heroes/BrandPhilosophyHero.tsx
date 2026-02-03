@@ -21,7 +21,7 @@ export function BrandPhilosophyHero() {
         <div className="max-w-5xl mx-auto text-center space-y-12">
           {/* Overline */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
-            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-400/60">
+            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-600/70">
               La Nostra Filosofia
             </span>
           </div>
@@ -51,8 +51,8 @@ export function BrandPhilosophyHero() {
           {/* Body text */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '1200ms', animationFillMode: 'forwards' }}>
             <p className="font-inter text-base md:text-lg text-stone-700 leading-relaxed max-w-3xl mx-auto">
-              Non creiamo profumi. Creiamo <strong className="text-gold-400 font-semibold">esperienze sensoriali</strong> che
-              trascendono il tempo, <strong className="text-gold-400 font-semibold">opere d'arte liquide</strong> che vivono
+              Non creiamo profumi. Creiamo <strong className="text-gold-600 font-semibold">esperienze sensoriali</strong> che
+              trascendono il tempo, <strong className="text-gold-600 font-semibold">opere d'arte liquide</strong> che vivono
               sulla pelle e nell'anima.
             </p>
           </div>
@@ -62,22 +62,22 @@ export function BrandPhilosophyHero() {
             <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-8">
               <div className="space-y-2">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">40%</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-white/50">Concentrazione</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Concentrazione</div>
               </div>
-              <div className="space-y-2 border-x border-white/10">
+              <div className="space-y-2 border-x border-stone-200">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">12+</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-white/50">Ore Durata</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Ore Durata</div>
               </div>
               <div className="space-y-2">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">100%</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-white/50">Artigianale</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Artigianale</div>
               </div>
             </div>
           </div>
 
           {/* CTA */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '2000ms', animationFillMode: 'forwards' }}>
-            <a href="#valori" className="inline-flex items-center gap-2 px-8 py-4 border border-gold-500/50 text-gold-400 font-inter text-sm uppercase tracking-wide rounded-sm hover:bg-gold-500/10 hover:border-gold-400 transition-all duration-300">
+            <a href="#valori" className="inline-flex items-center gap-2 px-8 py-4 border border-gold-500/50 text-gold-600 font-inter text-sm uppercase tracking-wide rounded-sm hover:bg-gold-500/10 hover:border-gold-500 transition-all duration-300">
               <span>Scopri i Nostri Valori</span>
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
