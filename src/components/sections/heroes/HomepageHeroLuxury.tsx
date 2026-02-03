@@ -157,12 +157,11 @@ export function HomepageHeroLuxury() {
         {!isReady && (
           <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-amber-700/60 to-amber-900/80 flex items-center justify-center">
             <div className="text-center">
-              <h1 className="font-cinzel text-[80px] md:text-[120px] lg:text-[160px] leading-[0.85] tracking-tight text-gold-gradient drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]">
-                OZ
-              </h1>
-              <p className="font-playfair text-2xl md:text-3xl text-gold-400 italic font-light tracking-wider mt-4">
-                Extrait
-              </p>
+              <img
+                src="/uploads/images/logo.png"
+                alt="OZ Extrait"
+                className="h-20 md:h-28 lg:h-36 w-auto mx-auto drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]"
+              />
               <div className="mt-8 w-48 h-[2px] bg-white/10 mx-auto rounded-full overflow-hidden">
                 <div
                   className="h-full bg-gold-500 transition-all duration-300 rounded-full"
@@ -176,19 +175,16 @@ export function HomepageHeroLuxury() {
         {/* Gradient — only at bottom for text area, keeps video clean */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 pointer-events-none" />
 
-        {/* OZ Title — centered, visible at start, fades before bottle */}
+        {/* Logo — centered, visible at start, fades before bottle */}
         <motion.div
           style={{ opacity: titleOpacity, y: titleY }}
           className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
         >
-          <div className="text-center">
-            <p className="font-inter text-xs md:text-sm uppercase tracking-[0.4em] font-light text-gold-400/90 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
-              Verona &middot; Italia
-            </p>
-            <h1 className="font-cinzel text-[100px] md:text-[140px] lg:text-[180px] leading-[0.8] tracking-tight text-gold-gradient drop-shadow-[0_0_60px_rgba(212,175,55,0.4)]">
-              OZ
-            </h1>
-          </div>
+          <img
+            src="/uploads/images/logo.png"
+            alt="OZ Extrait"
+            className="h-24 md:h-36 lg:h-44 w-auto drop-shadow-[0_0_60px_rgba(212,175,55,0.4)]"
+          />
         </motion.div>
 
         {/* Bottom text area — all content pinned to bottom, doesn't cover the bottle */}

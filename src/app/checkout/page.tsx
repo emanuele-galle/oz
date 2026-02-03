@@ -4,6 +4,7 @@ export const dynamic = 'force-dynamic';
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { loadStripe } from '@stripe/stripe-js';
@@ -17,15 +18,129 @@ import { Input } from '@/components/ui/forms/Input';
 import { Textarea } from '@/components/ui/forms/Textarea';
 import { Select } from '@/components/ui/forms/Select';
 import { Button } from '@/components/ui/Button';
-import { CartIcon, CheckIcon } from '@/components/icons';
-import { fadeUpVariants, staggerContainerVariants, staggerItemVariants } from '@/lib/animations/microInteractions';
 import { useReducedMotion } from '@/hooks';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
+// Trust badges component
+function TrustBadges() {
+  return (
+    <div className="flex items-center justify-center gap-6 py-4">
+      <div className="flex items-center gap-1.5 text-white/30">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+        </svg>
+        <span className="font-inter text-[10px] uppercase tracking-wide">SSL Sicuro</span>
+      </div>
+      <div className="flex items-center gap-1.5 text-white/30">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+        <span className="font-inter text-[10px] uppercase tracking-wide">Stripe</span>
+      </div>
+      <div className="flex items-center gap-1.5 text-white/30">
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
+        </svg>
+        <span className="font-inter text-[10px] uppercase tracking-wide">Spedizione Tracciata</span>
+      </div>
+    </div>
+  );
+}
+
+// Order summary sidebar
+function OrderSummary({
+  items,
+  subtotal,
+  shippingCost,
+  orderTotal,
+  selectedCountry,
+  compact = false,
+}: {
+  items: any[];
+  subtotal: number;
+  shippingCost: number;
+  orderTotal: number;
+  selectedCountry: string;
+  compact?: boolean;
+}) {
+  return (
+    <div className={compact ? 'space-y-4' : 'space-y-5'}>
+      {!compact && (
+        <h3 className="font-inter text-[10px] uppercase tracking-[0.2em] text-white/40 mb-4">
+          Il tuo ordine
+        </h3>
+      )}
+
+      {/* Items */}
+      <div className="space-y-3">
+        {items.map((item) => {
+          const primaryImage =
+            item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
+          return (
+            <div key={`${item.product.id}-${item.size.volume}`} className="flex gap-3">
+              {primaryImage && (
+                <div className="relative w-14 h-14 flex-shrink-0 bg-white/[0.04] overflow-hidden">
+                  <Image
+                    src={primaryImage.url}
+                    alt={item.product.name}
+                    fill
+                    className="object-cover"
+                  />
+                  {item.quantity > 1 && (
+                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold-500 text-stone-950 rounded-full flex items-center justify-center text-[10px] font-bold">
+                      {item.quantity}
+                    </span>
+                  )}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-white/90 text-sm font-inter truncate">{item.product.name}</p>
+                <p className="text-white/40 text-xs font-inter">{item.size.volume}</p>
+              </div>
+              <p className="text-white/70 text-sm font-inter tabular-nums whitespace-nowrap">
+                €{(item.size.price * item.quantity).toFixed(2)}
+              </p>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Divider */}
+      <div className="h-px bg-white/[0.06]" />
+
+      {/* Totals */}
+      <div className="space-y-2">
+        <div className="flex justify-between text-sm">
+          <span className="text-white/50 font-inter">Subtotale</span>
+          <span className="text-white/70 font-inter tabular-nums">€{subtotal.toFixed(2)}</span>
+        </div>
+        <div className="flex justify-between text-sm">
+          <span className="text-white/50 font-inter">{getShippingLabel(subtotal, selectedCountry)}</span>
+          <span className="text-white/70 font-inter tabular-nums">
+            {shippingCost === 0 ? 'Gratuita' : `€${shippingCost.toFixed(2)}`}
+          </span>
+        </div>
+        {subtotal < FREE_SHIPPING_THRESHOLD && (
+          <p className="text-[11px] text-white/30 font-inter">
+            Spedizione gratuita da €{FREE_SHIPPING_THRESHOLD}
+          </p>
+        )}
+      </div>
+
+      {/* Total */}
+      <div className="h-px bg-white/[0.06]" />
+      <div className="flex justify-between items-baseline">
+        <span className="text-white/60 font-inter text-sm">Totale</span>
+        <span className="font-cinzel text-2xl text-gold-500">€{orderTotal.toFixed(2)}</span>
+      </div>
+    </div>
+  );
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
-  const { items, total, clearCart } = useCartStore();
+  const { items, total } = useCartStore();
   const { currentStep, setStep, setShippingAddress, customerNotes, setCustomerNotes } =
     useCheckoutStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -38,7 +153,6 @@ export default function CheckoutPage() {
     setIsMounted(true);
   }, []);
 
-  // React Hook Form
   const {
     register,
     handleSubmit,
@@ -46,9 +160,7 @@ export default function CheckoutPage() {
     formState: { errors },
   } = useForm<ShippingAddress>({
     resolver: zodResolver(shippingAddressSchema),
-    defaultValues: {
-      country: 'IT',
-    },
+    defaultValues: { country: 'IT' },
   });
 
   const selectedCountry = watch('country') || 'IT';
@@ -56,74 +168,88 @@ export default function CheckoutPage() {
   const shippingCost = calculateShippingCost(subtotal, selectedCountry);
   const orderTotal = subtotal + shippingCost;
 
-  // Wait for persist rehydration before checking cart
   if (!isMounted) {
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-stone-950 flex items-center justify-center">
         <div className="text-center">
-          <h1 className="font-cinzel text-4xl text-gold-500/20 animate-pulse">OZ</h1>
+          <img src="/uploads/images/logo.png" alt="OZ" className="h-10 w-auto mx-auto opacity-20 animate-pulse" />
         </div>
       </div>
     );
   }
 
-  // Redirect se carrello vuoto (only after mount/rehydration)
   if (items.length === 0 && currentStep !== 'confirmation') {
     router.push('/');
     return null;
   }
 
-  // Step 1: Cart Review
+  // Steps config
+  const steps = [
+    { id: 'cart', label: 'Carrello', num: '1' },
+    { id: 'shipping', label: 'Spedizione', num: '2' },
+    { id: 'payment', label: 'Pagamento', num: '3' },
+  ];
+  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
+
+  // --- STEP: Cart Review ---
   const renderCartStep = () => (
     <div className="space-y-6">
-      <h2 className="font-cinzel text-3xl text-gold">Riepilogo Carrello</h2>
+      <div>
+        <h2 className="font-cinzel text-2xl text-white mb-1">Riepilogo Carrello</h2>
+        <p className="font-inter text-sm text-white/40">{items.length} {items.length === 1 ? 'articolo' : 'articoli'}</p>
+      </div>
 
-      <div className="space-y-4">
-        {items.map((item) => (
-          <div key={`${item.product.id}-${item.size.volume}`} className="glass-card-dark p-6">
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="text-lg font-medium text-white">{item.product.name}</h3>
-                <p className="text-sm text-white/60">
+      <div className="space-y-3">
+        {items.map((item) => {
+          const primaryImage =
+            item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
+          return (
+            <div key={`${item.product.id}-${item.size.volume}`} className="glass-card-dark p-4 flex gap-4">
+              {primaryImage && (
+                <div className="relative w-20 h-20 flex-shrink-0 bg-white/[0.04] overflow-hidden">
+                  <Image
+                    src={primaryImage.url}
+                    alt={item.product.name}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-white font-inter font-medium truncate">{item.product.name}</h3>
+                <p className="text-white/40 text-sm font-inter mt-0.5">
                   {item.size.volume} × {item.quantity}
                 </p>
               </div>
-              <p className="text-lg text-gold font-medium">
+              <p className="text-gold-500 font-inter font-medium tabular-nums whitespace-nowrap self-center">
                 €{(item.size.price * item.quantity).toFixed(2)}
               </p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
-      {/* Totals */}
-      <div className="glass-card-dark p-6 space-y-3">
-        <div className="flex justify-between text-white/70">
-          <span>Subtotale</span>
-          <span>€{subtotal.toFixed(2)}</span>
-        </div>
-        <div className="flex justify-between text-white/70">
-          <span>{getShippingLabel(subtotal, selectedCountry)}</span>
-          <span>{shippingCost === 0 ? 'Gratuita' : `€${shippingCost.toFixed(2)}`}</span>
-        </div>
-        <div className="border-t border-white/10 pt-3 flex justify-between text-xl text-gold font-bold">
-          <span>Totale</span>
-          <span>€{orderTotal.toFixed(2)}</span>
-        </div>
-        {subtotal < FREE_SHIPPING_THRESHOLD && (
-          <p className="text-xs text-white/60 text-center pt-1">
-            Spedizione gratuita per ordini superiori a €{FREE_SHIPPING_THRESHOLD}
-          </p>
-        )}
+      {/* Mobile order summary (hidden on desktop where sidebar shows) */}
+      <div className="lg:hidden glass-card-dark p-5">
+        <OrderSummary
+          items={items}
+          subtotal={subtotal}
+          shippingCost={shippingCost}
+          orderTotal={orderTotal}
+          selectedCountry={selectedCountry}
+          compact
+        />
       </div>
 
       <Button onClick={() => setStep('shipping')} size="lg" className="w-full">
-        Procedi al Checkout
+        Procedi alla Spedizione
       </Button>
+
+      <TrustBadges />
     </div>
   );
 
-  // Step 2: Shipping Form
+  // --- STEP: Shipping ---
   const onShippingSubmit = (data: ShippingAddress) => {
     setShippingAddress(data);
     setStep('payment');
@@ -131,7 +257,10 @@ export default function CheckoutPage() {
 
   const renderShippingStep = () => (
     <div className="space-y-6">
-      <h2 className="font-cinzel text-3xl text-gold">Indirizzo di Spedizione</h2>
+      <div>
+        <h2 className="font-cinzel text-2xl text-white mb-1">Spedizione</h2>
+        <p className="font-inter text-sm text-white/40">Inserisci i dati per la consegna</p>
+      </div>
 
       <form onSubmit={handleSubmit(onShippingSubmit)} className="space-y-4">
         <Input
@@ -142,7 +271,7 @@ export default function CheckoutPage() {
           {...register('fullName')}
         />
 
-        <div className="grid md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             label="Email"
             type="email"
@@ -151,7 +280,6 @@ export default function CheckoutPage() {
             required
             {...register('email')}
           />
-
           <Input
             label="Telefono"
             type="tel"
@@ -177,7 +305,7 @@ export default function CheckoutPage() {
           {...register('addressLine2')}
         />
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-3 gap-4">
           <Input
             label="Città"
             placeholder="Roma"
@@ -185,14 +313,12 @@ export default function CheckoutPage() {
             required
             {...register('city')}
           />
-
           <Input
-            label="Provincia (opzionale)"
+            label="Provincia"
             placeholder="RM"
             error={errors.state?.message}
             {...register('state')}
           />
-
           <Input
             label="CAP"
             placeholder="00100"
@@ -227,28 +353,27 @@ export default function CheckoutPage() {
           value={customerNotes}
           onChange={(e) => setCustomerNotes(e.target.value)}
           maxLength={500}
-          helperText={`${customerNotes.length}/500 caratteri`}
+          helperText={`${customerNotes.length}/500`}
         />
 
-        <div className="flex gap-4">
+        <div className="flex gap-3 pt-2">
           <Button type="button" variant="outline" onClick={() => setStep('cart')}>
             Indietro
           </Button>
           <Button type="submit" className="flex-1">
-            Procedi al Pagamento
+            Continua
           </Button>
         </div>
       </form>
     </div>
   );
 
-  // Step 3: Payment (Stripe)
+  // --- STEP: Payment ---
   const handlePayment = async () => {
     setIsSubmitting(true);
     setError(null);
 
     try {
-      // Create checkout session
       const response = await fetch('/api/checkout/create-session', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -268,15 +393,11 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Errore durante la creazione della sessione');
       }
 
-      const { sessionId, url } = await response.json();
+      const { url } = await response.json();
 
-      // Redirect to Stripe Checkout
       const stripe = await stripePromise;
-      if (!stripe) {
-        throw new Error('Stripe non inizializzato');
-      }
+      if (!stripe) throw new Error('Stripe non inizializzato');
 
-      // Redirect to Stripe hosted checkout
       window.location.href = url;
     } catch (err: any) {
       setError(err.message);
@@ -286,53 +407,66 @@ export default function CheckoutPage() {
 
   const renderPaymentStep = () => (
     <div className="space-y-6">
-      <h2 className="font-cinzel text-3xl text-gold">Pagamento</h2>
+      <div>
+        <h2 className="font-cinzel text-2xl text-white mb-1">Pagamento</h2>
+        <p className="font-inter text-sm text-white/40">Conferma e paga in sicurezza</p>
+      </div>
 
       {error && (
-        <div className="p-4 bg-red-500/10 border border-red-500 rounded-md text-red-500">
+        <div className="p-4 bg-red-500/10 border border-red-500/30 text-red-400 text-sm font-inter">
           {error}
         </div>
       )}
 
-      {/* Order summary */}
-      <div className="glass-card-dark p-6 space-y-3">
-        <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3">Riepilogo Ordine</h3>
-        {items.map((item) => (
-          <div key={`${item.product.id}-${item.size.volume}`} className="flex justify-between text-white/70 text-sm">
-            <span>{item.product.name} {item.size.volume} × {item.quantity}</span>
-            <span>€{(item.size.price * item.quantity).toFixed(2)}</span>
+      {/* Mobile order summary */}
+      <div className="lg:hidden glass-card-dark p-5">
+        <OrderSummary
+          items={items}
+          subtotal={subtotal}
+          shippingCost={shippingCost}
+          orderTotal={orderTotal}
+          selectedCountry={selectedCountry}
+          compact
+        />
+      </div>
+
+      {/* Security info */}
+      <div className="glass-card-dark p-5 space-y-4">
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-8 h-8 flex items-center justify-center bg-gold-500/10 rounded-full">
+            <svg className="w-4 h-4 text-gold-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
           </div>
-        ))}
-        <div className="border-t border-white/10 pt-3 space-y-2">
-          <div className="flex justify-between text-white/70 text-sm">
-            <span>Subtotale</span>
-            <span>€{subtotal.toFixed(2)}</span>
+          <div>
+            <p className="text-white/80 font-inter text-sm font-medium">Pagamento Sicuro</p>
+            <p className="text-white/40 font-inter text-xs">Powered by Stripe</p>
           </div>
-          <div className="flex justify-between text-white/70 text-sm">
-            <span>{getShippingLabel(subtotal, selectedCountry)}</span>
-            <span>{shippingCost === 0 ? 'Gratuita' : `€${shippingCost.toFixed(2)}`}</span>
+        </div>
+
+        <div className="space-y-2 text-sm text-white/50 font-inter">
+          <div className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5 text-green-500/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Crittografia SSL 256-bit</span>
           </div>
-          <div className="flex justify-between text-gold font-bold text-lg pt-1">
-            <span>Totale</span>
-            <span>€{orderTotal.toFixed(2)}</span>
+          <div className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5 text-green-500/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Visa, Mastercard, Amex, Apple Pay, Google Pay</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <svg className="w-3.5 h-3.5 text-green-500/60 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            <span>Nessun dato carta salvato</span>
           </div>
         </div>
       </div>
 
-      <div className="glass-card-dark p-6 space-y-4">
-        <p className="text-white/80">
-          Cliccando su &quot;Paga Ora&quot; sarai reindirizzato alla pagina sicura di Stripe per
-          completare il pagamento.
-        </p>
-
-        <div className="space-y-2 text-sm text-white/60">
-          <p>✓ Pagamento sicuro con SSL</p>
-          <p>✓ Carte di credito/debito accettate</p>
-          <p>✓ Nessun dato salvato sui nostri server</p>
-        </div>
-      </div>
-
-      <div className="flex gap-4">
+      <div className="flex gap-3">
         <Button
           type="button"
           variant="outline"
@@ -344,173 +478,125 @@ export default function CheckoutPage() {
         <Button
           onClick={handlePayment}
           disabled={isSubmitting}
+          loading={isSubmitting}
           className="flex-1"
           size="lg"
         >
           {isSubmitting ? 'Reindirizzamento...' : `Paga €${orderTotal.toFixed(2)}`}
         </Button>
       </div>
+
+      <TrustBadges />
     </div>
   );
 
-  // Step configuration with icons
-  const steps = [
-    { id: 'cart', label: 'Carrello', icon: CartIcon },
-    { id: 'shipping', label: 'Spedizione', icon: () => (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12" />
-      </svg>
-    )},
-    { id: 'payment', label: 'Pagamento', icon: () => (
-      <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3m-3.75 3h15a2.25 2.25 0 002.25-2.25V6.75A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25v10.5A2.25 2.25 0 004.5 19.5z" />
-      </svg>
-    )},
-  ];
-
-  const currentStepIndex = steps.findIndex((s) => s.id === currentStep);
+  // Fade variants
+  const fadeVariants = shouldReduceMotion
+    ? undefined
+    : {
+        initial: { opacity: 0, y: 12 },
+        animate: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+        exit: { opacity: 0, y: -12, transition: { duration: 0.2 } },
+      };
 
   return (
-    <div className="min-h-screen bg-black py-16">
-      <div className="container max-w-3xl mx-auto px-4">
-        {/* Enhanced Progress Indicator */}
-        <div className="mb-12">
-          <div className="flex items-center justify-between relative">
-            {/* Background progress line */}
-            <div className="absolute top-5 left-0 right-0 h-0.5 bg-white/10 -z-10" style={{
-              left: '5%',
-              right: '5%',
-            }} />
-
-            {/* Animated progress line */}
-            <motion.div
-              className="absolute top-5 left-0 h-0.5 bg-gold -z-10"
-              initial={{ width: '0%' }}
-              animate={{
-                width: currentStepIndex === 0 ? '0%' : currentStepIndex === 1 ? '50%' : '100%',
-              }}
-              transition={{
-                duration: shouldReduceMotion ? 0 : 0.6,
-                ease: 'easeInOut',
-              }}
-              style={{
-                left: '5%',
-              }}
-            />
-
+    <div className="min-h-screen bg-stone-950 pt-28 pb-16">
+      <div className="container-luxury">
+        {/* Progress Steps */}
+        <div className="max-w-lg mx-auto lg:max-w-none mb-10">
+          <div className="flex items-center justify-center gap-0">
             {steps.map((step, index) => {
-              const StepIcon = step.icon;
               const isActive = currentStep === step.id;
               const isCompleted = index < currentStepIndex;
-
               return (
                 <React.Fragment key={step.id}>
-                  <motion.div
-                    className="flex flex-col items-center relative z-10"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{
-                      delay: index * 0.1,
-                      duration: shouldReduceMotion ? 0 : 0.3,
-                    }}
-                  >
-                    {/* Step circle con icon */}
-                    <motion.div
-                      className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all ${
-                        isActive
-                          ? 'border-gold bg-gold text-black shadow-[0_0_20px_rgba(212,175,55,0.5)]'
-                          : isCompleted
-                          ? 'border-green-500 bg-green-500 text-white'
-                          : 'border-white/30 bg-black/50 text-white/50'
-                      }`}
-                      animate={isActive && !shouldReduceMotion ? {
-                        scale: [1, 1.1, 1],
-                      } : undefined}
-                      transition={isActive ? {
-                        duration: 2,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                      } : undefined}
-                    >
-                      <AnimatePresence mode="wait">
-                        {isCompleted ? (
-                          <motion.div
-                            key="check"
-                            initial={{ scale: 0, rotate: -180 }}
-                            animate={{ scale: 1, rotate: 0 }}
-                            exit={{ scale: 0, rotate: 180 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <CheckIcon size={24} />
-                          </motion.div>
-                        ) : (
-                          <motion.div
-                            key="icon"
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.8, opacity: 0 }}
-                          >
-                            <StepIcon />
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
-                    </motion.div>
-
-                    {/* Step label */}
-                    <motion.span
-                      className={`text-xs mt-2 font-inter uppercase tracking-wide transition-colors ${
-                        isActive
-                          ? 'text-gold font-medium'
-                          : isCompleted
-                          ? 'text-green-500'
-                          : 'text-white/40'
-                      }`}
-                    >
+                  {index > 0 && (
+                    <div className="w-12 md:w-20 h-px mx-2 relative">
+                      <div className="absolute inset-0 bg-white/[0.06]" />
+                      <motion.div
+                        className="absolute inset-y-0 left-0 bg-gold-500/60"
+                        initial={{ width: '0%' }}
+                        animate={{ width: isCompleted || isActive ? '100%' : '0%' }}
+                        transition={{ duration: 0.4 }}
+                      />
+                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <div className={`
+                      w-7 h-7 rounded-full flex items-center justify-center text-xs font-inter font-medium transition-all duration-300
+                      ${isActive
+                        ? 'bg-gold-500 text-stone-950 shadow-[0_0_16px_rgba(212,175,55,0.4)]'
+                        : isCompleted
+                          ? 'bg-gold-500/20 text-gold-500'
+                          : 'bg-white/[0.06] text-white/30'
+                      }
+                    `}>
+                      {isCompleted ? (
+                        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                        </svg>
+                      ) : (
+                        step.num
+                      )}
+                    </div>
+                    <span className={`
+                      font-inter text-xs uppercase tracking-wide hidden sm:block
+                      ${isActive ? 'text-gold-500' : isCompleted ? 'text-gold-500/50' : 'text-white/25'}
+                    `}>
                       {step.label}
-                    </motion.span>
-                  </motion.div>
+                    </span>
+                  </div>
                 </React.Fragment>
               );
             })}
           </div>
         </div>
 
-        {/* Step Content with smooth transitions */}
-        <AnimatePresence mode="wait">
-          {currentStep === 'cart' && (
-            <motion.div
-              key="cart"
-              variants={shouldReduceMotion ? undefined : fadeUpVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {renderCartStep()}
-            </motion.div>
-          )}
-          {currentStep === 'shipping' && (
-            <motion.div
-              key="shipping"
-              variants={shouldReduceMotion ? undefined : fadeUpVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {renderShippingStep()}
-            </motion.div>
-          )}
-          {currentStep === 'payment' && (
-            <motion.div
-              key="payment"
-              variants={shouldReduceMotion ? undefined : fadeUpVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-            >
-              {renderPaymentStep()}
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* Two-column layout on desktop */}
+        <div className="lg:grid lg:grid-cols-12 lg:gap-12 max-w-5xl mx-auto">
+          {/* Main content */}
+          <div className="lg:col-span-7">
+            <AnimatePresence mode="wait">
+              {currentStep === 'cart' && (
+                <motion.div key="cart" variants={fadeVariants} initial="initial" animate="animate" exit="exit">
+                  {renderCartStep()}
+                </motion.div>
+              )}
+              {currentStep === 'shipping' && (
+                <motion.div key="shipping" variants={fadeVariants} initial="initial" animate="animate" exit="exit">
+                  {renderShippingStep()}
+                </motion.div>
+              )}
+              {currentStep === 'payment' && (
+                <motion.div key="payment" variants={fadeVariants} initial="initial" animate="animate" exit="exit">
+                  {renderPaymentStep()}
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Desktop Order Summary Sidebar */}
+          <div className="hidden lg:block lg:col-span-5">
+            <div className="sticky top-28">
+              <div className="glass-card-dark p-6">
+                <OrderSummary
+                  items={items}
+                  subtotal={subtotal}
+                  shippingCost={shippingCost}
+                  orderTotal={orderTotal}
+                  selectedCountry={selectedCountry}
+                />
+              </div>
+
+              {/* Guarantee */}
+              <div className="mt-4 p-4 border border-white/[0.04] text-center">
+                <p className="font-inter text-[11px] text-white/25 leading-relaxed">
+                  Spedizione assicurata · Reso entro 14 giorni · Packaging di lusso
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
