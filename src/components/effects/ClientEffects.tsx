@@ -61,7 +61,7 @@ export function ClientEffects() {
       <ScrollProgress />
       {!prefersReduced && (
         <>
-          <AnimatedMesh />
+          {!isMobile && <AnimatedMesh />}
           {!isMobile && (
             <SplashCursor
               SIM_RESOLUTION={64}

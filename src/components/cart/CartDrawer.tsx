@@ -107,7 +107,7 @@ export function CartDrawer() {
                   return (
                     <div
                       key={`${item.product.id}-${item.size.volume}`}
-                      className="glass-card p-4 flex gap-4"
+                      className="glass-card-dark p-4 flex gap-4"
                     >
                       {/* Image */}
                       <div className="relative w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-black/20">
@@ -140,7 +140,7 @@ export function CartDrawer() {
                                   item.quantity - 1
                                 )
                               }
-                              className="w-8 h-8 flex items-center justify-center hover:bg-white/5 transition-colors text-white/80"
+                              className="w-10 h-10 flex items-center justify-center hover:bg-white/5 transition-colors text-white/80"
                               aria-label="Decrease quantity"
                             >
                               −
@@ -156,7 +156,7 @@ export function CartDrawer() {
                                   item.quantity + 1
                                 )
                               }
-                              className="w-8 h-8 flex items-center justify-center hover:bg-white/5 transition-colors text-white/80"
+                              className="w-10 h-10 flex items-center justify-center hover:bg-white/5 transition-colors text-white/80"
                               aria-label="Increase quantity"
                             >
                               +
@@ -215,7 +215,7 @@ export function CartDrawer() {
                 Procedi al Checkout
               </Button>
 
-              <p className="text-center text-white/40 text-xs font-inter">
+              <p className="text-center text-white/60 text-xs font-inter">
                 Spedizione e tasse calcolate al checkout
               </p>
             </div>

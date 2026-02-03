@@ -80,7 +80,7 @@ export default function CheckoutPage() {
 
       <div className="space-y-4">
         {items.map((item) => (
-          <div key={`${item.product.id}-${item.size.volume}`} className="glass-card p-6">
+          <div key={`${item.product.id}-${item.size.volume}`} className="glass-card-dark p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
                 <h3 className="text-lg font-medium text-white">{item.product.name}</h3>
@@ -97,7 +97,7 @@ export default function CheckoutPage() {
       </div>
 
       {/* Totals */}
-      <div className="glass-card p-6 space-y-3">
+      <div className="glass-card-dark p-6 space-y-3">
         <div className="flex justify-between text-white/70">
           <span>Subtotale</span>
           <span>€{subtotal.toFixed(2)}</span>
@@ -111,7 +111,7 @@ export default function CheckoutPage() {
           <span>€{orderTotal.toFixed(2)}</span>
         </div>
         {subtotal < FREE_SHIPPING_THRESHOLD && (
-          <p className="text-xs text-white/40 text-center pt-1">
+          <p className="text-xs text-white/60 text-center pt-1">
             Spedizione gratuita per ordini superiori a €{FREE_SHIPPING_THRESHOLD}
           </p>
         )}
@@ -295,7 +295,7 @@ export default function CheckoutPage() {
       )}
 
       {/* Order summary */}
-      <div className="glass-card p-6 space-y-3">
+      <div className="glass-card-dark p-6 space-y-3">
         <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3">Riepilogo Ordine</h3>
         {items.map((item) => (
           <div key={`${item.product.id}-${item.size.volume}`} className="flex justify-between text-white/70 text-sm">
@@ -319,7 +319,7 @@ export default function CheckoutPage() {
         </div>
       </div>
 
-      <div className="glass-card p-6 space-y-4">
+      <div className="glass-card-dark p-6 space-y-4">
         <p className="text-white/80">
           Cliccando su &quot;Paga Ora&quot; sarai reindirizzato alla pagina sicura di Stripe per
           completare il pagamento.

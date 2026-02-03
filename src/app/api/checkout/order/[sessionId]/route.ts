@@ -15,8 +15,14 @@ export async function GET(
       );
     }
 
-    const order = await prisma.order.findUnique({
-      where: { paymentIntentId: sessionId },
+    // Try both session ID (initial) and payment intent ID (after webhook)
+    const order = await prisma.order.findFirst({
+      where: {
+        OR: [
+          { paymentIntentId: sessionId },
+          { id: sessionId },
+        ],
+      },
       include: {
         items: true,
       },

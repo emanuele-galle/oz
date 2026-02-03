@@ -95,32 +95,35 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     return;
   }
 
-  // Update order status and payment info
-  await prisma.order.update({
-    where: { id: orderId },
-    data: {
-      status: 'PROCESSING',
-      paymentIntentId: session.payment_intent as string,
-      paymentStatus: 'succeeded',
-      paymentMethod: 'card',
-    },
-  });
-
-  // Decrement stock for each item
-  for (const item of order.items) {
-    await prisma.productSize.update({
-      where: { id: item.sizeId },
+  // Update order and decrement stock atomically in a transaction
+  await prisma.$transaction(async (tx) => {
+    // Update order status and payment info
+    await tx.order.update({
+      where: { id: orderId },
       data: {
-        stockQuantity: {
-          decrement: item.quantity,
-        },
+        status: 'PROCESSING',
+        paymentIntentId: session.payment_intent as string,
+        paymentStatus: 'succeeded',
+        paymentMethod: 'card',
       },
     });
 
-    console.log(
-      `Decremented stock for ${item.productName} ${item.sizeVolume}ml: -${item.quantity}`
-    );
-  }
+    // Decrement stock for each item
+    for (const item of order.items) {
+      await tx.productSize.update({
+        where: { id: item.sizeId },
+        data: {
+          stockQuantity: {
+            decrement: item.quantity,
+          },
+        },
+      });
+
+      console.log(
+        `Decremented stock for ${item.productName} ${item.sizeVolume}ml: -${item.quantity}`
+      );
+    }
+  });
 
   // Send order confirmation email
   try {

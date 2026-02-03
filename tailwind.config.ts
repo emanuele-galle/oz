@@ -20,6 +20,7 @@ const config: Config = {
       colors: {
         // Primary
         gold: {
+          DEFAULT: '#D4AF37',
           50: '#FFFBEB',
           100: '#FEF3C7',
           200: '#FDE68A',
@@ -30,6 +31,12 @@ const config: Config = {
           700: '#8B6914',
           800: '#5C4709',
           900: '#2E2305',
+        },
+
+        // Dark backgrounds
+        midnight: {
+          DEFAULT: '#0A0A0A',
+          lighter: '#1A1A1A',
         },
 
         // Secondary

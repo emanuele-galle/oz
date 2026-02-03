@@ -58,6 +58,21 @@ body {
   backdrop-filter: blur(16px);
 }
 
+/* Glass card for dark backgrounds (checkout, cart) */
+.glass-card-dark {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(16px);
+}
+
+/* Simplify glass effects on mobile for performance */
+@media (max-width: 767px) {
+  .glass-card-dark {
+    backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
 /* Subtle noise texture */
 .bg-noise {
   position: relative;
