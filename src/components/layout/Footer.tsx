@@ -14,7 +14,7 @@ export function Footer() {
   const router = useRouter();
 
   return (
-    <footer className="relative bg-gradient-to-br from-stone-900 via-stone-800 to-midnight overflow-hidden">
+    <footer className="relative bg-black border-t border-gold-500/10 overflow-hidden">
       {/* Decorative gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-gold-500/5 to-transparent pointer-events-none" />
 

@@ -19,7 +19,7 @@ interface ProductCardProps {
 export function ProductCard({ product, className }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const primaryImage = product.images.find((img) => img.isPrimary) || product.images[0];
-  const minPrice = Math.min(...product.sizes.map((s) => s.price));
+  const mainSize = product.sizes.find((s) => !s.isTester) || product.sizes[0];
 
   return (
     <Link
@@ -113,10 +113,10 @@ export function ProductCard({ product, className }: ProductCardProps) {
           <div className="flex items-baseline justify-between pt-4 border-t border-stone-200">
             <div>
               <span className="font-cinzel text-2xl md:text-3xl text-gold-600">
-                €{minPrice}
+                €{mainSize.price}
               </span>
               <span className="ml-2 font-inter text-sm text-stone-500">
-                da
+                {mainSize.volume}
               </span>
             </div>
 

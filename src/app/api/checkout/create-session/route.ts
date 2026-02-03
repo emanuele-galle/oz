@@ -6,6 +6,7 @@ import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { stripe, formatAmountForStripe } from '@/lib/stripe';
 import { createCheckoutSessionSchema } from '@/lib/validations/checkout';
+import { calculateShippingCost, getShippingLabel } from '@/lib/shipping';
 
 export async function POST(request: NextRequest) {
   try {
@@ -99,22 +100,24 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    // 3. Calculate shipping (flat rate per ora)
-    const shippingCost = 5.0; // €5 flat rate
+    // 3. Calculate shipping based on destination
+    const shippingCost = calculateShippingCost(subtotal, shippingAddress.country);
     const total = subtotal + shippingCost;
 
-    // Add shipping line item
-    lineItems.push({
-      price_data: {
-        currency: 'eur',
-        product_data: {
-          name: 'Spedizione Standard',
-          description: 'Consegna in 3-5 giorni lavorativi',
+    // Add shipping line item (only if not free)
+    if (shippingCost > 0) {
+      lineItems.push({
+        price_data: {
+          currency: 'eur',
+          product_data: {
+            name: getShippingLabel(subtotal, shippingAddress.country),
+            description: 'Consegna in 3-5 giorni lavorativi',
+          },
+          unit_amount: formatAmountForStripe(shippingCost),
         },
-        unit_amount: formatAmountForStripe(shippingCost),
-      },
-      quantity: 1,
-    });
+        quantity: 1,
+      });
+    }
 
     // 4. Generate unique order number
     const orderNumber = `OZ-${new Date().getFullYear()}-${Math.random()
@@ -168,7 +171,7 @@ export async function POST(request: NextRequest) {
       customer_email: shippingAddress.email,
       billing_address_collection: 'required',
       shipping_address_collection: {
-        allowed_countries: ['IT', 'FR', 'DE', 'ES', 'AT', 'BE', 'NL', 'PT', 'CH'],
+        allowed_countries: ['IT', 'FR', 'DE', 'ES', 'AT', 'BE', 'NL', 'PT', 'CH', 'GB'],
       },
       success_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout/cancel`,

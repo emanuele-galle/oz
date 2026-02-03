@@ -8,21 +8,51 @@ import { Button } from '@/components/ui/Button';
 import { useCartStore } from '@/store/cartStore';
 import { useCheckoutStore } from '@/store/checkoutStore';
 
+interface OrderData {
+  orderNumber: string;
+  email: string;
+  items: {
+    productName: string;
+    sizeVolume: number;
+    quantity: number;
+    unitPrice: number;
+    subtotal: number;
+  }[];
+  subtotal: number;
+  shippingCost: number;
+  total: number;
+}
+
 function CheckoutSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
   const { clearCart } = useCartStore();
-  const { orderNumber, resetCheckout } = useCheckoutStore();
+  const { orderNumber: storeOrderNumber, resetCheckout } = useCheckoutStore();
   const [isCleared, setIsCleared] = useState(false);
+  const [orderData, setOrderData] = useState<OrderData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     // Clear cart dopo checkout success (solo una volta)
     if (sessionId && !isCleared) {
       clearCart();
       setIsCleared(true);
+
+      // Fetch order details
+      fetch(`/api/checkout/order/${sessionId}`)
+        .then((res) => (res.ok ? res.json() : null))
+        .then((data) => {
+          if (data) setOrderData(data);
+        })
+        .catch(() => {})
+        .finally(() => setIsLoading(false));
+    } else {
+      setIsLoading(false);
     }
   }, [sessionId, clearCart, isCleared]);
+
+  const displayOrderNumber = orderData?.orderNumber || storeOrderNumber;
 
   return (
     <div className="min-h-screen bg-black flex items-center justify-center px-4 py-16">
@@ -53,12 +83,53 @@ function CheckoutSuccessContent() {
           Grazie per il tuo acquisto. Riceverai una email di conferma a breve.
         </p>
 
-        {orderNumber && (
+        {displayOrderNumber && (
           <div className="glass-card p-6 mb-8">
             <p className="text-white/60 text-sm mb-2">Numero Ordine</p>
-            <p className="text-2xl font-mono text-gold font-bold">{orderNumber}</p>
+            <p className="text-2xl font-mono text-gold font-bold">{displayOrderNumber}</p>
           </div>
         )}
+
+        {/* Order details */}
+        {isLoading ? (
+          <div className="glass-card p-6 mb-8 space-y-3 animate-pulse">
+            <div className="h-4 bg-white/10 rounded w-1/3 mx-auto" />
+            <div className="h-3 bg-white/5 rounded w-2/3 mx-auto" />
+            <div className="h-3 bg-white/5 rounded w-1/2 mx-auto" />
+            <div className="h-5 bg-white/10 rounded w-1/3 mx-auto mt-4" />
+          </div>
+        ) : orderData ? (
+          <div className="glass-card p-6 mb-8 text-left space-y-3">
+            <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3 text-center">
+              Dettagli Ordine
+            </h3>
+            {orderData.items.map((item, i) => (
+              <div key={i} className="flex justify-between text-white/70 text-sm">
+                <span>{item.productName} {item.sizeVolume}ml × {item.quantity}</span>
+                <span>€{item.subtotal.toFixed(2)}</span>
+              </div>
+            ))}
+            <div className="border-t border-white/10 pt-3 space-y-2">
+              <div className="flex justify-between text-white/70 text-sm">
+                <span>Subtotale</span>
+                <span>€{orderData.subtotal.toFixed(2)}</span>
+              </div>
+              <div className="flex justify-between text-white/70 text-sm">
+                <span>Spedizione</span>
+                <span>{orderData.shippingCost === 0 ? 'Gratuita' : `€${orderData.shippingCost.toFixed(2)}`}</span>
+              </div>
+              <div className="flex justify-between text-gold font-bold text-lg pt-1">
+                <span>Totale</span>
+                <span>€{orderData.total.toFixed(2)}</span>
+              </div>
+            </div>
+            {orderData.email && (
+              <p className="text-xs text-white/40 text-center pt-2">
+                Conferma inviata a {orderData.email}
+              </p>
+            )}
+          </div>
+        ) : null}
 
         {/* Info Box */}
         <div className="glass-card p-6 text-left space-y-4 mb-8">
@@ -78,7 +149,7 @@ function CheckoutSuccessContent() {
             <div>
               <h3 className="text-white font-medium mb-1">Email di Conferma</h3>
               <p className="text-white/60 text-sm">
-                Controlla la tua inbox per tutti i dettagli dell'ordine.
+                Controlla la tua inbox per tutti i dettagli dell&apos;ordine.
               </p>
             </div>
           </div>

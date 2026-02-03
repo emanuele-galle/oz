@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation';
 import { getProductBySlug, getAllProductSlugs } from '@/data/products-db';
 import { ProductHeroGallery } from '@/components/sections/heroes';
 import { ProductStoryBlock } from '@/components/product';
-import { ProductInfo } from '@/components/sections/ProductInfo';
 import { OlfactoryJourney } from '@/components/sections/OlfactoryJourney';
 import { ProductSchema, BreadcrumbSchema } from '@/components/JsonLd';
 
@@ -87,7 +86,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         />
       )}
 
-      <ProductInfo product={product} />
       <OlfactoryJourney product={product} />
     </div>
   );
