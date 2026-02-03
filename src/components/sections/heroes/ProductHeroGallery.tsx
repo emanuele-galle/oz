@@ -15,6 +15,7 @@ import Image from 'next/image';
 import { Product, ProductSize } from '@/types/product';
 import { useCartStore } from '@/store/cartStore';
 import { toast } from 'sonner';
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants';
 
 interface ProductHeroGalleryProps {
   product: Product;
@@ -59,7 +60,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
 
               {/* Image counter */}
               <div className="absolute top-6 right-6 px-4 py-2 bg-black/40 backdrop-blur-sm rounded-full">
-                <span className="font-inter text-sm text-stone-900">
+                <span className="font-inter text-sm text-white">
                   {selectedImageIndex + 1} / {product.images.length}
                 </span>
               </div>
@@ -156,21 +157,17 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
                 {product.description}
               </p>
 
-              {/* Quick Specs */}
+              {/* Quick Specs — only show populated fields */}
               <div className="grid grid-cols-2 gap-3">
                 {[
                   { label: 'Concentrazione', value: product.concentration },
-                  { label: 'Longevità', value: product.longevity },
-                  { label: 'Sillage', value: product.sillage },
+                  { label: 'Stagione', value: product.season },
+                  { label: 'Genere', value: product.gender },
                   {
-                    label: 'Famiglia',
-                    value: product.olfactoryNotes.top[0].includes('Bergamotto')
-                      ? 'Agrumato Chyprè'
-                      : product.olfactoryNotes.heart[0].includes('Iris')
-                      ? 'Orientale Speziato'
-                      : 'Gourmand Floreale',
+                    label: 'Note di Testa',
+                    value: product.olfactoryNotes.top.slice(0, 2).join(', '),
                   },
-                ].map((spec, index) => (
+                ].filter((spec) => spec.value).map((spec, index) => (
                   <div
                     key={index}
                     className="
@@ -309,7 +306,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
                   <svg className="w-5 h-5 text-gold-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span>Spedizione gratuita sopra €100</span>
+                  <span>Spedizione gratuita sopra €{FREE_SHIPPING_THRESHOLD}</span>
                 </div>
                 <div className="flex items-center gap-2 text-sm font-inter text-stone-600">
                   <svg className="w-5 h-5 text-gold-500" fill="currentColor" viewBox="0 0 20 20">

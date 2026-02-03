@@ -1,13 +1,20 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui';
 
 export function CartDrawer() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, getTotalPrice } = useCartStore();
+  const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // Lock body scroll when drawer is open
   useEffect(() => {
@@ -22,7 +29,9 @@ export function CartDrawer() {
     };
   }, [isOpen]);
 
-  const totalPrice = getTotalPrice();
+  // Use persisted items only after mount to prevent hydration mismatch
+  const cartItems = isMounted ? items : [];
+  const totalPrice = isMounted ? getTotalPrice() : 0;
 
   return (
     <>
@@ -67,7 +76,7 @@ export function CartDrawer() {
 
           {/* Cart Items */}
           <div className="flex-1 overflow-y-auto p-6">
-            {items.length === 0 ? (
+            {cartItems.length === 0 ? (
               <div className="text-center py-12">
                 <svg
                   className="w-16 h-16 text-white/20 mx-auto mb-4"
@@ -91,7 +100,7 @@ export function CartDrawer() {
               </div>
             ) : (
               <div className="space-y-4">
-                {items.map((item) => {
+                {cartItems.map((item) => {
                   const primaryImage =
                     item.product.images.find((img) => img.isPrimary) || item.product.images[0];
 
@@ -183,7 +192,7 @@ export function CartDrawer() {
           </div>
 
           {/* Footer */}
-          {items.length > 0 && (
+          {cartItems.length > 0 && (
             <div className="border-t border-white/10 p-6 space-y-4">
               {/* Subtotal */}
               <div className="flex items-center justify-between mb-4">
@@ -194,7 +203,15 @@ export function CartDrawer() {
               </div>
 
               {/* Checkout Button */}
-              <Button variant="primary" size="xl" className="w-full">
+              <Button
+                variant="primary"
+                size="xl"
+                className="w-full"
+                onClick={() => {
+                  closeCart();
+                  router.push('/checkout');
+                }}
+              >
                 Procedi al Checkout
               </Button>
 

@@ -36,7 +36,7 @@ const mockProducts = [
       { url: '/uploads/images/Cristallo-4.jpeg', alt: 'Cristallo vista 4', isPrimary: false, order: 4 },
       { url: '/uploads/images/Cristallo-5.jpeg', alt: 'Cristallo vista 5', isPrimary: false, order: 5 },
       { url: '/uploads/images/Cristallo-6.jpeg', alt: 'Cristallo dettaglio', isPrimary: false, order: 6 },
-      { url: '/uploads/images/Cristallo 7.jpeg', alt: 'Cristallo packaging', isPrimary: false, order: 7 },
+      { url: '/uploads/images/box cristallo.jpeg', alt: 'Cristallo packaging', isPrimary: false, order: 7 },
       { url: '/uploads/images/Cristallo-man.jpeg', alt: 'Cristallo uomo', isPrimary: false, order: 8 },
       { url: '/uploads/images/Cristallo-tester-10ml.jpeg', alt: 'Cristallo tester 10ml', isPrimary: false, order: 9 },
     ],
@@ -72,7 +72,7 @@ const mockProducts = [
       { url: '/uploads/images/Scintilla.jpeg', alt: 'Scintilla Extrait de Parfum', isPrimary: true, order: 1 },
       { url: '/uploads/images/Scintilla-2.jpeg', alt: 'Scintilla vista 2', isPrimary: false, order: 2 },
       { url: '/uploads/images/Scintilla-3.jpeg', alt: 'Scintilla dettaglio', isPrimary: false, order: 3 },
-      { url: '/uploads/images/Scintilla-4.jpeg', alt: 'Scintilla packaging', isPrimary: false, order: 4 },
+      { url: '/uploads/images/Scintilla-man.jpeg', alt: 'Scintilla uomo', isPrimary: false, order: 4 },
       { url: '/uploads/images/Scintilla-tester-10ml.jpeg', alt: 'Scintilla tester 10ml', isPrimary: false, order: 5 },
     ],
     olfactoryNotes: [
@@ -104,10 +104,10 @@ const mockProducts = [
       { volume: 10, price: '50.00', sku: 'POT-10', stockQuantity: 35 },
     ],
     images: [
-      { url: '/uploads/images/Potion d\'amour.jpeg', alt: 'Potion d\'Amour Extrait de Parfum', isPrimary: true, order: 1 },
+      { url: '/uploads/images/Potion-damour.jpeg', alt: 'Potion d\'Amour Extrait de Parfum', isPrimary: true, order: 1 },
       { url: '/uploads/images/Potion-d-amour-1.jpeg', alt: 'Potion d\'Amour vista 2', isPrimary: false, order: 2 },
-      { url: '/uploads/images/Potion d\'amour con tester cristallo.jpeg', alt: 'Potion d\'Amour con tester Cristallo', isPrimary: false, order: 3 },
-      { url: '/uploads/images/Potion d\'amour con tester scintilla.jpeg', alt: 'Potion d\'Amour con tester Scintilla', isPrimary: false, order: 4 },
+      { url: '/uploads/images/Potion-damour-con-tester-cristallo.jpeg', alt: 'Potion d\'Amour con tester Cristallo', isPrimary: false, order: 3 },
+      { url: '/uploads/images/Potion-damour-con-tester-scintilla.jpeg', alt: 'Potion d\'Amour con tester Scintilla', isPrimary: false, order: 4 },
     ],
     olfactoryNotes: [
       { category: 'top', note: 'Lampone Rosso', order: 1 },

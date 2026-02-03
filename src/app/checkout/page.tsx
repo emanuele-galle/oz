@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -11,6 +11,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCartStore } from '@/store/cartStore';
 import { useCheckoutStore } from '@/store/checkoutStore';
 import { shippingAddressSchema, type ShippingAddress } from '@/lib/validations/checkout';
+import { calculateShippingCost, getShippingLabel } from '@/lib/shipping';
+import { FREE_SHIPPING_THRESHOLD } from '@/lib/constants';
 import { Input } from '@/components/ui/forms/Input';
 import { Textarea } from '@/components/ui/forms/Textarea';
 import { Select } from '@/components/ui/forms/Select';
@@ -28,11 +30,19 @@ export default function CheckoutPage() {
     useCheckoutStore();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isMounted, setIsMounted] = useState(false);
+
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   // React Hook Form
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<ShippingAddress>({
     resolver: zodResolver(shippingAddressSchema),
@@ -41,7 +51,23 @@ export default function CheckoutPage() {
     },
   });
 
-  // Redirect se carrello vuoto
+  const selectedCountry = watch('country') || 'IT';
+  const subtotal = total();
+  const shippingCost = calculateShippingCost(subtotal, selectedCountry);
+  const orderTotal = subtotal + shippingCost;
+
+  // Wait for persist rehydration before checking cart
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="font-cinzel text-4xl text-gold-500/20 animate-pulse">OZ</h1>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect se carrello vuoto (only after mount/rehydration)
   if (items.length === 0 && currentStep !== 'confirmation') {
     router.push('/');
     return null;
@@ -74,16 +100,21 @@ export default function CheckoutPage() {
       <div className="glass-card p-6 space-y-3">
         <div className="flex justify-between text-white/70">
           <span>Subtotale</span>
-          <span>€{total().toFixed(2)}</span>
+          <span>€{subtotal.toFixed(2)}</span>
         </div>
         <div className="flex justify-between text-white/70">
-          <span>Spedizione</span>
-          <span>€5.00</span>
+          <span>{getShippingLabel(subtotal, selectedCountry)}</span>
+          <span>{shippingCost === 0 ? 'Gratuita' : `€${shippingCost.toFixed(2)}`}</span>
         </div>
         <div className="border-t border-white/10 pt-3 flex justify-between text-xl text-gold font-bold">
           <span>Totale</span>
-          <span>€{(total() + 5).toFixed(2)}</span>
+          <span>€{orderTotal.toFixed(2)}</span>
         </div>
+        {subtotal < FREE_SHIPPING_THRESHOLD && (
+          <p className="text-xs text-white/40 text-center pt-1">
+            Spedizione gratuita per ordini superiori a €{FREE_SHIPPING_THRESHOLD}
+          </p>
+        )}
       </div>
 
       <Button onClick={() => setStep('shipping')} size="lg" className="w-full">
@@ -178,7 +209,12 @@ export default function CheckoutPage() {
             { value: 'FR', label: 'Francia' },
             { value: 'DE', label: 'Germania' },
             { value: 'ES', label: 'Spagna' },
+            { value: 'AT', label: 'Austria' },
+            { value: 'BE', label: 'Belgio' },
+            { value: 'NL', label: 'Paesi Bassi' },
+            { value: 'PT', label: 'Portogallo' },
             { value: 'CH', label: 'Svizzera' },
+            { value: 'GB', label: 'Regno Unito' },
           ]}
           error={errors.country?.message}
           required
@@ -258,9 +294,34 @@ export default function CheckoutPage() {
         </div>
       )}
 
+      {/* Order summary */}
+      <div className="glass-card p-6 space-y-3">
+        <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3">Riepilogo Ordine</h3>
+        {items.map((item) => (
+          <div key={`${item.product.id}-${item.size.volume}`} className="flex justify-between text-white/70 text-sm">
+            <span>{item.product.name} {item.size.volume} × {item.quantity}</span>
+            <span>€{(item.size.price * item.quantity).toFixed(2)}</span>
+          </div>
+        ))}
+        <div className="border-t border-white/10 pt-3 space-y-2">
+          <div className="flex justify-between text-white/70 text-sm">
+            <span>Subtotale</span>
+            <span>€{subtotal.toFixed(2)}</span>
+          </div>
+          <div className="flex justify-between text-white/70 text-sm">
+            <span>{getShippingLabel(subtotal, selectedCountry)}</span>
+            <span>{shippingCost === 0 ? 'Gratuita' : `€${shippingCost.toFixed(2)}`}</span>
+          </div>
+          <div className="flex justify-between text-gold font-bold text-lg pt-1">
+            <span>Totale</span>
+            <span>€{orderTotal.toFixed(2)}</span>
+          </div>
+        </div>
+      </div>
+
       <div className="glass-card p-6 space-y-4">
         <p className="text-white/80">
-          Cliccando su "Paga Ora" sarai reindirizzato alla pagina sicura di Stripe per
+          Cliccando su &quot;Paga Ora&quot; sarai reindirizzato alla pagina sicura di Stripe per
           completare il pagamento.
         </p>
 
@@ -286,13 +347,11 @@ export default function CheckoutPage() {
           className="flex-1"
           size="lg"
         >
-          {isSubmitting ? 'Reindirizzamento...' : 'Paga Ora'}
+          {isSubmitting ? 'Reindirizzamento...' : `Paga €${orderTotal.toFixed(2)}`}
         </Button>
       </div>
     </div>
   );
-
-  const shouldReduceMotion = useReducedMotion();
 
   // Step configuration with icons
   const steps = [

@@ -108,14 +108,6 @@ export default function ScegliereFragranzaPage() {
               </a>
             </div>
 
-            {/* Note finale */}
-            <div className="border-t border-stone-200 pt-8 mt-12">
-              <Body size="sm" className="text-stone-500 italic">
-                Questa è la versione condensata della guida completa.
-                Il contenuto completo (1800+ parole) è disponibile nel file
-                /content/guides/come-scegliere-fragranza.md
-              </Body>
-            </div>
           </div>
         </Container>
       </Section>
