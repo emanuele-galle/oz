@@ -42,8 +42,8 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
       <div className="grid lg:grid-cols-[60%_40%] min-h-screen">
         {/* LEFT: Gallery — 60% width */}
         <div className="relative bg-stone-100">
-          {/* Main Image */}
-          <div className="sticky top-0 h-screen flex flex-col">
+          {/* Main Image — sticky on desktop, fixed height on mobile */}
+          <div className="lg:sticky lg:top-0 h-[60vh] lg:h-screen flex flex-col">
             {/* Large Image Area */}
             <div className="flex-1 relative">
               <Image

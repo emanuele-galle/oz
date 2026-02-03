@@ -28,7 +28,7 @@ export function FounderStoryLuxury() {
               className="md:col-span-7 space-y-6"
             >
               {/* Primary image with ImageReveal */}
-              <div className="relative">
+              <div className="relative overflow-hidden">
                 <ImageReveal
                   src="/uploads/images/Zoe-Cristofoli.jpeg"
                   alt="Zoe Cristofoli - Founder OZ Extrait"
@@ -43,7 +43,7 @@ export function FounderStoryLuxury() {
                   whileInView={{ opacity: 1, y: 0, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.7, delay: 0.3 }}
-                  className="absolute -bottom-8 -right-4 md:right-8 w-2/5 z-20 shadow-2xl"
+                  className="absolute -bottom-8 right-0 md:right-8 w-2/5 z-20 shadow-2xl"
                 >
                   <div className="relative aspect-[3/4] overflow-hidden border-2 border-stone-200">
                     <Image

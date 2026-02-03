@@ -39,9 +39,9 @@ export default function CheckoutCancelPage() {
         </p>
 
         {/* Info */}
-        <div className="glass-card p-6 text-left mb-8">
+        <div className="glass-card-dark p-6 text-left mb-8">
           <p className="text-white/80 mb-4">Cosa è successo?</p>
-          <ul className="space-y-2 text-white/60 text-sm">
+          <ul className="space-y-2 text-white/70 text-sm">
             <li>• Hai chiuso la finestra di pagamento</li>
             <li>• Hai cliccato su "Indietro"</li>
             <li>• La sessione di pagamento è scaduta</li>
@@ -57,7 +57,7 @@ export default function CheckoutCancelPage() {
         </div>
 
         {/* Help */}
-        <p className="mt-8 text-sm text-white/50">
+        <p className="mt-8 text-sm text-white/60">
           Hai bisogno di aiuto?{' '}
           <a href="mailto:info@oz.fodivps2.cloud" className="text-gold underline">
             Contattaci

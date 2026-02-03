@@ -34,9 +34,10 @@ function CheckoutSuccessContent() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Clear cart dopo checkout success (solo una volta)
+    // Clear cart and reset checkout state on success
     if (sessionId && !isCleared) {
       clearCart();
+      resetCheckout();
       setIsCleared(true);
 
       // Fetch order details
@@ -50,7 +51,7 @@ function CheckoutSuccessContent() {
     } else {
       setIsLoading(false);
     }
-  }, [sessionId, clearCart, isCleared]);
+  }, [sessionId, clearCart, resetCheckout, isCleared]);
 
   const displayOrderNumber = orderData?.orderNumber || storeOrderNumber;
 
@@ -84,7 +85,7 @@ function CheckoutSuccessContent() {
         </p>
 
         {displayOrderNumber && (
-          <div className="glass-card p-6 mb-8">
+          <div className="glass-card-dark p-6 mb-8">
             <p className="text-white/60 text-sm mb-2">Numero Ordine</p>
             <p className="text-2xl font-mono text-gold font-bold">{displayOrderNumber}</p>
           </div>
@@ -92,14 +93,14 @@ function CheckoutSuccessContent() {
 
         {/* Order details */}
         {isLoading ? (
-          <div className="glass-card p-6 mb-8 space-y-3 animate-pulse">
+          <div className="glass-card-dark p-6 mb-8 space-y-3 animate-pulse">
             <div className="h-4 bg-white/10 rounded w-1/3 mx-auto" />
             <div className="h-3 bg-white/5 rounded w-2/3 mx-auto" />
             <div className="h-3 bg-white/5 rounded w-1/2 mx-auto" />
             <div className="h-5 bg-white/10 rounded w-1/3 mx-auto mt-4" />
           </div>
         ) : orderData ? (
-          <div className="glass-card p-6 mb-8 text-left space-y-3">
+          <div className="glass-card-dark p-6 mb-8 text-left space-y-3">
             <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3 text-center">
               Dettagli Ordine
             </h3>
@@ -124,7 +125,7 @@ function CheckoutSuccessContent() {
               </div>
             </div>
             {orderData.email && (
-              <p className="text-xs text-white/40 text-center pt-2">
+              <p className="text-xs text-white/60 text-center pt-2">
                 Conferma inviata a {orderData.email}
               </p>
             )}
@@ -132,7 +133,7 @@ function CheckoutSuccessContent() {
         ) : null}
 
         {/* Info Box */}
-        <div className="glass-card p-6 text-left space-y-4 mb-8">
+        <div className="glass-card-dark p-6 text-left space-y-4 mb-8">
           <div className="flex items-start gap-4">
             <div className="text-gold text-2xl">📦</div>
             <div>

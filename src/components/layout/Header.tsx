@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 
@@ -202,46 +203,69 @@ export function Header() {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={cn(
-            'md:hidden overflow-hidden transition-all duration-300',
-            isMobileMenuOpen ? 'max-h-96 mt-6 pb-6 border-t border-stone-200 pt-6' : 'max-h-0'
-          )}
-        >
-          <nav className="flex flex-col gap-4">
-            {mainLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="h-px bg-stone-200 my-1" />
-            <span className="font-inter text-xs uppercase tracking-wider text-gold-500/60">Il Brand</span>
-            {brandLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300 pl-3"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <div className="h-px bg-stone-200 my-1" />
-            <Link
-              href="/guida/scegliere-fragranza"
-              className="font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
-              onClick={() => setIsMobileMenuOpen(false)}
+        {/* Mobile Menu — AnimatePresence for smooth animation */}
+        <AnimatePresence>
+          {isMobileMenuOpen && (
+            <motion.div
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
+              className="md:hidden overflow-hidden"
             >
-              Guida
-            </Link>
-          </nav>
-        </div>
+              <nav className="flex flex-col mt-6 pb-6 border-t border-stone-200 pt-6">
+                {mainLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="block py-3 font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <div className="h-px bg-stone-200 my-1" />
+                <span className="py-2 font-inter text-xs uppercase tracking-wider text-gold-500/60">Il Brand</span>
+                {brandLinks.map((link, i) => (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: (mainLinks.length + i) * 0.05 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className="block py-3 font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300 pl-3"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  </motion.div>
+                ))}
+                <div className="h-px bg-stone-200 my-1" />
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: (mainLinks.length + brandLinks.length) * 0.05 }}
+                >
+                  <Link
+                    href="/guida/scegliere-fragranza"
+                    className="block py-3 font-inter text-sm uppercase tracking-wide text-stone-600 hover:text-gold-600 transition-colors duration-300"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Guida
+                  </Link>
+                </motion.div>
+              </nav>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </header>
   );

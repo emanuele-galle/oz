@@ -4,6 +4,7 @@
 import { PrismaClient, Prisma } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import pg from 'pg';
+import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 
 const connectionString = process.env.DATABASE_URL!;
@@ -191,6 +192,24 @@ async function main() {
 
     console.log(`  ✅ Created product: ${product.name} (${product.slug})`);
   }
+
+  // Seed admin user
+  console.log('👤 Seeding admin user...');
+  const adminEmail = process.env.ADMIN_EMAIL || 'admin@oz.fodivps2.cloud';
+  const adminPassword = process.env.ADMIN_PASSWORD || 'OzAdmin2026!';
+  const hashedPassword = await bcrypt.hash(adminPassword, 12);
+
+  const adminUser = await prisma.user.upsert({
+    where: { email: adminEmail },
+    update: { password: hashedPassword, role: 'ADMIN' },
+    create: {
+      email: adminEmail,
+      name: 'Admin OZ',
+      password: hashedPassword,
+      role: 'ADMIN',
+    },
+  });
+  console.log(`  ✅ Admin user: ${adminUser.email} (role: ${adminUser.role})`);
 
   console.log('✨ Seed completed!');
 }

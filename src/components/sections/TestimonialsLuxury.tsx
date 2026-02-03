@@ -180,13 +180,15 @@ export function TestimonialsLuxury() {
                       setDirection(index > currentIndex ? 1 : -1);
                       setCurrentIndex(index);
                     }}
-                    className={`h-2 rounded-full transition-all duration-300 ${
+                    className="p-2"
+                    aria-label={`Vai alla testimonianza ${index + 1}`}
+                  >
+                    <span className={`block h-2 rounded-full transition-all duration-300 ${
                       index === currentIndex
                         ? 'w-8 bg-gold-500'
                         : 'w-2 bg-stone-400 hover:bg-gold-500/60'
-                    }`}
-                    aria-label={`Vai alla testimonianza ${index + 1}`}
-                  />
+                    }`} />
+                  </button>
                 ))}
               </div>
 
