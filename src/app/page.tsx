@@ -5,6 +5,7 @@ import { Craftsmanship } from '@/components/sections/Craftsmanship';
 import { FounderStoryLuxury } from '@/components/sections/FounderStoryLuxury';
 import { TestimonialsLuxury } from '@/components/sections/TestimonialsLuxury';
 import { NewsletterLuxury } from '@/components/sections/NewsletterLuxury';
+import { ParallaxDividerFirst, ParallaxDividerSecond, ParallaxDividerThird } from '@/components/sections/HomepageParallaxDividers';
 import { OrganizationSchema } from '@/components/JsonLd';
 import { getFeaturedProducts } from '@/data/products-db';
 
@@ -40,8 +41,11 @@ export default async function Home() {
       <OrganizationSchema />
       <HomepageHeroLuxury />
       <TrustFeaturesLuxury />
+      <ParallaxDividerFirst />
       <ProductsShowcaseLuxury products={productsData} />
+      <ParallaxDividerSecond />
       <Craftsmanship />
+      <ParallaxDividerThird />
       <FounderStoryLuxury />
       <TestimonialsLuxury />
       <NewsletterLuxury />

@@ -1,135 +1,261 @@
 'use client';
 
 /**
- * HOMEPAGE HERO LUXURY — OZ Extrait
- * Design: Dark & Bold — Tom Ford / YSL inspired
- * Deep black, gold shimmer, cinematic atmosphere
+ * HOMEPAGE HERO — Scroll-Driven Frame Animation
+ * Design: Apple-style sticky canvas that plays video frames on scroll
+ * 81 frames from Scintilla video — golden bottle reveal with splash
+ * @version 3.0
  */
 
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion, useScroll, useTransform, useMotionValueEvent } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 
+const TOTAL_FRAMES = 81;
+const FRAME_PATH = '/uploads/frames/scintilla/frame-';
+
+function getFrameSrc(index: number): string {
+  const num = String(Math.min(Math.max(index, 1), TOTAL_FRAMES)).padStart(3, '0');
+  return `${FRAME_PATH}${num}.jpg`;
+}
+
 export function HomepageHeroLuxury() {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
+  const [isReady, setIsReady] = useState(false);
+  const currentFrameRef = useRef(0);
+  const rafRef = useRef<number>(0);
   const router = useRouter();
 
+  // Scroll progress across the tall section
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start start', 'end end'],
+  });
+
+  // Text opacity transforms based on scroll
+  const overlayOpacity = useTransform(scrollYProgress, [0, 0.08], [0.7, 0]);
+  const titleOpacity = useTransform(scrollYProgress, [0, 0.05, 0.35, 0.45], [1, 1, 1, 0]);
+  const titleY = useTransform(scrollYProgress, [0, 0.05, 0.35, 0.45], [0, 0, 0, -60]);
+  const subtitleOpacity = useTransform(scrollYProgress, [0.08, 0.15, 0.35, 0.45], [0, 1, 1, 0]);
+  const taglineOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.7, 0.78], [0, 1, 1, 0]);
+  const descOpacity = useTransform(scrollYProgress, [0.75, 0.85, 1], [0, 1, 1]);
+  const ctaOpacity = useTransform(scrollYProgress, [0.82, 0.92, 1], [0, 1, 1]);
+  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05, 0.9, 1], [1, 1, 1, 0]);
+
+  // Preload all frames
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {});
+    const images: HTMLImageElement[] = [];
+    let loaded = 0;
+
+    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+      const img = new window.Image();
+      img.src = getFrameSrc(i);
+      img.onload = () => {
+        loaded++;
+        setImagesLoaded(loaded);
+        if (loaded === TOTAL_FRAMES) {
+          setIsReady(true);
+        }
+      };
+      img.onerror = () => {
+        loaded++;
+        setImagesLoaded(loaded);
+        if (loaded === TOTAL_FRAMES) setIsReady(true);
+      };
+      images[i - 1] = img;
     }
+
+    imagesRef.current = images;
   }, []);
+
+  // Draw frame on canvas
+  const drawFrame = useCallback((frameIndex: number) => {
+    const canvas = canvasRef.current;
+    const ctx = canvas?.getContext('2d');
+    const img = imagesRef.current[frameIndex];
+    if (!canvas || !ctx || !img || !img.complete) return;
+
+    // Set canvas to match display size
+    const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1;
+    const rect = canvas.getBoundingClientRect();
+    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    // Draw with cover behavior
+    const cw = rect.width;
+    const ch = rect.height;
+    const iw = img.naturalWidth;
+    const ih = img.naturalHeight;
+    const scale = Math.max(cw / iw, ch / ih);
+    const sw = iw * scale;
+    const sh = ih * scale;
+    const sx = (cw - sw) / 2;
+    const sy = (ch - sh) / 2;
+
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, sx, sy, sw, sh);
+  }, []);
+
+  // Update frame on scroll
+  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
+    const frameIndex = Math.min(
+      Math.floor(progress * (TOTAL_FRAMES - 1)),
+      TOTAL_FRAMES - 1
+    );
+    if (frameIndex !== currentFrameRef.current) {
+      currentFrameRef.current = frameIndex;
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => drawFrame(frameIndex));
+    }
+  });
+
+  // Draw first frame when ready & handle resize
+  useEffect(() => {
+    if (isReady) {
+      drawFrame(0);
+
+      const handleResize = () => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          // Reset canvas dimensions on resize
+          canvas.width = 0;
+          canvas.height = 0;
+        }
+        drawFrame(currentFrameRef.current);
+      };
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [isReady, drawFrame]);
 
   const scrollToProducts = () => {
     const element = document.getElementById('products');
     element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  return (
-    <section className="relative h-screen w-full overflow-hidden bg-black">
-      {/* Video/Image Background — subtle overlay */}
-      <div className="absolute inset-0">
-        <video
-          ref={videoRef}
-          autoPlay
-          loop
-          muted
-          playsInline
-          onLoadedData={() => setIsVideoLoaded(true)}
-          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ${isVideoLoaded ? 'opacity-30' : 'opacity-0'}`}
-        >
-          <source src="/uploads/videos/cristallo-background.mp4" type="video/mp4" />
-        </video>
+  const loadProgress = Math.round((imagesLoaded / TOTAL_FRAMES) * 100);
 
-        {/* Poster fallback */}
-        {!isVideoLoaded && (
-          <Image
-            src="/uploads/images/Cristallo.jpeg"
-            alt=""
-            fill
-            className="object-cover opacity-25"
-            priority
-          />
+  return (
+    <section ref={sectionRef} className="relative h-[400vh] bg-stone-950">
+      {/* Sticky viewport */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden">
+        {/* Canvas */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          style={{ display: isReady ? 'block' : 'none' }}
+        />
+
+        {/* Loading state — first frame as fallback */}
+        {!isReady && (
+          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-amber-700/60 to-amber-900/80 flex items-center justify-center">
+            <div className="text-center">
+              <h1 className="font-cinzel text-[80px] md:text-[120px] lg:text-[160px] leading-[0.85] tracking-tight text-gold-gradient drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]">
+                OZ
+              </h1>
+              <p className="font-playfair text-2xl md:text-3xl text-gold-400 italic font-light tracking-wider mt-4">
+                Extrait
+              </p>
+              <div className="mt-8 w-48 h-[2px] bg-white/10 mx-auto rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gold-500 transition-all duration-300 rounded-full"
+                  style={{ width: `${loadProgress}%` }}
+                />
+              </div>
+            </div>
+          </div>
         )}
 
-        {/* Intense gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
-      </div>
+        {/* Gradient — only at bottom for text area, keeps video clean */}
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 pointer-events-none" />
 
-      {/* Content */}
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-6">
-        <div className="max-w-5xl mx-auto text-center">
-          {/* Overline */}
-          <p className="font-inter text-xs md:text-sm uppercase tracking-[0.4em] text-gold-500/80 mb-8 font-light animate-fade-in">
-            Verona · Italia
-          </p>
-
-          {/* Main Title — Prominent OZ with gold glow */}
-          <h1 className="font-cinzel text-[80px] md:text-[110px] lg:text-[130px] leading-[0.85] tracking-tight text-white mb-4">
-            <span className="text-gold-gradient drop-shadow-[0_0_40px_rgba(212,175,55,0.4)]">
+        {/* OZ Title — centered, visible at start, fades before bottle */}
+        <motion.div
+          style={{ opacity: titleOpacity, y: titleY }}
+          className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+        >
+          <div className="text-center">
+            <p className="font-inter text-xs md:text-sm uppercase tracking-[0.4em] font-light text-gold-400/90 mb-4 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+              Verona &middot; Italia
+            </p>
+            <h1 className="font-cinzel text-[100px] md:text-[140px] lg:text-[180px] leading-[0.8] tracking-tight text-gold-gradient drop-shadow-[0_0_60px_rgba(212,175,55,0.4)]">
               OZ
-            </span>
-          </h1>
-          <p className="font-playfair text-2xl md:text-3xl text-gold-400 italic font-light tracking-wider mb-10">
-            Extrait
-          </p>
-
-          {/* Decorative divider */}
-          <div className="flex items-center justify-center gap-4 mb-10">
-            <div className="h-px w-16 bg-gradient-to-r from-transparent to-gold-500/60" />
-            <div className="w-1.5 h-1.5 bg-gold-500 rotate-45" />
-            <div className="h-px w-16 bg-gradient-to-l from-transparent to-gold-500/60" />
+            </h1>
           </div>
+        </motion.div>
 
-          {/* Tagline */}
-          <p className="font-playfair text-2xl md:text-3xl lg:text-4xl text-white/90 leading-relaxed max-w-3xl mx-auto mb-4 italic font-light">
-            Extrait de Parfum.
-            <br />
-            <span className="text-gold-400 not-italic font-cinzel text-xl md:text-2xl lg:text-3xl">
-              Extrait d'Âme.
-            </span>
-          </p>
+        {/* Bottom text area — all content pinned to bottom, doesn't cover the bottle */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-8">
+          <div className="max-w-4xl mx-auto text-center">
 
-          {/* Description */}
-          <p className="font-inter text-base md:text-lg text-white/60 max-w-2xl mx-auto leading-relaxed mb-14 font-light">
-            Tre fragranze artigianali al 40% di concentrazione.
-            <br className="hidden md:block" />
-            Heritage veneziano. Visione contemporanea.
-          </p>
-
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
-            <button
-              onClick={scrollToProducts}
-              className="group relative px-10 py-4 bg-gold-500 text-stone-950 font-inter text-sm font-semibold uppercase tracking-[0.15em] overflow-hidden hover:bg-gold-400 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-500"
+            {/* Extrait subtitle — appears as video starts */}
+            <motion.p
+              style={{ opacity: subtitleOpacity }}
+              className="font-playfair text-2xl md:text-3xl text-white/90 italic font-light tracking-wider mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
             >
-              Scopri le Fragranze
-            </button>
+              Extrait de Parfum
+            </motion.p>
 
-            <button
-              onClick={() => router.push('/il-brand/storia')}
-              className="px-10 py-4 border border-gold-500/40 text-gold-400 font-inter text-sm font-medium uppercase tracking-[0.15em] hover:bg-gold-500/10 hover:border-gold-500/70 transition-all duration-300"
+            {/* Tagline — appears during full reveal */}
+            <motion.div style={{ opacity: taglineOpacity }} className="mb-4">
+              <p className="font-playfair text-xl md:text-2xl lg:text-3xl text-white/95 italic font-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+                Extrait de Parfum. Extrait d&apos;Âme.
+              </p>
+              <p className="font-inter text-xs md:text-sm text-white/50 mt-2 tracking-wide font-light">
+                Estratto di Profumo. Estratto d&apos;Anima.
+              </p>
+            </motion.div>
+
+            {/* Description — appears at the end */}
+            <motion.p
+              style={{ opacity: descOpacity }}
+              className="font-inter text-sm md:text-base text-white/60 max-w-xl mx-auto leading-relaxed font-light mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
             >
-              La Storia
-            </button>
+              Tre fragranze artigianali al 40% di concentrazione.
+              <span className="hidden md:inline"> Heritage veronese. Visione contemporanea.</span>
+            </motion.p>
+
+            {/* CTAs */}
+            <motion.div
+              style={{ opacity: ctaOpacity }}
+              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+            >
+              <button
+                onClick={scrollToProducts}
+                className="px-8 py-3 bg-stone-950/90 text-gold-400 font-inter text-xs font-semibold uppercase tracking-[0.15em] hover:bg-stone-900 hover:text-gold-300 transition-all duration-500 border border-stone-700/80 backdrop-blur-sm"
+              >
+                Scopri le Fragranze
+              </button>
+
+              <button
+                onClick={() => router.push('/il-brand/storia')}
+                className="px-8 py-3 bg-white/10 backdrop-blur-sm border border-white/30 text-white/90 font-inter text-xs font-medium uppercase tracking-[0.15em] hover:bg-white/20 hover:border-white/50 transition-all duration-300"
+              >
+                La Storia
+              </button>
+            </motion.div>
           </div>
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-10 left-1/2 -translate-x-1/2">
-          <button
-            onClick={scrollToProducts}
-            className="group flex flex-col items-center gap-2"
+        {/* Scroll indicator — top of bottom area */}
+        <motion.div
+          style={{ opacity: scrollIndicatorOpacity }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 pb-2"
+        >
+          <motion.div
+            animate={{ y: [0, 6, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <span className="font-inter text-[10px] uppercase tracking-[0.2em] text-white/30 font-light">
-              Scorri
-            </span>
-            <ChevronDown className="w-5 h-5 text-gold-500/50 group-hover:text-gold-500 animate-bounce transition-colors" />
-          </button>
-        </div>
+            <ChevronDown className="w-4 h-4 text-gold-500/40" />
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
