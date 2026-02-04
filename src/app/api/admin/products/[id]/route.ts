@@ -14,7 +14,7 @@ export async function PUT(
 
     const { id } = await params;
     const body = await request.json();
-    const { name, slug, tagline, description, story, basePrice, concentration, season, gender, active, featured, sizes } = body;
+    const { name, slug, tagline, description, story, basePrice, concentration, season, gender, active, featured, sizes, olfactoryNotes, images } = body;
 
     // Update product fields
     const product = await prisma.product.update({
@@ -60,6 +60,37 @@ export async function PUT(
             },
           });
         }
+      }
+    }
+
+    // Update olfactory notes: delete-and-recreate
+    if (olfactoryNotes) {
+      await prisma.olfactoryNote.deleteMany({ where: { productId: id } });
+      if (olfactoryNotes.length > 0) {
+        await prisma.olfactoryNote.createMany({
+          data: olfactoryNotes.map((n: any) => ({
+            productId: id,
+            category: n.category,
+            note: n.note,
+            order: n.order ?? 0,
+          })),
+        });
+      }
+    }
+
+    // Update images: delete-and-recreate
+    if (images) {
+      await prisma.productImage.deleteMany({ where: { productId: id } });
+      if (images.length > 0) {
+        await prisma.productImage.createMany({
+          data: images.map((img: any) => ({
+            productId: id,
+            url: img.url,
+            alt: img.alt || '',
+            isPrimary: img.isPrimary ?? false,
+            order: img.order ?? 0,
+          })),
+        });
       }
     }
 
