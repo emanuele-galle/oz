@@ -5,7 +5,7 @@
  * Full-width dark bg, refined columns, payment icons, trust seals
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
 function PaymentIcons() {
@@ -43,31 +43,6 @@ function PaymentIcons() {
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const [email, setEmail] = useState('');
-  const [subscribed, setSubscribed] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleNewsletter = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || isSubmitting) return;
-
-    setIsSubmitting(true);
-    try {
-      const res = await fetch('/api/newsletter/subscribe', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
-      });
-      if (res.ok) {
-        setSubscribed(true);
-        setEmail('');
-      }
-    } catch {
-      // silently fail
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <footer className="relative bg-stone-950 overflow-hidden">
@@ -75,52 +50,13 @@ export function Footer() {
       <div className="h-px bg-gradient-to-r from-transparent via-gold-500/40 to-transparent" />
 
       <div className="relative z-10 container-luxury">
-        {/* Newsletter Banner */}
-        <div className="py-12 md:py-16 border-b border-white/[0.06]">
-          <div className="max-w-2xl mx-auto text-center">
-            <h3 className="font-cinzel text-xl md:text-2xl text-white mb-2 tracking-wide">
-              Entra nel Mondo OZ
-            </h3>
-            <p className="font-inter text-sm text-white/50 mb-6">
-              Anteprime esclusive, offerte riservate e guide alla profumeria artistica.
-            </p>
-
-            {subscribed ? (
-              <div className="flex items-center justify-center gap-2 text-gold-500">
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-                <span className="font-inter text-sm">Iscrizione confermata. Benvenuto.</span>
-              </div>
-            ) : (
-              <form onSubmit={handleNewsletter} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="la.tua@email.it"
-                  required
-                  className="flex-1 px-4 py-3 bg-white/[0.06] border border-white/[0.1] text-white font-inter text-sm placeholder:text-white/30 focus:outline-none focus:border-gold-500/50 transition-colors duration-300"
-                />
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className="px-6 py-3 bg-gold-500/10 border border-gold-500/40 text-gold-400 font-inter text-xs font-semibold uppercase tracking-[0.15em] hover:bg-gold-500 hover:text-stone-950 hover:border-gold-500 transition-all duration-300 disabled:opacity-50 whitespace-nowrap"
-                >
-                  {isSubmitting ? '...' : 'Iscriviti'}
-                </button>
-              </form>
-            )}
-          </div>
-        </div>
-
         {/* Main Footer Content */}
         <div className="py-12 md:py-16">
           <div className="grid grid-cols-2 md:grid-cols-12 gap-8 md:gap-12">
             {/* Brand Column */}
             <div className="col-span-2 md:col-span-4 space-y-5">
               <img src="/uploads/images/logo.png" alt="OZ Extrait" className="h-14 w-auto" />
-              <p className="font-inter text-sm text-white/45 leading-relaxed max-w-xs">
+              <p className="font-inter text-sm text-white/70 leading-relaxed max-w-xs">
                 Extrait de Parfum artigianale italiano. Tre fragranze d'autore al 40% di concentrazione.
               </p>
 
@@ -154,7 +90,7 @@ export function Footer() {
                   <li key={product.href}>
                     <Link
                       href={product.href}
-                      className="font-inter text-sm text-white/45 hover:text-gold-400 transition-colors duration-300"
+                      className="font-inter text-sm text-white/70 hover:text-gold-400 transition-colors duration-300"
                     >
                       {product.name}
                     </Link>
@@ -178,7 +114,7 @@ export function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="font-inter text-sm text-white/45 hover:text-gold-400 transition-colors duration-300"
+                      className="font-inter text-sm text-white/70 hover:text-gold-400 transition-colors duration-300"
                     >
                       {link.name}
                     </Link>
@@ -202,7 +138,7 @@ export function Footer() {
                   <li key={link.name}>
                     <Link
                       href={link.href}
-                      className="font-inter text-sm text-white/45 hover:text-gold-400 transition-colors duration-300"
+                      className="font-inter text-sm text-white/70 hover:text-gold-400 transition-colors duration-300"
                     >
                       {link.name}
                     </Link>
@@ -219,11 +155,11 @@ export function Footer() {
               <div className="space-y-3">
                 <a
                   href="mailto:info@oz-extrait.com"
-                  className="block font-inter text-sm text-white/45 hover:text-gold-400 transition-colors duration-300"
+                  className="block font-inter text-sm text-white/70 hover:text-gold-400 transition-colors duration-300"
                 >
                   info@oz-extrait.com
                 </a>
-                <p className="font-inter text-sm text-white/30 leading-relaxed">
+                <p className="font-inter text-sm text-white/50 leading-relaxed">
                   Verona, Italia
                 </p>
               </div>
@@ -235,15 +171,15 @@ export function Footer() {
         <div className="py-6 border-t border-white/[0.06]">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
-              <p className="text-white/30 text-xs font-inter">
+              <p className="text-white/50 text-xs font-inter">
                 © {currentYear} OZ Extrait. Tutti i diritti riservati.
               </p>
               <div className="flex items-center gap-4">
-                <Link href="/privacy" className="text-white/30 hover:text-gold-400 text-xs font-inter transition-colors duration-300">
+                <Link href="/privacy" className="text-white/50 hover:text-gold-400 text-xs font-inter transition-colors duration-300">
                   Privacy
                 </Link>
                 <span className="text-white/10">|</span>
-                <Link href="/terms" className="text-white/30 hover:text-gold-400 text-xs font-inter transition-colors duration-300">
+                <Link href="/terms" className="text-white/50 hover:text-gold-400 text-xs font-inter transition-colors duration-300">
                   Termini
                 </Link>
               </div>
