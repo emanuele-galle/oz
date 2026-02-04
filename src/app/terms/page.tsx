@@ -12,7 +12,7 @@ export default function TermsPage() {
         <h1 className="font-cinzel text-4xl md:text-5xl text-stone-900 mb-4">
           Termini e Condizioni
         </h1>
-        <p className="font-inter text-sm text-stone-500 mb-12">
+        <p className="font-inter text-sm text-stone-600 mb-12">
           Ultimo aggiornamento: Febbraio 2026
         </p>
 

@@ -21,7 +21,7 @@ export function BrandPhilosophyHero() {
         <div className="max-w-5xl mx-auto text-center space-y-12">
           {/* Overline */}
           <div className="animate-fade-in opacity-0" style={{ animationDelay: '200ms', animationFillMode: 'forwards' }}>
-            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-600/70">
+            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-700">
               La Nostra Filosofia
             </span>
           </div>
@@ -62,15 +62,15 @@ export function BrandPhilosophyHero() {
             <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto pt-8">
               <div className="space-y-2">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">40%</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Concentrazione</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-600">Concentrazione</div>
               </div>
               <div className="space-y-2 border-x border-stone-200">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">12+</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Ore Durata</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-600">Ore Durata</div>
               </div>
               <div className="space-y-2">
                 <div className="font-cinzel text-4xl md:text-5xl text-gold-500">100%</div>
-                <div className="font-inter text-xs uppercase tracking-wider text-stone-500">Artigianale</div>
+                <div className="font-inter text-xs uppercase tracking-wider text-stone-600">Artigianale</div>
               </div>
             </div>
           </div>

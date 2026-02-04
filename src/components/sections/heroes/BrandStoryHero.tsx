@@ -63,8 +63,8 @@ export function BrandStoryHero() {
       {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2">
         <div className="flex flex-col items-center gap-2 animate-pulse">
-          <span className="font-inter text-xs uppercase tracking-wider text-white/40">Scroll</span>
-          <div className="w-[1px] h-10 bg-gradient-to-b from-white/40 to-transparent" />
+          <span className="font-inter text-xs uppercase tracking-wider text-white/70">Scroll</span>
+          <div className="w-[1px] h-10 bg-gradient-to-b from-white/60 to-transparent" />
         </div>
       </div>
     </section>

@@ -41,7 +41,7 @@ export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps
             transition={{ duration: 0.5 }}
             className="mb-6"
           >
-            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-600/80 font-light">
+            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-700 font-medium">
               Le Nostre Creazioni
             </span>
           </motion.div>
@@ -55,7 +55,7 @@ export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="font-playfair text-xl md:text-2xl text-stone-500 leading-relaxed italic"
+            className="font-playfair text-xl md:text-2xl text-stone-600 leading-relaxed italic"
           >
             Ogni extrait racconta una storia. Ogni nota è un capitolo.
             Ogni spray è un viaggio nell&apos;anima.
@@ -87,7 +87,7 @@ export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps
           transition={{ duration: 0.5, delay: 0.4 }}
           className="text-center mt-20"
         >
-          <p className="font-inter text-sm uppercase tracking-[0.2em] text-stone-400">
+          <p className="font-inter text-sm uppercase tracking-[0.2em] text-stone-600">
             Spedizione gratuita sopra i &euro;{FREE_SHIPPING_THRESHOLD}
           </p>
         </motion.div>

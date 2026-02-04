@@ -45,7 +45,7 @@ export function AboutHero() {
             Dalla passione per l'arte del tatuaggio all'universo della profumeria di lusso.
           </p>
 
-          <p className="font-inter text-lg text-stone-600 leading-relaxed mb-8 animate-slide-up animation-delay-400">
+          <p className="font-inter text-lg text-white/80 leading-relaxed mb-8 animate-slide-up animation-delay-400">
             Influencer, modella, e ora creatrice di fragranze. Con oltre 1 milione di follower su Instagram,
             Zoe Cristofoli porta la sua visione audace e autentica nel mondo della profumeria d'autore.
           </p>
@@ -53,19 +53,19 @@ export function AboutHero() {
           <div className="flex flex-wrap gap-6 animate-slide-up animation-delay-600">
             <div className="glass-card px-6 py-4">
               <div className="text-3xl font-cinzel text-gold-600 mb-1">1M+</div>
-              <div className="text-sm text-stone-600 font-inter uppercase tracking-wide">
+              <div className="text-sm text-white/70 font-inter uppercase tracking-wide">
                 Instagram Followers
               </div>
             </div>
             <div className="glass-card px-6 py-4">
               <div className="text-3xl font-cinzel text-gold-600 mb-1">2024</div>
-              <div className="text-sm text-stone-600 font-inter uppercase tracking-wide">
+              <div className="text-sm text-white/70 font-inter uppercase tracking-wide">
                 Brand Launch
               </div>
             </div>
             <div className="glass-card px-6 py-4">
               <div className="text-3xl font-cinzel text-gold-600 mb-1">3</div>
-              <div className="text-sm text-stone-600 font-inter uppercase tracking-wide">
+              <div className="text-sm text-white/70 font-inter uppercase tracking-wide">
                 Signature Fragrances
               </div>
             </div>

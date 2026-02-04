@@ -57,7 +57,7 @@ export default function CheckoutCancelPage() {
         </div>
 
         {/* Help */}
-        <p className="mt-8 text-sm text-white/60">
+        <p className="mt-8 text-sm text-white/80">
           Hai bisogno di aiuto?{' '}
           <a href="mailto:info@oz.fodivps2.cloud" className="text-gold underline">
             Contattaci

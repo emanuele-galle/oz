@@ -22,11 +22,11 @@ export function OlfactoryJourney({ product }: OlfactoryJourneyProps) {
 
         <div className="grid md:grid-cols-3 gap-8">
           {notes.map((note, index) => (
-            <div key={index} className="glass-card p-8 text-center">
+            <div key={index} className="bg-stone-50 border border-stone-200 rounded-sm p-8 text-center">
               {/* Icon/Number */}
               <div className="mb-6">
                 <div className={`w-16 h-16 mx-auto rounded-full bg-gradient-to-br ${note.color} flex items-center justify-center`}>
-                  <span className="font-cinzel text-2xl text-black">
+                  <span className="font-cinzel text-2xl text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
                     {index + 1}
                   </span>
                 </div>
@@ -55,15 +55,15 @@ export function OlfactoryJourney({ product }: OlfactoryJourneyProps) {
           <div className="absolute inset-0 flex justify-between items-center px-4">
             <div className="text-center">
               <div className="w-4 h-4 bg-gold-light rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">0-15 min</span>
+              <span className="text-xs font-inter text-stone-700">0-15 min</span>
             </div>
             <div className="text-center">
               <div className="w-4 h-4 bg-gold-500 rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">15 min - 4 ore</span>
+              <span className="text-xs font-inter text-stone-700">15 min - 4 ore</span>
             </div>
             <div className="text-center">
               <div className="w-4 h-4 bg-gold-dark rounded-full mb-2" />
-              <span className="text-xs font-inter text-stone-500">4 - 12+ ore</span>
+              <span className="text-xs font-inter text-stone-700">4 - 12+ ore</span>
             </div>
           </div>
         </div>
