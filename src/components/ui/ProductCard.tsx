@@ -8,6 +8,8 @@ import { Product } from '@/types/product';
 import { Button } from './Button';
 import { useReducedMotion } from '@/hooks';
 import { tiltVariants, springConfigs } from '@/lib/animations/microInteractions';
+import { useCartStore } from '@/store/cartStore';
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   product: Product;
@@ -15,9 +17,11 @@ interface ProductCardProps {
 
 export function ProductCard({ product }: ProductCardProps) {
   const primaryImage = product.images.find((img) => img.isPrimary) || product.images[0];
+  const mainSize = product.sizes.find((s) => !s.isTester) || product.sizes[0];
   const cardRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const shouldReduceMotion = useReducedMotion();
+  const { addItem } = useCartStore();
 
   // Mouse position tracking
   const mouseX = useMotionValue(0);
@@ -146,9 +150,10 @@ export function ProductCard({ product }: ProductCardProps) {
             onClick={(e) => {
               e.preventDefault();
               e.stopPropagation();
-              // TODO: Implement add to cart logic
-              console.log('Add to cart:', product.slug);
-              alert(`"${product.name}" aggiunto al carrello!`);
+              addItem(product, mainSize, 1);
+              toast.success('Aggiunto al carrello', {
+                description: `${product.name} - ${mainSize.volume}`,
+              });
             }}
             className="w-full"
           >

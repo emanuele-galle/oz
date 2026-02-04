@@ -17,13 +17,24 @@ export function NewsletterSection() {
     setIsSubmitting(true);
     setMessage('');
 
-    // TODO: Implement newsletter subscription logic
-    // For now, just simulate a successful submission
-    setTimeout(() => {
-      setMessage('✓ Iscrizione confermata! Controlla la tua email.');
-      setEmail('');
-      setIsSubmitting(false);
-    }, 1500);
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'newsletter-section' }),
+      });
+
+      if (response.ok) {
+        setMessage('✓ Iscrizione confermata! Controlla la tua email.');
+        setEmail('');
+      } else {
+        setMessage('Qualcosa è andato storto. Riprova più tardi.');
+      }
+    } catch {
+      setMessage('Qualcosa è andato storto. Riprova più tardi.');
+    }
+
+    setIsSubmitting(false);
   };
 
   return (

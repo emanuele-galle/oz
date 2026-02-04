@@ -14,14 +14,25 @@ export function EnhancedNewsletter() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, source: 'enhanced-newsletter' }),
+      });
 
-    toast.success('Grazie! Ti sei iscritto alla newsletter.', {
-      description: 'Riceverai le nostre ultime novità e offerte esclusive.',
-    });
+      if (response.ok) {
+        toast.success('Grazie! Ti sei iscritto alla newsletter.', {
+          description: 'Riceverai le nostre ultime novità e offerte esclusive.',
+        });
+        setEmail('');
+      } else {
+        toast.error('Qualcosa è andato storto. Riprova più tardi.');
+      }
+    } catch {
+      toast.error('Qualcosa è andato storto. Riprova più tardi.');
+    }
 
-    setEmail('');
     setIsSubmitting(false);
   };
 
