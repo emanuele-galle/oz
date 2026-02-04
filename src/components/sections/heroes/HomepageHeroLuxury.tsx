@@ -225,14 +225,14 @@ export function HomepageHeroLuxury() {
             >
               <button
                 onClick={scrollToProducts}
-                className="px-8 py-3 bg-stone-950/90 text-gold-400 font-inter text-xs font-semibold uppercase tracking-[0.15em] hover:bg-stone-900 hover:text-gold-300 transition-all duration-500 border border-stone-700/80 backdrop-blur-sm"
+                className="px-8 py-3 bg-gold-500 text-stone-950 font-inter text-xs font-semibold uppercase tracking-[0.15em] hover:bg-gold-400 hover:shadow-gold-medium transition-all duration-500"
               >
                 Scopri le Fragranze
               </button>
 
               <button
                 onClick={() => router.push('/il-brand/storia')}
-                className="px-8 py-3 bg-white/10 backdrop-blur-sm border border-white/30 text-white/90 font-inter text-xs font-medium uppercase tracking-[0.15em] hover:bg-white/20 hover:border-white/50 transition-all duration-300"
+                className="px-8 py-3 bg-white/15 backdrop-blur-sm border border-white/50 text-white font-inter text-xs font-medium uppercase tracking-[0.15em] hover:bg-white/25 hover:border-white/70 transition-all duration-300"
               >
                 La Storia
               </button>
