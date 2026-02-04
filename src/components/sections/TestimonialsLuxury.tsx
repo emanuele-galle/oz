@@ -110,7 +110,7 @@ export function TestimonialsLuxury() {
 
           {/* Testimonials — AnimatePresence */}
           <div className="relative">
-            <div className="glass-card p-10 md:p-16 text-center min-h-[320px] flex flex-col justify-center overflow-hidden">
+            <div className="glass-card p-5 sm:p-8 md:p-10 lg:p-16 text-center min-h-[320px] flex flex-col justify-center overflow-hidden">
               {/* Quote mark */}
               <div className="mb-6">
                 <div className="inline-flex w-12 h-12 border border-stone-200 items-center justify-center">
@@ -180,7 +180,7 @@ export function TestimonialsLuxury() {
                       setDirection(index > currentIndex ? 1 : -1);
                       setCurrentIndex(index);
                     }}
-                    className="p-2"
+                    className="p-2.5"
                     aria-label={`Vai alla testimonianza ${index + 1}`}
                   >
                     <span className={`block h-2 rounded-full transition-all duration-300 ${

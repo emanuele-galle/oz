@@ -89,7 +89,7 @@ export function NewsletterLuxury() {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="max-w-xl mx-auto"
           >
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-3">
               <div className="relative flex-1">
                 <input
                   type="email"

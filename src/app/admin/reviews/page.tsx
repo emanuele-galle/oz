@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ReviewActions } from './ReviewActions';
 
@@ -6,26 +7,37 @@ export const dynamic = 'force-dynamic';
 export default async function AdminReviewsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const filter = params.filter || 'pending';
+  const page = parseInt(params.page || '1');
+  const perPage = 20;
 
   const where = filter === 'pending' ? { approved: false } : filter === 'approved' ? { approved: true } : {};
 
-  const reviews = await prisma.review.findMany({
-    where,
-    include: {
-      product: { select: { name: true, slug: true } },
-      user: { select: { name: true, email: true } },
-    },
-    orderBy: { createdAt: 'desc' },
-    take: 50,
-  });
+  const [reviews, totalCount] = await Promise.all([
+    prisma.review.findMany({
+      where,
+      include: {
+        product: { select: { name: true, slug: true } },
+        user: { select: { name: true, email: true } },
+      },
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * perPage,
+      take: perPage,
+    }),
+    prisma.review.count({ where }),
+  ]);
+
+  const totalPages = Math.ceil(totalCount / perPage);
 
   return (
     <div>
-      <h1 className="font-cinzel text-2xl text-white mb-8">Recensioni</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="font-cinzel text-2xl text-white">Recensioni</h1>
+        <span className="text-stone-400 text-sm font-inter">{totalCount} totali</span>
+      </div>
 
       {/* Filters */}
       <div className="flex gap-2 mb-6">
@@ -34,7 +46,7 @@ export default async function AdminReviewsPage({
           { key: 'approved', label: 'Approvate' },
           { key: 'all', label: 'Tutte' },
         ].map((f) => (
-          <a
+          <Link
             key={f.key}
             href={`/admin/reviews?filter=${f.key}`}
             className={`px-4 py-2 text-xs font-inter uppercase tracking-wide rounded-full border transition-colors ${
@@ -44,7 +56,7 @@ export default async function AdminReviewsPage({
             }`}
           >
             {f.label}
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -86,6 +98,23 @@ export default async function AdminReviewsPage({
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <Link
+              key={p}
+              href={`/admin/reviews?filter=${filter}&page=${p}`}
+              className={`px-3 py-1 text-sm rounded ${
+                p === page ? 'bg-gold-500 text-black' : 'bg-stone-800 text-stone-400 hover:text-white'
+              }`}
+            >
+              {p}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

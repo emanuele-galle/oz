@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
+import { UserMenu } from './UserMenu';
 
 // Pages with dark hero backgrounds need light header text
 const DARK_HERO_PAGES = ['/', '/il-brand/storia', '/il-brand/processo', '/about'];
@@ -204,12 +205,24 @@ export function Header() {
               </Link>
             </nav>
 
-            {/* Right side — Cart + Mobile menu */}
-            <div className="flex items-center gap-5">
+            {/* Right side — User + Cart + Mobile menu */}
+            <div className="flex items-center gap-3 md:gap-4">
+              {/* User Menu */}
+              {isMounted && (
+                <UserMenu
+                  iconClass={
+                    isScrolled || isMobileMenuOpen || !isDarkHero
+                      ? "text-stone-600 group-hover:text-gold-600"
+                      : "text-white/90 group-hover:text-gold-400"
+                  }
+                  hoverClass=""
+                />
+              )}
+
               {/* Cart Icon */}
               <button
                 onClick={openCart}
-                className="group relative p-2"
+                className="group relative p-2.5"
                 aria-label="Apri carrello"
               >
                 <svg
@@ -244,7 +257,7 @@ export function Header() {
 
               {/* Mobile Menu Button */}
               <button
-                className="md:hidden relative z-10 p-2"
+                className="md:hidden relative z-10 p-2.5"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                 aria-label="Menu"
               >
@@ -380,6 +393,32 @@ export function Header() {
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     Guida
+                  </Link>
+                </motion.div>
+
+                {/* Gold divider */}
+                <motion.div
+                  initial={{ scaleX: 0 }}
+                  animate={{ scaleX: 1 }}
+                  transition={{ delay: 0.65, duration: 0.4 }}
+                  className="h-px bg-gradient-to-r from-transparent via-gold-500/30 to-transparent my-4"
+                />
+
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ delay: 0.7, duration: 0.3 }}
+                >
+                  <Link
+                    href="/account"
+                    className={cn(
+                      "block py-3 font-inter text-base text-stone-500 hover:text-gold-600 transition-colors duration-300",
+                      isLinkActive('/account') && "text-gold-600"
+                    )}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Il Mio Account
                   </Link>
                 </motion.div>
               </div>

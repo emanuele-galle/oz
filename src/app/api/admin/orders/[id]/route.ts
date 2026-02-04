@@ -16,6 +16,12 @@ export async function PATCH(
     const body = await request.json();
     const { status, trackingNumber, carrier, adminNotes } = body;
 
+    // Fetch current order to preserve existing timestamps
+    const currentOrder = await prisma.order.findUnique({ where: { id } });
+    if (!currentOrder) {
+      return NextResponse.json({ error: 'Ordine non trovato' }, { status: 404 });
+    }
+
     const updateData: any = {};
 
     if (status) updateData.status = status;
@@ -23,11 +29,11 @@ export async function PATCH(
     if (carrier !== undefined) updateData.carrier = carrier;
     if (adminNotes !== undefined) updateData.adminNotes = adminNotes;
 
-    // Set timestamps based on status
-    if (status === 'SHIPPED' && !updateData.shippedAt) {
+    // Set timestamps based on status — only if not already set on the existing order
+    if (status === 'SHIPPED' && !currentOrder.shippedAt) {
       updateData.shippedAt = new Date();
     }
-    if (status === 'DELIVERED' && !updateData.deliveredAt) {
+    if (status === 'DELIVERED' && !currentOrder.deliveredAt) {
       updateData.deliveredAt = new Date();
     }
 

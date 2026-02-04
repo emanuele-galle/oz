@@ -63,7 +63,7 @@ export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps
         </div>
 
         {/* Products Grid — staggered entrance with HoverCard3D */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-8 lg:gap-12 max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 lg:gap-12 max-w-7xl mx-auto">
           {products.map((product, index) => (
             <motion.div
               key={product.slug}
