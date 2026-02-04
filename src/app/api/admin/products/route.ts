@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, slug, tagline, description, story, basePrice, concentration, season, gender, active, featured, sizes } = body;
+    const { name, slug, tagline, description, story, basePrice, concentration, season, gender, active, featured, sizes, olfactoryNotes, images } = body;
 
     if (!name || !slug || !description || !basePrice) {
       return NextResponse.json({ error: 'Campi obbligatori mancanti' }, { status: 400 });
@@ -36,6 +36,21 @@ export async function POST(request: NextRequest) {
             sku: s.sku || `${slug}-${s.volume}ml`,
             stockQuantity: s.stockQuantity || 0,
             lowStockThreshold: s.lowStockThreshold || 5,
+          })) || [],
+        },
+        olfactoryNotes: {
+          create: olfactoryNotes?.map((n: any) => ({
+            category: n.category,
+            note: n.note,
+            order: n.order ?? 0,
+          })) || [],
+        },
+        images: {
+          create: images?.map((img: any) => ({
+            url: img.url,
+            alt: img.alt || '',
+            isPrimary: img.isPrimary ?? false,
+            order: img.order ?? 0,
           })) || [],
         },
       },

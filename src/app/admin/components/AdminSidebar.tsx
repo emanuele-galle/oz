@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { LayoutDashboard, ShoppingBag, Package, Star, BarChart3, LogOut } from 'lucide-react';
+import { LayoutDashboard, ShoppingBag, Package, Star, BarChart3, Mail, LogOut } from 'lucide-react';
 
 interface AdminSidebarProps {
   user: { name: string | null; email: string; role: string };
@@ -15,6 +15,7 @@ const navItems = [
   { href: '/admin/products', label: 'Prodotti', icon: Package },
   { href: '/admin/reviews', label: 'Recensioni', icon: Star },
   { href: '/admin/analytics', label: 'Analytics', icon: BarChart3 },
+  { href: '/admin/newsletter', label: 'Newsletter', icon: Mail },
 ];
 
 export function AdminSidebar({ user }: AdminSidebarProps) {

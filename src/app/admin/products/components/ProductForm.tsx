@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 interface ProductSize {
@@ -10,6 +10,21 @@ interface ProductSize {
   sku: string;
   stockQuantity: number;
   lowStockThreshold: number;
+}
+
+interface OlfactoryNote {
+  id?: string;
+  category: string;
+  note: string;
+  order: number;
+}
+
+interface ProductImage {
+  id?: string;
+  url: string;
+  alt: string;
+  isPrimary: boolean;
+  order: number;
 }
 
 interface ProductFormProps {
@@ -27,6 +42,8 @@ interface ProductFormProps {
     active: boolean;
     featured: boolean;
     sizes: ProductSize[];
+    olfactoryNotes?: OlfactoryNote[];
+    images?: ProductImage[];
   };
 }
 
@@ -48,6 +65,26 @@ export function ProductForm({ product }: ProductFormProps) {
   const [sizes, setSizes] = useState<ProductSize[]>(
     product?.sizes || [{ volume: 50, price: 0, sku: '', stockQuantity: 0, lowStockThreshold: 5 }]
   );
+
+  // Olfactory Notes state
+  const existingNotes = product?.olfactoryNotes || [];
+  const [topNotes, setTopNotes] = useState<string[]>(
+    existingNotes.filter((n) => n.category === 'top').sort((a, b) => a.order - b.order).map((n) => n.note)
+  );
+  const [heartNotes, setHeartNotes] = useState<string[]>(
+    existingNotes.filter((n) => n.category === 'heart').sort((a, b) => a.order - b.order).map((n) => n.note)
+  );
+  const [baseNotes, setBaseNotes] = useState<string[]>(
+    existingNotes.filter((n) => n.category === 'base').sort((a, b) => a.order - b.order).map((n) => n.note)
+  );
+  const [topInput, setTopInput] = useState('');
+  const [heartInput, setHeartInput] = useState('');
+  const [baseInput, setBaseInput] = useState('');
+
+  // Images state
+  const [images, setImages] = useState<ProductImage[]>(product?.images || []);
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
@@ -71,10 +108,94 @@ export function ProductForm({ product }: ProductFormProps) {
     setSizes(sizes.filter((_, i) => i !== index));
   };
 
+  // Note helpers
+  const addNote = (category: 'top' | 'heart' | 'base') => {
+    const inputMap = { top: topInput, heart: heartInput, base: baseInput };
+    const setterMap = { top: setTopNotes, heart: setHeartNotes, base: setBaseNotes };
+    const inputSetterMap = { top: setTopInput, heart: setHeartInput, base: setBaseInput };
+    const notesMap = { top: topNotes, heart: heartNotes, base: baseNotes };
+
+    const value = inputMap[category].trim();
+    if (!value) return;
+    if (notesMap[category].includes(value)) return;
+
+    setterMap[category]([...notesMap[category], value]);
+    inputSetterMap[category]('');
+  };
+
+  const removeNote = (category: 'top' | 'heart' | 'base', index: number) => {
+    const setterMap = { top: setTopNotes, heart: setHeartNotes, base: setBaseNotes };
+    const notesMap = { top: topNotes, heart: heartNotes, base: baseNotes };
+    setterMap[category](notesMap[category].filter((_, i) => i !== index));
+  };
+
+  // Image helpers
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    setError('');
+
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const res = await fetch('/api/admin/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || 'Errore durante l\'upload');
+        return;
+      }
+
+      setImages([...images, {
+        url: data.url,
+        alt: file.name.replace(/\.[^.]+$/, ''),
+        isPrimary: images.length === 0,
+        order: images.length,
+      }]);
+    } catch {
+      setError('Errore di connessione durante l\'upload');
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const updateImage = (index: number, field: keyof ProductImage, value: any) => {
+    const updated = [...images];
+    if (field === 'isPrimary' && value === true) {
+      updated.forEach((img, i) => { img.isPrimary = i === index; });
+    } else {
+      (updated[index] as any)[field] = value;
+    }
+    setImages(updated);
+  };
+
+  const removeImage = (index: number) => {
+    const updated = images.filter((_, i) => i !== index);
+    if (updated.length > 0 && !updated.some((img) => img.isPrimary)) {
+      updated[0].isPrimary = true;
+    }
+    setImages(updated);
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSaving(true);
     setError('');
+
+    // Build olfactory notes array
+    const olfactoryNotes: { category: string; note: string; order: number }[] = [
+      ...topNotes.map((note, i) => ({ category: 'top', note, order: i })),
+      ...heartNotes.map((note, i) => ({ category: 'heart', note, order: i })),
+      ...baseNotes.map((note, i) => ({ category: 'base', note, order: i })),
+    ];
 
     const payload = {
       name, slug, tagline, description, story, basePrice: parseFloat(basePrice),
@@ -86,6 +207,13 @@ export function ProductForm({ product }: ProductFormProps) {
         sku: s.sku,
         stockQuantity: typeof s.stockQuantity === 'string' ? parseInt(s.stockQuantity as any) : s.stockQuantity,
         lowStockThreshold: typeof s.lowStockThreshold === 'string' ? parseInt(s.lowStockThreshold as any) : s.lowStockThreshold,
+      })),
+      olfactoryNotes,
+      images: images.map((img, i) => ({
+        url: img.url,
+        alt: img.alt,
+        isPrimary: img.isPrimary,
+        order: i,
       })),
     };
 
@@ -221,7 +349,7 @@ export function ProductForm({ product }: ProductFormProps) {
                 <input type="number" value={size.volume} onChange={(e) => updateSize(index, 'volume', e.target.value)} className={inputClass} />
               </div>
               <div>
-                <label className={labelClass}>Prezzo €</label>
+                <label className={labelClass}>Prezzo &euro;</label>
                 <input type="number" step="0.01" value={size.price} onChange={(e) => updateSize(index, 'price', e.target.value)} className={inputClass} />
               </div>
               <div>
@@ -242,6 +370,149 @@ export function ProductForm({ product }: ProductFormProps) {
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Olfactory Notes */}
+      <div className="bg-stone-900 border border-stone-800 rounded-lg p-6">
+        <h3 className="text-white font-inter text-sm font-semibold uppercase tracking-wide mb-4">Note Olfattive</h3>
+
+        <div className="space-y-4">
+          {/* Top Notes */}
+          <div>
+            <label className={labelClass}>Note di Testa</label>
+            <div className="flex gap-2 mb-2">
+              <input
+                value={topInput}
+                onChange={(e) => setTopInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addNote('top'); } }}
+                placeholder="es. Bergamotto, Limone..."
+                className={inputClass}
+              />
+              <button type="button" onClick={() => addNote('top')} className="px-3 py-2 bg-stone-700 text-stone-300 text-xs rounded hover:bg-stone-600 flex-shrink-0">
+                +
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {topNotes.map((note, i) => (
+                <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-amber-500/10 text-amber-400 text-xs rounded-full border border-amber-500/20">
+                  {note}
+                  <button type="button" onClick={() => removeNote('top', i)} className="ml-1 hover:text-amber-200">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Heart Notes */}
+          <div>
+            <label className={labelClass}>Note di Cuore</label>
+            <div className="flex gap-2 mb-2">
+              <input
+                value={heartInput}
+                onChange={(e) => setHeartInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addNote('heart'); } }}
+                placeholder="es. Rosa, Gelsomino..."
+                className={inputClass}
+              />
+              <button type="button" onClick={() => addNote('heart')} className="px-3 py-2 bg-stone-700 text-stone-300 text-xs rounded hover:bg-stone-600 flex-shrink-0">
+                +
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {heartNotes.map((note, i) => (
+                <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-rose-500/10 text-rose-400 text-xs rounded-full border border-rose-500/20">
+                  {note}
+                  <button type="button" onClick={() => removeNote('heart', i)} className="ml-1 hover:text-rose-200">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* Base Notes */}
+          <div>
+            <label className={labelClass}>Note di Fondo</label>
+            <div className="flex gap-2 mb-2">
+              <input
+                value={baseInput}
+                onChange={(e) => setBaseInput(e.target.value)}
+                onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); addNote('base'); } }}
+                placeholder="es. Sandalo, Muschio..."
+                className={inputClass}
+              />
+              <button type="button" onClick={() => addNote('base')} className="px-3 py-2 bg-stone-700 text-stone-300 text-xs rounded hover:bg-stone-600 flex-shrink-0">
+                +
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {baseNotes.map((note, i) => (
+                <span key={i} className="inline-flex items-center gap-1 px-3 py-1 bg-stone-500/10 text-stone-300 text-xs rounded-full border border-stone-500/20">
+                  {note}
+                  <button type="button" onClick={() => removeNote('base', i)} className="ml-1 hover:text-stone-100">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Images */}
+      <div className="bg-stone-900 border border-stone-800 rounded-lg p-6">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-white font-inter text-sm font-semibold uppercase tracking-wide">Immagini</h3>
+          <label className={`px-3 py-1 text-xs bg-stone-700 text-stone-300 rounded hover:bg-stone-600 cursor-pointer ${isUploading ? 'opacity-50 pointer-events-none' : ''}`}>
+            {isUploading ? 'Caricamento...' : '+ Carica Immagine'}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/jpeg,image/png,image/webp"
+              onChange={handleImageUpload}
+              className="hidden"
+              disabled={isUploading}
+            />
+          </label>
+        </div>
+
+        {images.length > 0 ? (
+          <div className="grid grid-cols-2 gap-4">
+            {images.map((img, index) => (
+              <div key={index} className="bg-stone-800 rounded-lg p-3 border border-stone-700">
+                <div className="flex gap-3">
+                  <div className="w-20 h-20 flex-shrink-0 rounded overflow-hidden bg-stone-700">
+                    <img src={img.url} alt={img.alt} className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <input
+                      value={img.alt}
+                      onChange={(e) => updateImage(index, 'alt', e.target.value)}
+                      placeholder="Testo alternativo"
+                      className="w-full px-2 py-1 bg-stone-700 border border-stone-600 rounded text-white text-xs font-inter focus:outline-none focus:border-gold-500"
+                    />
+                    <div className="flex items-center justify-between">
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="primaryImage"
+                          checked={img.isPrimary}
+                          onChange={() => updateImage(index, 'isPrimary', true)}
+                          className="accent-gold-500"
+                        />
+                        <span className="text-stone-400 text-xs">Primaria</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="text-red-400 text-xs hover:text-red-300"
+                      >
+                        Rimuovi
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="text-stone-500 text-sm text-center py-6">Nessuna immagine. Carica la prima immagine del prodotto.</p>
+        )}
       </div>
 
       {/* Submit */}
