@@ -49,7 +49,7 @@ export function ShopHero({ totalProducts = 3 }: ShopHeroProps) {
             <p className="
               font-inter
               text-sm
-              text-stone-500
+              text-stone-600
               uppercase
               tracking-wider
             ">
@@ -128,7 +128,7 @@ export function ShopHero({ totalProducts = 3 }: ShopHeroProps) {
             {/* Search suggestions (opzionale, mostra se empty) */}
             {!searchQuery && (
               <div className="flex flex-wrap items-center justify-center gap-2 mt-4">
-                <span className="font-inter text-xs text-stone-500">
+                <span className="font-inter text-xs text-stone-600">
                   Ricerche popolari:
                 </span>
                 {['Agrumato', 'Vaniglia', 'Primavera', 'Sera'].map((term) => (

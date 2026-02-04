@@ -75,7 +75,7 @@ export function FounderStory() {
             </div>
 
             {/* Video Section */}
-            <div className="glass-card p-8 md:p-12">
+            <div className="bg-stone-50 border border-stone-200 p-8 md:p-12">
               <div className="max-w-4xl mx-auto">
                 <h3 className="font-cinzel text-3xl text-gold-600 mb-6 text-center">
                   Zoe Racconta OZ Extrait
@@ -97,7 +97,7 @@ export function FounderStory() {
             <div className="text-center max-w-4xl mx-auto">
               <blockquote className="relative">
                 <div className="absolute -top-8 -left-4 text-8xl text-gold-600/20 font-cinzel">&ldquo;</div>
-                <p className="font-playfair text-3xl text-white/90 leading-relaxed italic relative z-10 mb-6">
+                <p className="font-playfair text-3xl text-stone-800 leading-relaxed italic relative z-10 mb-6">
                   Ogni fragranza è un pezzo di me. Cristallo per la purezza che cerco, Scintilla per
                   l'energia che porto, Potion d'Amour per la passione che vivo.
                 </p>

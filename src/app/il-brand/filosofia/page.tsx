@@ -283,7 +283,7 @@ export default function FilosofiaPage() {
               { step: '04', title: 'Artigianato', text: 'Ogni bottiglia assemblata e confezionata a mano nel nostro laboratorio a Verona.' },
             ].map((item) => (
               <div key={item.step} className="text-center space-y-4">
-                <div className="font-cinzel text-5xl text-gold-500/20 font-bold">
+                <div className="font-cinzel text-5xl text-gold-500/50 font-bold">
                   {item.step}
                 </div>
                 <Heading level={3} size="h4" color="black">
@@ -302,7 +302,7 @@ export default function FilosofiaPage() {
       <Section bg="midnight" spacing="default">
         <Container size="md">
           <div className="text-center space-y-8">
-            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-500/60 block">
+            <span className="font-inter text-xs uppercase tracking-[0.3em] text-gold-500/80 block">
               Scopri OZ Extrait
             </span>
             <Heading level={2} size="h2" color="gold">

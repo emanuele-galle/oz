@@ -107,7 +107,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
           <div className="sticky top-0 h-screen overflow-y-auto py-12 px-6 md:px-12">
             <div className="max-w-xl space-y-8">
               {/* Breadcrumb */}
-              <nav className="flex items-center gap-2 text-sm font-inter text-stone-500">
+              <nav className="flex items-center gap-2 text-sm font-inter text-stone-600">
                 <a href="/" className="hover:text-gold-600 transition-colors">
                   Home
                 </a>

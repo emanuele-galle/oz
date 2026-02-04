@@ -59,7 +59,7 @@ function UnsubscribeContent() {
     <div className="min-h-screen bg-black flex items-center justify-center px-4">
       <div className="max-w-md w-full text-center">
         {/* Logo */}
-        <h2 className="font-cinzel text-2xl text-gold/30 mb-12">OZ</h2>
+        <h2 className="font-cinzel text-2xl text-gold/60 mb-12">OZ</h2>
 
         {status === 'confirm' && (
           <>

@@ -86,7 +86,7 @@ function CheckoutSuccessContent() {
 
         {displayOrderNumber && (
           <div className="glass-card-dark p-6 mb-8">
-            <p className="text-white/60 text-sm mb-2">Numero Ordine</p>
+            <p className="text-white/80 text-sm mb-2">Numero Ordine</p>
             <p className="text-2xl font-mono text-gold font-bold">{displayOrderNumber}</p>
           </div>
         )}
@@ -101,7 +101,7 @@ function CheckoutSuccessContent() {
           </div>
         ) : orderData ? (
           <div className="glass-card-dark p-6 mb-8 text-left space-y-3">
-            <h3 className="text-sm uppercase tracking-wider text-white/50 mb-3 text-center">
+            <h3 className="text-sm uppercase tracking-wider text-white/80 mb-3 text-center">
               Dettagli Ordine
             </h3>
             {orderData.items.map((item, i) => (
@@ -125,7 +125,7 @@ function CheckoutSuccessContent() {
               </div>
             </div>
             {orderData.email && (
-              <p className="text-xs text-white/60 text-center pt-2">
+              <p className="text-xs text-white/80 text-center pt-2">
                 Conferma inviata a {orderData.email}
               </p>
             )}
@@ -138,7 +138,7 @@ function CheckoutSuccessContent() {
             <div className="text-gold text-2xl">📦</div>
             <div>
               <h3 className="text-white font-medium mb-1">Spedizione</h3>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/80 text-sm">
                 Il tuo ordine sarà spedito entro 1-2 giorni lavorativi. Riceverai una email
                 con il tracking.
               </p>
@@ -149,7 +149,7 @@ function CheckoutSuccessContent() {
             <div className="text-gold text-2xl">✉️</div>
             <div>
               <h3 className="text-white font-medium mb-1">Email di Conferma</h3>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/80 text-sm">
                 Controlla la tua inbox per tutti i dettagli dell&apos;ordine.
               </p>
             </div>
@@ -159,7 +159,7 @@ function CheckoutSuccessContent() {
             <div className="text-gold text-2xl">💬</div>
             <div>
               <h3 className="text-white font-medium mb-1">Assistenza</h3>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/80 text-sm">
                 Per qualsiasi domanda:{' '}
                 <a href="mailto:info@oz.fodivps2.cloud" className="text-gold underline">
                   info@oz.fodivps2.cloud

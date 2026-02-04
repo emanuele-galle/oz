@@ -58,7 +58,7 @@ export default function OrderTrackingPage() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <h1 className="font-cinzel text-4xl text-gold-500/20 animate-pulse">OZ</h1>
+          <h1 className="font-cinzel text-4xl text-gold-500/60 animate-pulse">OZ</h1>
         </div>
       </div>
     );
@@ -99,7 +99,7 @@ export default function OrderTrackingPage() {
 
         {/* Status Badge */}
         <div className="glass-card-dark p-6 text-center mb-8">
-          <p className="text-sm text-white/60 uppercase tracking-wider mb-2">Stato Attuale</p>
+          <p className="text-sm text-white/80 uppercase tracking-wider mb-2">Stato Attuale</p>
           <p className={`text-2xl font-cinzel font-bold ${status.color}`}>{status.label}</p>
         </div>
 
@@ -120,7 +120,7 @@ export default function OrderTrackingPage() {
                             ? 'border-gold bg-gold text-black'
                             : isActive
                             ? 'border-green-500 bg-green-500 text-white'
-                            : 'border-white/20 text-white/30'
+                            : 'border-white/30 text-white/50'
                         }`}
                       >
                         {isActive && index < currentStepIndex ? (
@@ -131,7 +131,7 @@ export default function OrderTrackingPage() {
                           <span className="text-xs font-bold">{index + 1}</span>
                         )}
                       </div>
-                      <span className={`text-xs mt-2 hidden sm:block ${isActive ? 'text-white/80' : 'text-white/30'}`}>
+                      <span className={`text-xs mt-2 hidden sm:block ${isActive ? 'text-white/90' : 'text-white/50'}`}>
                         {stepInfo.label}
                       </span>
                     </div>
@@ -152,7 +152,7 @@ export default function OrderTrackingPage() {
         {/* Tracking Info */}
         {order.trackingNumber && (
           <div className="glass-card-dark p-6 mb-8">
-            <h3 className="text-sm uppercase tracking-wider text-white/60 mb-3">Tracking Spedizione</h3>
+            <h3 className="text-sm uppercase tracking-wider text-white/80 mb-3">Tracking Spedizione</h3>
             <div className="flex items-center justify-between">
               <div>
                 {order.carrier && <p className="text-white/80 text-sm mb-1">{order.carrier}</p>}
@@ -164,7 +164,7 @@ export default function OrderTrackingPage() {
 
         {/* Order Details */}
         <div className="glass-card-dark p-6 mb-8">
-          <h3 className="text-sm uppercase tracking-wider text-white/60 mb-4">Dettagli Ordine</h3>
+          <h3 className="text-sm uppercase tracking-wider text-white/80 mb-4">Dettagli Ordine</h3>
           <div className="space-y-3">
             {order.items.map((item, i) => (
               <div key={i} className="flex justify-between text-white/70 text-sm">
@@ -193,13 +193,13 @@ export default function OrderTrackingPage() {
 
         {/* Timeline */}
         <div className="glass-card-dark p-6 mb-8">
-          <h3 className="text-sm uppercase tracking-wider text-white/60 mb-4">Cronologia</h3>
+          <h3 className="text-sm uppercase tracking-wider text-white/80 mb-4">Cronologia</h3>
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="w-2 h-2 rounded-full bg-gold mt-2 flex-shrink-0" />
               <div>
                 <p className="text-white/80 text-sm">Ordine creato</p>
-                <p className="text-white/50 text-xs">{new Date(order.createdAt).toLocaleString('it-IT')}</p>
+                <p className="text-white/70 text-xs">{new Date(order.createdAt).toLocaleString('it-IT')}</p>
               </div>
             </div>
             {order.shippedAt && (
@@ -207,7 +207,7 @@ export default function OrderTrackingPage() {
                 <div className="w-2 h-2 rounded-full bg-purple-400 mt-2 flex-shrink-0" />
                 <div>
                   <p className="text-white/80 text-sm">Ordine spedito</p>
-                  <p className="text-white/50 text-xs">{new Date(order.shippedAt).toLocaleString('it-IT')}</p>
+                  <p className="text-white/70 text-xs">{new Date(order.shippedAt).toLocaleString('it-IT')}</p>
                 </div>
               </div>
             )}
@@ -216,7 +216,7 @@ export default function OrderTrackingPage() {
                 <div className="w-2 h-2 rounded-full bg-green-400 mt-2 flex-shrink-0" />
                 <div>
                   <p className="text-white/80 text-sm">Ordine consegnato</p>
-                  <p className="text-white/50 text-xs">{new Date(order.deliveredAt).toLocaleString('it-IT')}</p>
+                  <p className="text-white/70 text-xs">{new Date(order.deliveredAt).toLocaleString('it-IT')}</p>
                 </div>
               </div>
             )}
@@ -225,7 +225,7 @@ export default function OrderTrackingPage() {
 
         {/* Actions */}
         <div className="text-center space-y-4">
-          <p className="text-white/60 text-sm">
+          <p className="text-white/80 text-sm">
             Hai bisogno di aiuto?{' '}
             <a href="mailto:info@oz.fodivps2.cloud" className="text-gold underline">
               Contattaci
