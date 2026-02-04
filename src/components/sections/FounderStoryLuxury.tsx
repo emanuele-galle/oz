@@ -15,7 +15,7 @@ import { ImageReveal } from '@/components/effects/ImageReveal';
 
 export function FounderStoryLuxury() {
   return (
-    <section className="py-24 md:py-32 bg-[#FBF8F3]">
+    <section className="py-24 md:py-32 bg-[#FBF8F3] overflow-hidden">
       <div className="container-luxury">
         <div className="max-w-7xl mx-auto">
           <div className="grid md:grid-cols-12 gap-12 md:gap-16 items-start">
@@ -195,7 +195,7 @@ export function FounderStoryLuxury() {
                 className="pt-4"
               >
                 <Link
-                  href="/il-brand/storia"
+                  href="/zoe-cristofoli"
                   className="inline-flex items-center gap-3 group"
                 >
                   <span className="font-inter text-sm uppercase tracking-[0.15em] text-gold-600 font-medium border-b border-gold-500/40 group-hover:border-gold-500 transition-all duration-300">

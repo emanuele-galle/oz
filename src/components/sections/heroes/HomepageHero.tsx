@@ -89,7 +89,7 @@ export function HomepageHero() {
               </span>
             </button>
 
-            <button onClick={() => router.push('/il-brand/storia')} className="px-8 md:px-12 py-4 md:py-5 border-2 border-gold-500 text-gold-500 font-inter text-sm md:text-base font-semibold uppercase tracking-wide rounded-sm hover:bg-gold-500/10 hover:border-gold-400 hover:text-gold-400 active:scale-[0.98] transition-all duration-300">
+            <button onClick={() => router.push('/zoe-cristofoli')} className="px-8 md:px-12 py-4 md:py-5 border-2 border-gold-500 text-gold-500 font-inter text-sm md:text-base font-semibold uppercase tracking-wide rounded-sm hover:bg-gold-500/10 hover:border-gold-400 hover:text-gold-400 active:scale-[0.98] transition-all duration-300">
               La Storia di Zoe
             </button>
           </div>

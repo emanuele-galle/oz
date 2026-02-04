@@ -32,7 +32,7 @@ export function EnhancedHero() {
   };
 
   const navigateToAbout = () => {
-    window.location.href = '/about';
+    window.location.href = '/zoe-cristofoli';
   };
 
   return (

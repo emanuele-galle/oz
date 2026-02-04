@@ -6,18 +6,21 @@ import { BreadcrumbSchema } from '@/components/JsonLd';
 import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: 'La Storia di Zoe Cristofoli — Founder OZ Extrait',
+  title: 'Zoe Cristofoli — Founder & Creative Director | OZ Extrait',
   description: 'Da Verona al mondo della profumeria luxury. Scopri come Zoe Cristofoli ha creato OZ Extrait, portando autenticità e passione nella profumeria artigianale italiana.',
+  openGraph: {
+    title: 'Zoe Cristofoli — Founder OZ Extrait',
+    description: 'Scopri la storia di Zoe Cristofoli e la nascita di OZ Extrait',
+  },
 };
 
-export default function StoriaPage() {
+export default function ZoeCristofoliPage() {
   return (
     <div className="min-h-screen">
       <BreadcrumbSchema
         items={[
           { name: 'Home', url: '/' },
-          { name: 'Il Brand', url: '/il-brand/storia' },
-          { name: 'Storia', url: '/il-brand/storia' },
+          { name: 'Zoe Cristofoli', url: '/zoe-cristofoli' },
         ]}
       />
 
@@ -33,14 +36,14 @@ export default function StoriaPage() {
               </Heading>
 
               <Body size="lg" variant="narrative" className="text-stone-700">
-                Nata a Verona, città dell'amore e dell'arte, Zoe Cristofoli ha sempre avuto una
-                personalità forte e distintiva. Il suo percorso nel mondo dell'immagine e della moda
-                l'ha portata a diventare una delle influencer più seguite in Italia.
+                Nata a Verona, città dell&apos;amore e dell&apos;arte, Zoe Cristofoli ha sempre avuto una
+                personalità forte e distintiva. Il suo percorso nel mondo dell&apos;immagine e della moda
+                l&apos;ha portata a diventare una delle influencer più seguite in Italia.
               </Body>
 
               <Body size="lg" variant="narrative" className="text-stone-700">
                 Con i suoi tatuaggi iconici e il suo stile inconfondibile, Zoe ha sempre cercato modi
-                per esprimere la propria identità, trovando nell'arte olfattiva la forma di espressione
+                per esprimere la propria identità, trovando nell&apos;arte olfattiva la forma di espressione
                 più pura e intima.
               </Body>
             </div>
@@ -58,7 +61,7 @@ export default function StoriaPage() {
         </Container>
       </Section>
 
-      {/* Chapter 2: La Visione */}
+      {/* Chapter 2: La Visione + Quote */}
       <Section bg="white" spacing="default">
         <Container size="lg">
           <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -79,8 +82,8 @@ export default function StoriaPage() {
 
               <Quote size="default" author="Zoe Cristofoli" showQuotationMarks={false}>
                 <span className="text-stone-800">
-                  Volevo creare qualcosa che andasse oltre l'immagine, qualcosa che rimanesse sulla pelle
-                  e nell'anima. I profumi hanno il potere di evocare ricordi, emozioni,
+                  Volevo creare qualcosa che andasse oltre l&apos;immagine, qualcosa che rimanesse sulla pelle
+                  e nell&apos;anima. I profumi hanno il potere di evocare ricordi, emozioni,
                   momenti. Volevo che le mie fragranze raccontassero storie.
                 </span>
               </Quote>
@@ -94,7 +97,48 @@ export default function StoriaPage() {
         </Container>
       </Section>
 
-      {/* Chapter 3: Il Viaggio */}
+      {/* Video: Zoe Racconta OZ Extrait */}
+      <Section bg="cream" spacing="default">
+        <Container size="lg">
+          <div className="bg-stone-50 border border-stone-200 p-8 md:p-12">
+            <div className="max-w-4xl mx-auto">
+              <h3 className="font-cinzel text-3xl text-gold-600 mb-6 text-center">
+                Zoe Racconta OZ Extrait
+              </h3>
+              <div className="aspect-video rounded-lg overflow-hidden bg-black/50">
+                <video
+                  controls
+                  className="w-full h-full"
+                  poster="/uploads/images/Zoe-Cristofoli.jpeg"
+                >
+                  <source src="/uploads/videos/Video Zoe con Schiume capelli.mp4" type="video/mp4" />
+                  Il tuo browser non supporta il video.
+                </video>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Quote personale sulle fragranze */}
+      <Section bg="white" spacing="default">
+        <Container size="md">
+          <div className="text-center max-w-4xl mx-auto">
+            <blockquote className="relative">
+              <div className="absolute -top-8 -left-4 text-8xl text-gold-600/20 font-cinzel">&ldquo;</div>
+              <p className="font-playfair text-3xl text-stone-800 leading-relaxed italic relative z-10 mb-6">
+                Ogni fragranza è un pezzo di me. Cristallo per la purezza che cerco, Scintilla per
+                l&apos;energia che porto, Potion d&apos;Amour per la passione che vivo.
+              </p>
+              <footer className="font-inter text-gold-600 uppercase tracking-widest text-sm">
+                — Zoe Cristofoli
+              </footer>
+            </blockquote>
+          </div>
+        </Container>
+      </Section>
+
+      {/* Chapter 3: Il Viaggio + Stats */}
       <Section bg="cream" spacing="default">
         <Container size="md">
           <div className="text-center space-y-8">
@@ -109,7 +153,7 @@ export default function StoriaPage() {
 
             <Body size="lg" variant="narrative" className="text-stone-700 max-w-3xl mx-auto">
               Ma ogni momento è valso la pena. Perché OZ Extrait non è solo un brand — è un manifesto.
-              Un manifesto contro la mediocrità, contro l'omologazione, per la qualità assoluta.
+              Un manifesto contro la mediocrità, contro l&apos;omologazione, per la qualità assoluta.
             </Body>
 
             {/* Stats Grid */}

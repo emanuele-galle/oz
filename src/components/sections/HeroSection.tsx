@@ -73,7 +73,7 @@ export function HeroSection() {
             size="xl"
             className="text-lg px-16 py-6 border-2 hover:border-gold-light hover:text-gold-light transition-all"
             onClick={() => {
-              window.location.href = '/about';
+              window.location.href = '/zoe-cristofoli';
             }}
           >
             La Nostra Storia

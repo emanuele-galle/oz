@@ -143,7 +143,7 @@ export function HomepageHeroLuxury() {
   const loadProgress = Math.round((imagesLoaded / TOTAL_FRAMES) * 100);
 
   return (
-    <section ref={sectionRef} className="relative h-[250vh] md:h-[400vh] bg-stone-950">
+    <section ref={sectionRef} className="relative h-[180vh] md:h-[400vh] bg-stone-950">
       {/* Sticky viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Canvas */}
@@ -231,7 +231,7 @@ export function HomepageHeroLuxury() {
               </button>
 
               <button
-                onClick={() => router.push('/il-brand/storia')}
+                onClick={() => router.push('/zoe-cristofoli')}
                 className="px-8 py-3 bg-white/15 backdrop-blur-sm border border-white/50 text-white font-inter text-xs font-medium uppercase tracking-[0.15em] hover:bg-white/25 hover:border-white/70 transition-all duration-300"
               >
                 La Storia
@@ -253,6 +253,9 @@ export function HomepageHeroLuxury() {
           </motion.div>
         </motion.div>
       </div>
+
+      {/* Gradient transition from dark hero to cream content */}
+      <div className="absolute bottom-0 left-0 right-0 h-[15vh] bg-gradient-to-b from-transparent via-stone-950/80 to-[#FBF8F3] pointer-events-none" />
     </section>
   );
 }

@@ -1,11 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 function PaymentIcons() {
   return (
-    <div className="flex items-center gap-2.5 flex-wrap">
+    <div className="flex items-center gap-2.5 flex-wrap justify-center sm:justify-end">
       {/* Visa */}
       <div className="h-7 w-11 rounded bg-white/[0.08] border border-white/[0.06] flex items-center justify-center">
         <svg className="h-3 w-auto" viewBox="0 0 60 20" fill="none">
@@ -35,6 +37,46 @@ function PaymentIcons() {
   );
 }
 
+interface FooterSectionProps {
+  title: string;
+  children: React.ReactNode;
+}
+
+function FooterSection({ title, children }: FooterSectionProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div>
+      {/* Mobile: collapsible accordion */}
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="sm:hidden flex items-center justify-between w-full py-3 border-b border-white/[0.06]"
+      >
+        <h4 className="font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50">
+          {title}
+        </h4>
+        <ChevronDown className={cn(
+          "w-4 h-4 text-white/30 transition-transform duration-300",
+          isOpen && "rotate-180"
+        )} />
+      </button>
+
+      {/* Desktop: always visible title */}
+      <h4 className="hidden sm:block font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50 mb-5">
+        {title}
+      </h4>
+
+      {/* Content */}
+      <div className={cn(
+        "sm:block overflow-hidden transition-all duration-300",
+        isOpen ? "max-h-96 pt-3 pb-2" : "max-h-0 sm:max-h-none"
+      )}>
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export function Footer() {
   const currentYear = new Date().getFullYear();
 
@@ -46,9 +88,9 @@ export function Footer() {
       <div className="relative z-10 container-luxury">
         {/* Main Footer Content */}
         <div className="py-12 md:py-20">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-8">
             {/* Brand Column */}
-            <div className="sm:col-span-2 lg:col-span-4 space-y-5">
+            <div className="sm:col-span-2 lg:col-span-4 space-y-5 pb-4 sm:pb-0">
               <Link href="/" className="inline-block">
                 <img src="/uploads/images/logo.png" alt="OZ Extrait" className="h-12 w-auto" />
               </Link>
@@ -62,7 +104,7 @@ export function Footer() {
                   href="https://www.instagram.com/zoe_cristofoli"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group w-9 h-9 flex items-center justify-center border border-white/[0.08] hover:border-gold-500/40 hover:bg-gold-500/5 transition-all duration-300"
+                  className="group w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-white/[0.08] hover:border-gold-500/40 hover:bg-gold-500/5 transition-all duration-300"
                   aria-label="Instagram"
                 >
                   <svg className="w-4 h-4 text-white/35 group-hover:text-gold-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -73,7 +115,7 @@ export function Footer() {
                   href="https://www.tiktok.com/@zoe_cristofoli"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group w-9 h-9 flex items-center justify-center border border-white/[0.08] hover:border-gold-500/40 hover:bg-gold-500/5 transition-all duration-300"
+                  className="group w-11 h-11 sm:w-9 sm:h-9 flex items-center justify-center border border-white/[0.08] hover:border-gold-500/40 hover:bg-gold-500/5 transition-all duration-300"
                   aria-label="TikTok"
                 >
                   <svg className="w-4 h-4 text-white/35 group-hover:text-gold-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
@@ -85,108 +127,102 @@ export function Footer() {
 
             {/* Fragranze */}
             <div className="lg:col-span-2">
-              <h4 className="font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50 mb-5">
-                Fragranze
-              </h4>
-              <ul className="space-y-3">
-                {[
-                  { name: 'Cristallo', href: '/products/cristallo' },
-                  { name: 'Scintilla', href: '/products/scintilla' },
-                  { name: "Potion d'Amour", href: '/products/potion-damour' },
-                  { name: 'Tutte le Fragranze', href: '/fragranze' },
-                ].map((product) => (
-                  <li key={product.href}>
-                    <Link
-                      href={product.href}
-                      className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300"
-                    >
-                      {product.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <FooterSection title="Fragranze">
+                <ul className="space-y-3">
+                  {[
+                    { name: 'Cristallo', href: '/products/cristallo' },
+                    { name: 'Scintilla', href: '/products/scintilla' },
+                    { name: "Potion d'Amour", href: '/products/potion-damour' },
+                    { name: 'Tutte le Fragranze', href: '/fragranze' },
+                  ].map((product) => (
+                    <li key={product.href}>
+                      <Link
+                        href={product.href}
+                        className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300 block py-0.5 min-h-[44px] sm:min-h-0 flex items-center sm:block"
+                      >
+                        {product.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </FooterSection>
             </div>
 
-            {/* Il Brand */}
+            {/* Scopri */}
             <div className="lg:col-span-2">
-              <h4 className="font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50 mb-5">
-                Il Brand
-              </h4>
-              <ul className="space-y-3">
-                {[
-                  { name: 'La Nostra Storia', href: '/il-brand/storia' },
-                  { name: 'Filosofia', href: '/il-brand/filosofia' },
-                  { name: 'Il Processo', href: '/il-brand/processo' },
-                  { name: 'Chi Siamo', href: '/about' },
-                ].map((link) => (
-                  <li key={link.href}>
-                    <Link
-                      href={link.href}
-                      className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <FooterSection title="Scopri">
+                <ul className="space-y-3">
+                  {[
+                    { name: 'Zoe Cristofoli', href: '/zoe-cristofoli' },
+                    { name: 'Filosofia', href: '/il-brand/filosofia' },
+                  ].map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300 block py-0.5 min-h-[44px] sm:min-h-0 flex items-center sm:block"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </FooterSection>
             </div>
 
             {/* Assistenza */}
             <div className="lg:col-span-2">
-              <h4 className="font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50 mb-5">
-                Assistenza
-              </h4>
-              <ul className="space-y-3">
-                {[
-                  { name: 'Guida Fragranze', href: '/guida/scegliere-fragranza' },
-                  { name: 'FAQ', href: '/guida/faq' },
-                  { name: 'Spedizioni e Resi', href: '/terms' },
-                  { name: 'Il Mio Account', href: '/account' },
-                ].map((link) => (
-                  <li key={link.name}>
-                    <Link
-                      href={link.href}
-                      className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300"
-                    >
-                      {link.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <FooterSection title="Assistenza">
+                <ul className="space-y-3">
+                  {[
+                    { name: 'Guida Fragranze', href: '/guida/scegliere-fragranza' },
+                    { name: 'FAQ', href: '/guida/faq' },
+                    { name: 'Spedizioni e Resi', href: '/terms' },
+                    { name: 'Il Mio Account', href: '/account' },
+                  ].map((link) => (
+                    <li key={link.name}>
+                      <Link
+                        href={link.href}
+                        className="font-inter text-sm text-white/55 hover:text-gold-400 transition-colors duration-300 block py-0.5 min-h-[44px] sm:min-h-0 flex items-center sm:block"
+                      >
+                        {link.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </FooterSection>
             </div>
 
             {/* Contatti */}
             <div className="lg:col-span-2">
-              <h4 className="font-inter text-[10px] uppercase tracking-[0.25em] text-gold-500/50 mb-5">
-                Contatti
-              </h4>
-              <div className="space-y-3">
-                <a
-                  href="mailto:info@oz-extrait.com"
-                  className="block font-inter text-[13px] text-white/55 hover:text-gold-400 transition-colors duration-300"
-                >
-                  info@oz-extrait.com
-                </a>
-                <p className="font-inter text-sm text-white/40 leading-relaxed">
-                  Verona, Italia
-                </p>
-              </div>
+              <FooterSection title="Contatti">
+                <div className="space-y-3">
+                  <a
+                    href="mailto:info@oz-extrait.com"
+                    className="block font-inter text-[13px] text-white/55 hover:text-gold-400 transition-colors duration-300 min-h-[44px] sm:min-h-0 flex items-center sm:block"
+                  >
+                    info@oz-extrait.com
+                  </a>
+                  <p className="font-inter text-sm text-white/40 leading-relaxed">
+                    Verona, Italia
+                  </p>
+                </div>
 
-              {/* Legal links */}
-              <div className="mt-6 pt-4 border-t border-white/[0.04]">
-                <ul className="space-y-2.5">
-                  <li>
-                    <Link href="/privacy" className="font-inter text-[12px] text-white/35 hover:text-gold-400 transition-colors duration-300">
-                      Privacy Policy
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/terms" className="font-inter text-[12px] text-white/35 hover:text-gold-400 transition-colors duration-300">
-                      Termini e Condizioni
-                    </Link>
-                  </li>
-                </ul>
-              </div>
+                {/* Legal links */}
+                <div className="mt-6 pt-4 border-t border-white/[0.04]">
+                  <ul className="space-y-2.5">
+                    <li>
+                      <Link href="/privacy" className="font-inter text-[12px] text-white/35 hover:text-gold-400 transition-colors duration-300 block min-h-[44px] sm:min-h-0 flex items-center sm:block">
+                        Privacy Policy
+                      </Link>
+                    </li>
+                    <li>
+                      <Link href="/terms" className="font-inter text-[12px] text-white/35 hover:text-gold-400 transition-colors duration-300 block min-h-[44px] sm:min-h-0 flex items-center sm:block">
+                        Termini e Condizioni
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              </FooterSection>
             </div>
           </div>
         </div>
@@ -194,7 +230,7 @@ export function Footer() {
         {/* Bottom Bar */}
         <div className="py-5 border-t border-white/[0.05]">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-white/35 text-[11px] font-inter tracking-wide">
+            <p className="text-white/35 text-[11px] font-inter tracking-wide text-center sm:text-left">
               &copy; {currentYear} OZ Extrait. Tutti i diritti riservati.
             </p>
             <PaymentIcons />
