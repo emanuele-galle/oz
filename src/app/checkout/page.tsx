@@ -56,6 +56,7 @@ function OrderSummary({
   orderTotal,
   selectedCountry,
   compact = false,
+  hideItems = false,
 }: {
   items: any[];
   subtotal: number;
@@ -63,6 +64,7 @@ function OrderSummary({
   orderTotal: number;
   selectedCountry: string;
   compact?: boolean;
+  hideItems?: boolean;
 }) {
   return (
     <div className={compact ? 'space-y-4' : 'space-y-5'}>
@@ -73,41 +75,43 @@ function OrderSummary({
       )}
 
       {/* Items */}
-      <div className="space-y-3">
-        {items.map((item) => {
-          const primaryImage =
-            item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
-          return (
-            <div key={`${item.product.id}-${item.size.volume}`} className="flex gap-3">
-              {primaryImage && (
-                <div className="relative w-14 h-14 flex-shrink-0 bg-white/[0.04] overflow-hidden">
-                  <Image
-                    src={primaryImage.url}
-                    alt={item.product.name}
-                    fill
-                    className="object-cover"
-                  />
-                  {item.quantity > 1 && (
-                    <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold-500 text-stone-950 rounded-full flex items-center justify-center text-[10px] font-bold">
-                      {item.quantity}
-                    </span>
-                  )}
+      {!hideItems && (
+        <div className="space-y-3">
+          {items.map((item) => {
+            const primaryImage =
+              item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
+            return (
+              <div key={`${item.product.id}-${item.size.volume}`} className="flex gap-3">
+                {primaryImage && (
+                  <div className="relative w-14 h-14 flex-shrink-0 bg-white/[0.04] overflow-hidden">
+                    <Image
+                      src={primaryImage.url}
+                      alt={item.product.name}
+                      fill
+                      className="object-cover"
+                    />
+                    {item.quantity > 1 && (
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-gold-500 text-stone-950 rounded-full flex items-center justify-center text-[10px] font-bold">
+                        {item.quantity}
+                      </span>
+                    )}
+                  </div>
+                )}
+                <div className="flex-1 min-w-0">
+                  <p className="text-white/90 text-sm font-inter truncate">{item.product.name}</p>
+                  <p className="text-white/40 text-xs font-inter">{item.size.volume}</p>
                 </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <p className="text-white/90 text-sm font-inter truncate">{item.product.name}</p>
-                <p className="text-white/40 text-xs font-inter">{item.size.volume}</p>
+                <p className="text-white/70 text-sm font-inter tabular-nums whitespace-nowrap">
+                  €{(item.size.price * item.quantity).toFixed(2)}
+                </p>
               </div>
-              <p className="text-white/70 text-sm font-inter tabular-nums whitespace-nowrap">
-                €{(item.size.price * item.quantity).toFixed(2)}
-              </p>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Divider */}
-      <div className="h-px bg-white/[0.06]" />
+      {!hideItems && <div className="h-px bg-white/[0.06]" />}
 
       {/* Totals */}
       <div className="space-y-2">
@@ -132,7 +136,7 @@ function OrderSummary({
       <div className="h-px bg-white/[0.06]" />
       <div className="flex justify-between items-baseline">
         <span className="text-white/60 font-inter text-sm">Totale</span>
-        <span className="font-cinzel text-2xl text-gold-500">€{orderTotal.toFixed(2)}</span>
+        <span className="font-cinzel text-2xl text-gold-400">€{orderTotal.toFixed(2)}</span>
       </div>
     </div>
   );
@@ -229,7 +233,7 @@ export default function CheckoutPage() {
         })}
       </div>
 
-      {/* Mobile order summary (hidden on desktop where sidebar shows) */}
+      {/* Mobile order totals (hidden on desktop where sidebar shows) */}
       <div className="lg:hidden glass-card-dark p-5">
         <OrderSummary
           items={items}
@@ -238,6 +242,7 @@ export default function CheckoutPage() {
           orderTotal={orderTotal}
           selectedCountry={selectedCountry}
           compact
+          hideItems
         />
       </div>
 
