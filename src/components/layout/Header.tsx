@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 
 // Pages with dark hero backgrounds need light header text
-const DARK_HERO_PAGES = ['/', '/il-brand/storia', '/il-brand/processo'];
+const DARK_HERO_PAGES = ['/', '/il-brand/storia', '/il-brand/processo', '/about'];
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
