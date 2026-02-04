@@ -10,6 +10,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Product } from '@/types/product';
 import { cn } from '@/lib/utils';
+import { useCartStore } from '@/store/cartStore';
+import { toast } from 'sonner';
 
 interface ProductCardProps {
   product: Product;
@@ -20,6 +22,16 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const primaryImage = product.images.find((img) => img.isPrimary) || product.images[0];
   const mainSize = product.sizes.find((s) => !s.isTester) || product.sizes[0];
+  const { addItem } = useCartStore();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addItem(product, mainSize, 1);
+    toast.success('Aggiunto al carrello', {
+      description: `${product.name} - ${mainSize.volume}`,
+    });
+  };
 
   return (
     <Link
@@ -140,6 +152,19 @@ export function ProductCard({ product, className }: ProductCardProps) {
               </svg>
             </div>
           </div>
+
+          {/* Add to Cart button */}
+          <button
+            onClick={handleAddToCart}
+            className={cn(
+              'w-full mt-4 py-3 rounded-lg font-inter text-sm font-semibold uppercase tracking-wider',
+              'bg-gold-500 text-stone-950 hover:bg-gold-400 active:scale-[0.98]',
+              'transition-all duration-300',
+              'shadow-sm hover:shadow-gold-medium'
+            )}
+          >
+            Aggiungi al Carrello
+          </button>
         </div>
       </div>
 
