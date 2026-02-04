@@ -1,4 +1,5 @@
 import { redirect } from 'next/navigation';
+import { headers } from 'next/headers';
 import { getAdminUser } from '@/lib/admin/auth';
 import { AdminSidebar } from './components/AdminSidebar';
 
@@ -9,10 +10,22 @@ export default async function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const headersList = await headers();
+  const pathname = headersList.get('x-pathname') || '';
+  const isLoginPage = pathname === '/admin/login';
+
   const user = await getAdminUser();
 
-  if (!user) {
+  if (!user && !isLoginPage) {
     redirect('/admin/login');
+  }
+
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-stone-950">
+        {children}
+      </div>
+    );
   }
 
   return (
