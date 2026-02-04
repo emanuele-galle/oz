@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ProductForm } from '../components/ProductForm';
@@ -31,9 +32,9 @@ export default async function AdminProductEditPage({
 
   return (
     <div>
-      <a href="/admin/products" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-4 inline-block">
+      <Link href="/admin/products" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-4 inline-block">
         ← Torna ai Prodotti
-      </a>
+      </Link>
       <h1 className="font-cinzel text-2xl text-white mb-8">Modifica: {product.name}</h1>
       <ProductForm product={serialized} />
     </div>

@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { OrderActions } from './OrderActions';
@@ -31,9 +32,9 @@ export default async function AdminOrderDetailPage({
     <div>
       <div className="flex items-center justify-between mb-8">
         <div>
-          <a href="/admin/orders" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-2 inline-block">
+          <Link href="/admin/orders" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-2 inline-block">
             ← Torna agli Ordini
-          </a>
+          </Link>
           <h1 className="font-cinzel text-2xl text-white">
             Ordine {order.orderNumber}
           </h1>

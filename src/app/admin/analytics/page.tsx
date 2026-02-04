@@ -53,10 +53,11 @@ export default async function AdminAnalyticsPage() {
     }),
   ]);
 
-  // Process revenue by day
+  // Process revenue by day — use locale date to avoid UTC offset issues
   const revenueByDay: Record<string, number> = {};
   recentOrders.forEach((order) => {
-    const day = order.createdAt.toISOString().split('T')[0];
+    const d = order.createdAt;
+    const day = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     revenueByDay[day] = (revenueByDay[day] || 0) + Number(order.total);
   });
 
@@ -94,21 +95,24 @@ export default async function AdminAnalyticsPage() {
             Revenue Giornaliera (30g)
           </h3>
           <div className="space-y-2">
-            {Object.entries(revenueByDay).slice(-14).map(([day, amount]) => {
-              const maxAmount = Math.max(...Object.values(revenueByDay));
-              const width = maxAmount > 0 ? (amount / maxAmount) * 100 : 0;
-              return (
-                <div key={day} className="flex items-center gap-3">
-                  <span className="text-stone-500 text-xs font-mono w-20 flex-shrink-0">
-                    {day.slice(5)}
-                  </span>
-                  <div className="flex-1 bg-stone-800 rounded-full h-4 overflow-hidden">
-                    <div className="h-full bg-gold-500/60 rounded-full" style={{ width: `${width}%` }} />
+            {(() => {
+              const entries = Object.entries(revenueByDay).slice(-14);
+              const maxAmount = entries.length > 0 ? Math.max(...entries.map(([, a]) => a)) : 0;
+              return entries.map(([day, amount]) => {
+                const width = maxAmount > 0 ? (amount / maxAmount) * 100 : 0;
+                return (
+                  <div key={day} className="flex items-center gap-3">
+                    <span className="text-stone-500 text-xs font-mono w-20 flex-shrink-0">
+                      {day.slice(5)}
+                    </span>
+                    <div className="flex-1 bg-stone-800 rounded-full h-4 overflow-hidden">
+                      <div className="h-full bg-gold-500/60 rounded-full transition-all" style={{ width: `${Math.max(width, 2)}%` }} />
+                    </div>
+                    <span className="text-stone-300 text-xs font-mono w-20 text-right">€{amount.toFixed(0)}</span>
                   </div>
-                  <span className="text-stone-300 text-xs font-mono w-20 text-right">€{amount.toFixed(0)}</span>
-                </div>
-              );
-            })}
+                );
+              });
+            })()}
             {Object.keys(revenueByDay).length === 0 && (
               <p className="text-stone-500 text-sm">Nessun dato disponibile</p>
             )}

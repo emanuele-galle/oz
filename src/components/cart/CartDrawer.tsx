@@ -140,7 +140,7 @@ export function CartDrawer() {
                                   item.quantity - 1
                                 )
                               }
-                              className="w-10 h-10 flex items-center justify-center hover:bg-stone-100 transition-colors text-stone-600"
+                              className="w-11 h-11 flex items-center justify-center hover:bg-stone-100 transition-colors text-stone-600"
                               aria-label="Decrease quantity"
                             >
                               −
@@ -156,7 +156,7 @@ export function CartDrawer() {
                                   item.quantity + 1
                                 )
                               }
-                              className="w-10 h-10 flex items-center justify-center hover:bg-stone-100 transition-colors text-stone-600"
+                              className="w-11 h-11 flex items-center justify-center hover:bg-stone-100 transition-colors text-stone-600"
                               aria-label="Increase quantity"
                             >
                               +

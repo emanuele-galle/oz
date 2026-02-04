@@ -45,6 +45,7 @@ export function OrderActions({ orderId, currentStatus, trackingNumber, carrier, 
 
       setMessage('Salvato con successo');
       router.refresh();
+      setTimeout(() => setMessage(''), 3000);
     } catch {
       setMessage('Errore di connessione');
     } finally {

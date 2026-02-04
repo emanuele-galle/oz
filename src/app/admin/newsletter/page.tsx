@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { NewsletterActions } from './NewsletterActions';
 
@@ -6,10 +7,12 @@ export const dynamic = 'force-dynamic';
 export default async function AdminNewsletterPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string }>;
+  searchParams: Promise<{ filter?: string; page?: string }>;
 }) {
   const params = await searchParams;
   const filter = params.filter || 'all';
+  const page = parseInt(params.page || '1');
+  const perPage = 30;
 
   const where = filter === 'active' ? { active: true } : filter === 'inactive' ? { active: false } : {};
 
@@ -17,10 +20,13 @@ export default async function AdminNewsletterPage({
     prisma.newsletterSubscriber.findMany({
       where,
       orderBy: { createdAt: 'desc' },
-      take: 100,
+      skip: (page - 1) * perPage,
+      take: perPage,
     }),
-    prisma.newsletterSubscriber.count(),
+    prisma.newsletterSubscriber.count({ where }),
   ]);
+
+  const totalPages = Math.ceil(totalCount / perPage);
 
   return (
     <div>
@@ -38,7 +44,7 @@ export default async function AdminNewsletterPage({
           { key: 'active', label: 'Attivi' },
           { key: 'inactive', label: 'Disattivati' },
         ].map((f) => (
-          <a
+          <Link
             key={f.key}
             href={`/admin/newsletter?filter=${f.key}`}
             className={`px-4 py-2 text-xs font-inter uppercase tracking-wide rounded-full border transition-colors ${
@@ -48,7 +54,7 @@ export default async function AdminNewsletterPage({
             }`}
           >
             {f.label}
-          </a>
+          </Link>
         ))}
       </div>
 
@@ -93,6 +99,23 @@ export default async function AdminNewsletterPage({
           </div>
         )}
       </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex justify-center gap-2 mt-6">
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
+            <Link
+              key={p}
+              href={`/admin/newsletter?filter=${filter}&page=${p}`}
+              className={`px-3 py-1 text-sm rounded ${
+                p === page ? 'bg-gold-500 text-black' : 'bg-stone-800 text-stone-400 hover:text-white'
+              }`}
+            >
+              {p}
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

@@ -12,7 +12,7 @@ export default async function AdminLayout({
 }) {
   const headersList = await headers();
   const pathname = headersList.get('x-pathname') || '';
-  const isLoginPage = pathname === '/admin/login';
+  const isLoginPage = pathname === '/admin/login' || pathname === '';
 
   const user = await getAdminUser();
 

@@ -53,7 +53,7 @@ export function TrustFeaturesLuxury() {
   return (
     <section className="py-14 md:py-16 bg-[#FBF8F3]">
       <div className="container-luxury">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-4 max-w-6xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
               key={index}

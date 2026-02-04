@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 
 export const dynamic = 'force-dynamic';
@@ -113,9 +114,9 @@ export default async function AdminDashboardPage() {
           ) : (
             <div className="flex items-center gap-3">
               <span className="text-3xl font-cinzel text-yellow-400">{stats.pendingReviews}</span>
-              <a href="/admin/reviews" className="text-gold-500 text-sm hover:underline font-inter">
+              <Link href="/admin/reviews" className="text-gold-500 text-sm hover:underline font-inter">
                 Modera ora →
-              </a>
+              </Link>
             </div>
           )}
         </div>

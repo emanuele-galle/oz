@@ -134,6 +134,12 @@ export function ProductForm({ product }: ProductFormProps) {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    if (file.size > 5 * 1024 * 1024) {
+      setError('Il file supera il limite di 5 MB');
+      if (fileInputRef.current) fileInputRef.current.value = '';
+      return;
+    }
+
     setIsUploading(true);
     setError('');
 

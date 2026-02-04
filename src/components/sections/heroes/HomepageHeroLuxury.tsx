@@ -143,7 +143,7 @@ export function HomepageHeroLuxury() {
   const loadProgress = Math.round((imagesLoaded / TOTAL_FRAMES) * 100);
 
   return (
-    <section ref={sectionRef} className="relative h-[400vh] bg-stone-950">
+    <section ref={sectionRef} className="relative h-[250vh] md:h-[400vh] bg-stone-950">
       {/* Sticky viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Canvas */}

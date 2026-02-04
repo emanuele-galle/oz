@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, ShoppingBag, Package, Star, BarChart3, Mail, LogOut } from 'lucide-react';
@@ -21,8 +21,10 @@ const navItems = [
 export function AdminSidebar({ user }: AdminSidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleLogout = async () => {
+    setIsLoggingOut(true);
     await fetch('/api/admin/logout', { method: 'POST' });
     router.push('/admin/login');
     router.refresh();
@@ -68,10 +70,11 @@ export function AdminSidebar({ user }: AdminSidebarProps) {
         </div>
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-4 py-2 w-full text-sm text-stone-400 hover:text-red-400 transition-colors font-inter rounded-lg hover:bg-stone-800"
+          disabled={isLoggingOut}
+          className="flex items-center gap-3 px-4 py-2 w-full text-sm text-stone-400 hover:text-red-400 transition-colors font-inter rounded-lg hover:bg-stone-800 disabled:opacity-50"
         >
           <LogOut className="w-4 h-4" />
-          Esci
+          {isLoggingOut ? 'Uscita...' : 'Esci'}
         </button>
       </div>
     </aside>
