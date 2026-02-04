@@ -18,7 +18,6 @@ export { HomepageHero } from './HomepageHero';
 export { ProductHeroGallery } from './ProductHeroGallery';
 export { BrandStoryHero } from './BrandStoryHero';
 export { BrandPhilosophyHero } from './BrandPhilosophyHero';
-export { ProcessHero } from './ProcessHero';
 export { GuideHero } from './GuideHero';
 export { ShopHero } from './ShopHero';
 export { ReviewsHero } from './ReviewsHero';

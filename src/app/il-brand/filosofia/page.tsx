@@ -320,7 +320,7 @@ export default function FilosofiaPage() {
                 Scopri le Fragranze
               </a>
               <a
-                href="/il-brand/storia"
+                href="/zoe-cristofoli"
                 className="px-10 py-4 border border-white/30 text-white/90 font-inter text-sm font-medium uppercase tracking-[0.15em] hover:border-gold-500 hover:text-gold-400 transition-all duration-300"
               >
                 La Nostra Storia
