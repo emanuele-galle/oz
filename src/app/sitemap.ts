@@ -60,7 +60,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   ];
 
   // Product pages (da database)
-  const productSlugs = await getAllProductSlugs();
+  let productSlugs: string[] = [];
+  try {
+    productSlugs = await getAllProductSlugs();
+  } catch {
+    console.warn('Sitemap: DB unavailable, skipping product pages');
+  }
   const productPages = productSlugs.map((slug) => ({
     url: `${baseUrl}/products/${slug}`,
     lastModified: currentDate,

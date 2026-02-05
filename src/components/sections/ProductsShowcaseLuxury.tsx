@@ -30,10 +30,10 @@ interface ProductsShowcaseLuxuryProps {
 
 export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps) {
   return (
-    <section id="products" className="py-24 md:py-32 bg-[#FEFDFB]">
+    <section id="products" className="py-16 md:py-24 bg-[#FEFDFB]">
       <div className="container-luxury">
         {/* Header Section */}
-        <div className="max-w-3xl mx-auto text-center mb-20">
+        <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -85,7 +85,7 @@ export function ProductsShowcaseLuxury({ products }: ProductsShowcaseLuxuryProps
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="text-center mt-20"
+          className="text-center mt-12 md:mt-16"
         >
           <p className="font-inter text-sm uppercase tracking-[0.2em] text-stone-600">
             Spedizione gratuita sopra i &euro;{FREE_SHIPPING_THRESHOLD}
