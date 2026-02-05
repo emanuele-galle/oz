@@ -1,5 +1,4 @@
 import { HomepageHeroLuxury } from '@/components/sections/heroes/HomepageHeroLuxury';
-import { TrustFeaturesLuxury } from '@/components/sections/TrustFeaturesLuxury';
 import { ProductsShowcaseLuxury } from '@/components/sections/ProductsShowcaseLuxury';
 import { Craftsmanship } from '@/components/sections/Craftsmanship';
 import { FounderStoryLuxury } from '@/components/sections/FounderStoryLuxury';
@@ -39,7 +38,6 @@ export default async function Home() {
     <>
       <OrganizationSchema />
       <HomepageHeroLuxury />
-      <TrustFeaturesLuxury />
       <ParallaxDividerFirst />
       <ProductsShowcaseLuxury products={productsData} />
       <ParallaxDividerSecond />
