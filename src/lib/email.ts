@@ -89,3 +89,40 @@ export async function sendOrderShippedEmail(data: {
     throw error;
   }
 }
+
+/**
+ * Send order delivered email
+ */
+export async function sendOrderDeliveredEmail(data: {
+  orderNumber: string;
+  email: string;
+  customerName: string;
+}) {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('Email sending skipped: RESEND_API_KEY not set');
+    return null;
+  }
+
+  try {
+    const result = await resend.emails.send({
+      from: 'OZ Extrait <ordini@oz.fodivps2.cloud>',
+      to: data.email,
+      subject: `Ordine ${data.orderNumber} Consegnato - OZ Extrait`,
+      html: `
+        <h1>Il tuo ordine è stato consegnato!</h1>
+        <p>Ciao ${data.customerName},</p>
+        <p>Il tuo ordine <strong>${data.orderNumber}</strong> è stato consegnato con successo.</p>
+        <p>Speriamo che i nostri profumi ti regalino emozioni uniche.</p>
+        <p>Se hai un momento, ci farebbe piacere ricevere la tua recensione!</p>
+        <p>Grazie per aver scelto OZ Extrait.<br>
+        Team OZ Extrait</p>
+      `,
+    });
+
+    console.log('Delivery email sent successfully:', result);
+    return result;
+  } catch (error) {
+    console.error('Failed to send delivery email:', error);
+    throw error;
+  }
+}

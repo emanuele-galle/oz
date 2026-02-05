@@ -51,47 +51,53 @@ export function TrustFeaturesLuxury() {
   ];
 
   return (
-    <section className="relative z-10 bg-[#FBF8F3]">
-      {/* Gradient bridge from dark hero to cream — this is the actual transition element */}
-      <div className="h-20 md:h-28 bg-gradient-to-b from-stone-950 via-stone-950/40 to-[#FBF8F3]" />
-
-      <div className="container-luxury py-14 md:py-16">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
-          {features.map((feature, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-50px' }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="text-center group relative"
-            >
-              {/* Icon — scale entrance */}
+    <section
+      className="relative z-10"
+      style={{
+        marginTop: '-80vh',
+        paddingTop: '5vh',
+        background: 'linear-gradient(to bottom, transparent, #FBF8F3 5vh, #FBF8F3)',
+      }}
+    >
+      <div style={{ backgroundColor: '#FBF8F3' }}>
+        <div className="container-luxury py-10 md:py-12">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
+            {features.map((feature, index) => (
               <motion.div
-                initial={{ scale: 0.5, opacity: 0 }}
-                whileInView={{ scale: 1, opacity: 1 }}
-                viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  delay: index * 0.1 + 0.15,
-                  type: 'spring',
-                  stiffness: 200,
-                  damping: 15,
-                }}
-                className="inline-flex items-center justify-center w-14 h-14 mb-4 border border-stone-200 text-gold-500 group-hover:border-gold-500/30 group-hover:bg-gold-50 transition-all duration-300"
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className="text-center group relative"
               >
-                {feature.icon}
-              </motion.div>
+                {/* Icon — scale entrance */}
+                <motion.div
+                  initial={{ scale: 0.5, opacity: 0 }}
+                  whileInView={{ scale: 1, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.5,
+                    delay: index * 0.1 + 0.15,
+                    type: 'spring',
+                    stiffness: 200,
+                    damping: 15,
+                  }}
+                  className="inline-flex items-center justify-center w-14 h-14 mb-4 border border-stone-200 text-gold-500 group-hover:border-gold-500/30 group-hover:bg-gold-50 transition-all duration-300"
+                >
+                  {feature.icon}
+                </motion.div>
 
-              {/* Text */}
-              <h3 className="font-cinzel text-base text-stone-800 mb-1 tracking-tight">
-                {feature.title}
-              </h3>
-              <p className="font-inter text-xs text-stone-500 leading-relaxed">
-                {feature.description}
-              </p>
-            </motion.div>
-          ))}
+                {/* Text */}
+                <h3 className="font-cinzel text-base text-stone-800 mb-1 tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="font-inter text-xs text-stone-500 leading-relaxed">
+                  {feature.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -62,17 +62,15 @@ export function ClientEffects() {
       {!prefersReduced && (
         <>
           {!isMobile && <AnimatedMesh />}
-          {!isMobile && (
-            <SplashCursor
-              SIM_RESOLUTION={64}
-              DYE_RESOLUTION={512}
-              DENSITY_DISSIPATION={4}
-              VELOCITY_DISSIPATION={2.5}
-              SPLAT_RADIUS={0.15}
-              SPLAT_FORCE={4000}
-              CURL={3}
-            />
-          )}
+          <SplashCursor
+            SIM_RESOLUTION={isMobile ? 32 : 64}
+            DYE_RESOLUTION={isMobile ? 256 : 512}
+            DENSITY_DISSIPATION={isMobile ? 5 : 4}
+            VELOCITY_DISSIPATION={isMobile ? 3.5 : 2.5}
+            SPLAT_RADIUS={isMobile ? 0.2 : 0.15}
+            SPLAT_FORCE={isMobile ? 3000 : 4000}
+            CURL={3}
+          />
         </>
       )}
     </>

@@ -7,9 +7,9 @@
  * Color Scheme: Cream/ivory backgrounds, gold accents, dark text
  */
 
-/* Prevent horizontal scroll */
-html, body {
-  overflow-x: hidden;
+/* Prevent horizontal scroll — only on body, not html (overflow-x on html breaks position:sticky) */
+body {
+  overflow-x: clip;
 }
 
 /* Light cream base */

@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Cinzel, Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import { SmoothScroll } from "@/components/SmoothScroll";
-import { Header, Footer } from "@/components/layout";
-import { CartDrawer } from "@/components/cart/CartDrawer";
+import { LayoutShell } from "@/components/layout/LayoutShell";
 import { ClientEffects } from "@/components/effects/ClientEffects";
 import { Toaster } from "@/components/ui/Toaster";
 
@@ -91,12 +89,7 @@ export default function RootLayout({
       <body className="font-inter antialiased scrollbar-gutter">
         <ClientEffects />
         <Toaster />
-        <SmoothScroll>
-          <Header />
-          <main>{children}</main>
-          <Footer />
-          <CartDrawer />
-        </SmoothScroll>
+        <LayoutShell>{children}</LayoutShell>
       </body>
     </html>
   );
