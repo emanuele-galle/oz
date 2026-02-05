@@ -100,6 +100,7 @@ export function Header() {
                     textClass, hoverClass,
                     isLinkActive(link.href) && 'text-gold-600'
                   )}
+                  {...(isLinkActive(link.href) ? { 'aria-current': 'page' as const } : {})}
                 >
                   {link.label}
                   <span className={cn(
@@ -164,7 +165,7 @@ export function Header() {
               <button
                 className="md:hidden relative z-10 p-2.5"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                aria-label="Menu"
+                aria-label={isMobileMenuOpen ? 'Chiudi menu' : 'Apri menu'}
               >
                 <div className="w-6 h-5 flex flex-col justify-between">
                   <span

@@ -16,7 +16,7 @@ export function LayoutShell({ children }: { children: React.ReactNode }) {
   return (
     <SmoothScroll>
       <Header />
-      <main>{children}</main>
+      <main id="main-content">{children}</main>
       <Footer />
       <CartDrawer />
     </SmoothScroll>

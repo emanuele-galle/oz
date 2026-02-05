@@ -10,7 +10,6 @@ import { OrganizationSchema } from '@/components/JsonLd';
 import { getFeaturedProducts } from '@/data/products-db';
 
 export const revalidate = 3600;
-export const dynamic = 'force-dynamic';
 
 export default async function Home() {
   let productsData: { slug: string; name: string; tagline: string | null; price: number; imageUrl: string; imageUrlHover?: string; concentration: string; size: string }[] = [];

@@ -20,7 +20,7 @@ export function OrganizationSchema() {
     '@type': 'Organization',
     name: 'OZ Extrait',
     url: 'https://oz.fodivps2.cloud',
-    logo: 'https://oz.fodivps2.cloud/uploads/images/Logo su sfondo gold.jpeg',
+    logo: 'https://oz.fodivps2.cloud/uploads/images/og-cover.jpg',
     description: 'Profumi di lusso Extrait de Parfum artigianali italiani by Zoe Cristofoli',
     founder: {
       '@type': 'Person',
@@ -71,7 +71,7 @@ export function ProductSchema({
     sku,
     offers: {
       '@type': 'Offer',
-      price,
+      price: String(price),
       priceCurrency: 'EUR',
       availability: 'https://schema.org/InStock',
       seller: {
@@ -79,11 +79,7 @@ export function ProductSchema({
         name: 'OZ Extrait',
       },
     },
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '5.0',
-      reviewCount: '6',
-    },
+    // aggregateRating pulled from real reviews when available
   };
 
   return <JsonLd data={schema} />;

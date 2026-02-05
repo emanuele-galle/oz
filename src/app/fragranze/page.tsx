@@ -7,16 +7,16 @@ import { BreadcrumbSchema } from '@/components/JsonLd';
 import { Product } from '@/types/product';
 
 export const metadata: Metadata = {
-  title: 'Fragranze — Extrait de Parfum Artigianale | OZ Extrait',
+  title: 'Fragranze — Extrait de Parfum Artigianale',
   description: 'Scopri le tre fragranze OZ Extrait: Cristallo, Scintilla, Potion d\'Amour. Extrait de Parfum al 40-42% di concentrazione. Heritage veneziano, visione contemporanea.',
   openGraph: {
     title: 'Le Nostre Fragranze — OZ Extrait',
     description: 'Tre fragranze d\'autore al 40% di concentrazione. Artigianale italiano.',
+    images: ['/uploads/images/og-cover.jpg'],
   },
 };
 
-export const revalidate = 3600; // Revalidate ogni ora
-export const dynamic = 'force-dynamic'; // Skip SSG during build
+export const revalidate = 3600;
 
 export default async function FragranzePage() {
   // Get products con fallback se DB unavailable

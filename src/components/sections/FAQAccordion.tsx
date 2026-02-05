@@ -49,6 +49,9 @@ export function FAQAccordion({ categories }: FAQAccordionProps) {
                 <div key={itemIdx}>
                   <button
                     onClick={() => toggle(id)}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-answer-${id}`}
+                    id={`faq-question-${id}`}
                     className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-stone-50/50 transition-colors duration-200"
                   >
                     <span
@@ -69,6 +72,9 @@ export function FAQAccordion({ categories }: FAQAccordionProps) {
                   <AnimatePresence>
                     {isOpen && (
                       <motion.div
+                        id={`faq-answer-${id}`}
+                        role="region"
+                        aria-labelledby={`faq-question-${id}`}
                         initial={{ height: 0, opacity: 0 }}
                         animate={{ height: 'auto', opacity: 1 }}
                         exit={{ height: 0, opacity: 0 }}
