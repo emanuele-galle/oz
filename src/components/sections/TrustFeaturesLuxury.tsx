@@ -54,7 +54,7 @@ export function TrustFeaturesLuxury() {
     <section
       className="relative z-10"
       style={{
-        marginTop: '-80vh',
+        marginTop: '-15vh',
         paddingTop: '5vh',
         background: 'linear-gradient(to bottom, transparent, #FBF8F3 5vh, #FBF8F3)',
       }}
