@@ -50,7 +50,7 @@ export function StepEsplora({ recommendedId, onRestart }: StepEsploraProps) {
               >
                 <Link
                   href={frag.slug}
-                  className="group block bg-white border border-stone-200/60 overflow-hidden hover:border-gold-500/30 hover:shadow-lg transition-all duration-500 relative"
+                  className="group block bg-white border border-stone-200/60 overflow-hidden hover:border-gold-500/30 hover:shadow-xl transition-all duration-500 relative"
                 >
                   {isRecommended && (
                     <div className="absolute top-3 right-3 z-10 px-3 py-1 bg-gold-500 text-stone-950 font-inter text-[10px] uppercase tracking-widest font-bold">

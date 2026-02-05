@@ -43,13 +43,16 @@ export function CartDrawer() {
         />
       )}
 
-      {/* Drawer */}
+      {/* Drawer Container — clips translated drawer to prevent horizontal scroll */}
       <div
-        className={`fixed top-0 right-0 h-full w-full md:w-[480px] bg-white shadow-2xl z-50 transform transition-transform duration-300 ease-luxury ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed inset-0 z-50 overflow-hidden ${isOpen ? '' : 'pointer-events-none'}`}
       >
-        <div className="flex flex-col h-full">
+        <div
+          className={`absolute top-0 right-0 h-full w-full md:w-[480px] bg-white shadow-2xl transform transition-transform duration-300 ease-luxury ${
+            isOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
+        >
+          <div className="flex flex-col h-full">
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-stone-200">
             <h2 className="font-cinzel text-2xl text-stone-900">Carrello</h2>
@@ -220,6 +223,7 @@ export function CartDrawer() {
               </p>
             </div>
           )}
+          </div>
         </div>
       </div>
     </>

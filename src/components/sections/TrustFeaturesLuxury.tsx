@@ -51,8 +51,11 @@ export function TrustFeaturesLuxury() {
   ];
 
   return (
-    <section className="py-14 md:py-16 bg-[#FBF8F3]">
-      <div className="container-luxury">
+    <section className="relative z-10 bg-[#FBF8F3]">
+      {/* Gradient bridge from dark hero to cream — this is the actual transition element */}
+      <div className="h-20 md:h-28 bg-gradient-to-b from-stone-950 via-stone-950/40 to-[#FBF8F3]" />
+
+      <div className="container-luxury py-14 md:py-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-8 max-w-6xl mx-auto">
           {features.map((feature, index) => (
             <motion.div

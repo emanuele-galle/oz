@@ -254,8 +254,6 @@ export function HomepageHeroLuxury() {
         </motion.div>
       </div>
 
-      {/* Gradient transition from dark hero to cream content */}
-      <div className="absolute bottom-0 left-0 right-0 h-[15vh] bg-gradient-to-b from-transparent via-stone-950/80 to-[#FBF8F3] pointer-events-none" />
     </section>
   );
 }

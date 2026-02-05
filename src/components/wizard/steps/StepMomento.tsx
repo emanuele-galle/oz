@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils';
 import { stepMomento } from '@/data/fragrance-wizard';
 import { WizardProgress } from '../WizardProgress';
 import { WizardNavigation } from '../WizardNavigation';
-import { WizardParticles } from '../effects/WizardParticles';
+import { AuraEffect } from '../effects/AuraEffect';
+import { HoverCard3D } from '@/components/effects/HoverCard3D';
 
 interface StepMomentoProps {
   selected: string | undefined;
@@ -16,15 +17,16 @@ interface StepMomentoProps {
 
 export function StepMomento({ selected, onSelect, onNext, onBack }: StepMomentoProps) {
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[80vh] px-6 py-12">
-      <WizardParticles color="rgba(212, 175, 55, 0.25)" count={15} speed={0.2} />
+    <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-16">
+      <AuraEffect color="rgba(212, 175, 55, 0.05)" />
 
       <div className="relative z-10 w-full max-w-2xl space-y-8">
-        <div className="text-center space-y-3">
+        {/* Header */}
+        <div className="text-center space-y-4">
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="font-inter text-xs uppercase tracking-[0.3em] text-gold-500/60"
+            className="font-inter text-[11px] uppercase tracking-[0.3em] text-gold-500/70"
           >
             Domanda 1 di 3
           </motion.p>
@@ -36,6 +38,16 @@ export function StepMomento({ selected, onSelect, onNext, onBack }: StepMomentoP
           >
             {stepMomento.title}
           </motion.h2>
+          <motion.div
+            initial={{ scaleX: 0 }}
+            animate={{ scaleX: 1 }}
+            transition={{ delay: 0.15, duration: 0.6 }}
+            className="flex items-center justify-center gap-3"
+          >
+            <div className="h-px w-10 bg-gradient-to-r from-transparent to-gold-500/30" />
+            <div className="w-1 h-1 bg-gold-500/40 rotate-45" />
+            <div className="h-px w-10 bg-gradient-to-l from-transparent to-gold-500/30" />
+          </motion.div>
           <motion.p
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -46,44 +58,59 @@ export function StepMomento({ selected, onSelect, onNext, onBack }: StepMomentoP
           </motion.p>
         </div>
 
+        {/* Option Cards */}
         <div className="grid grid-cols-2 gap-3 md:gap-4">
           {stepMomento.options.map((option, i) => (
-            <motion.button
+            <motion.div
               key={option.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.08 }}
-              onClick={() => onSelect(option.id)}
-              className={cn(
-                'group relative p-5 md:p-6 border text-left transition-all duration-500',
-                'hover:border-gold-500/50 hover:bg-white/[0.03]',
-                selected === option.id
-                  ? 'border-gold-500 bg-gold-500/10 shadow-[0_0_20px_rgba(212,175,55,0.15)]'
-                  : 'border-white/10 bg-white/[0.02]'
-              )}
             >
-              <span className="text-2xl mb-3 block">{option.icon}</span>
-              <h3 className={cn(
-                'font-cinzel text-lg md:text-xl mb-1.5 transition-colors duration-300',
-                selected === option.id ? 'text-gold-400' : 'text-white/90 group-hover:text-gold-400'
-              )}>
-                {option.label}
-              </h3>
-              <p className="font-inter text-xs md:text-sm text-white/40 leading-relaxed">
-                {option.description}
-              </p>
+              <HoverCard3D intensity={10}>
+                <button
+                  onClick={() => onSelect(option.id)}
+                  className={cn(
+                    'group relative w-full p-5 md:p-6 border backdrop-blur-sm text-left transition-all duration-500 overflow-hidden',
+                    'hover:border-gold-500/40 hover:bg-white/[0.06]',
+                    selected === option.id
+                      ? 'border-gold-500/80 bg-gold-500/10 shadow-[0_0_30px_rgba(212,175,55,0.12)]'
+                      : 'border-white/15 bg-white/[0.04]'
+                  )}
+                >
+                  {/* StarBorder animated glow when selected */}
+                  {selected === option.id && (
+                    <>
+                      <div
+                        className="absolute w-[300%] h-[50%] opacity-70 bottom-[-11px] right-[-250%] rounded-full animate-star-movement-bottom z-0"
+                        style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent 10%)', animationDuration: '4s' }}
+                      />
+                      <div
+                        className="absolute w-[300%] h-[50%] opacity-70 top-[-10px] left-[-250%] rounded-full animate-star-movement-top z-0"
+                        style={{ background: 'radial-gradient(circle, rgba(212, 175, 55, 0.8), transparent 10%)', animationDuration: '4s' }}
+                      />
+                    </>
+                  )}
 
-              {selected === option.id && (
-                <motion.div
-                  layoutId="momento-selected"
-                  className="absolute inset-0 border-2 border-gold-500 pointer-events-none"
-                  transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                />
-              )}
-            </motion.button>
+                  <span className="relative z-[1] block">
+                    <span className="text-2xl mb-3 block">{option.icon}</span>
+                    <h3 className={cn(
+                      'font-cinzel text-lg md:text-xl mb-1.5 transition-colors duration-300',
+                      selected === option.id ? 'text-gold-400' : 'text-white/90 group-hover:text-gold-400'
+                    )}>
+                      {option.label}
+                    </h3>
+                    <p className="font-inter text-xs md:text-sm text-white/50 leading-relaxed">
+                      {option.description}
+                    </p>
+                  </span>
+                </button>
+              </HoverCard3D>
+            </motion.div>
           ))}
         </div>
 
+        {/* Navigation */}
         <div className="space-y-4 pt-4">
           <WizardProgress currentStep={1} totalSteps={6} />
           <WizardNavigation

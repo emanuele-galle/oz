@@ -24,7 +24,7 @@ function ParallaxDivider({ imageSrc, imageAlt, title, subtitle, overlayOpacity: 
 
   return (
     <section ref={ref} className="relative h-[35vh] md:h-[60vh] overflow-hidden">
-      <motion.div style={{ y }} className="absolute inset-0 will-change-transform">
+      <motion.div style={{ y }} className="absolute inset-0 will-change-transform overflow-hidden">
         <Image
           src={imageSrc}
           alt={imageAlt}
