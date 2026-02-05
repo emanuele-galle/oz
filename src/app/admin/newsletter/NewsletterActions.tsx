@@ -2,10 +2,13 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
+import { ConfirmDialog } from '../components/ConfirmDialog';
 
 export function NewsletterActions({ subscriberId, active }: { subscriberId: string; active: boolean }) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const handleToggle = async () => {
     setIsLoading(true);
@@ -15,20 +18,26 @@ export function NewsletterActions({ subscriberId, active }: { subscriberId: stri
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ active: !active }),
       });
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        toast.success(active ? 'Iscritto disattivato' : 'Iscritto riattivato');
+        router.refresh();
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   const handleDelete = async () => {
-    if (!confirm('Eliminare questo iscritto?')) return;
+    setConfirmOpen(false);
     setIsLoading(true);
     try {
       const res = await fetch(`/api/admin/newsletter/${subscriberId}`, {
         method: 'DELETE',
       });
-      if (res.ok) router.refresh();
+      if (res.ok) {
+        toast.success('Iscritto eliminato');
+        router.refresh();
+      }
     } finally {
       setIsLoading(false);
     }
@@ -48,12 +57,21 @@ export function NewsletterActions({ subscriberId, active }: { subscriberId: stri
         {active ? 'Disattiva' : 'Attiva'}
       </button>
       <button
-        onClick={handleDelete}
+        onClick={() => setConfirmOpen(true)}
         disabled={isLoading}
         className="px-3 py-1 text-xs bg-red-500/10 text-red-400 border border-red-500/30 rounded hover:bg-red-500/20 transition-colors disabled:opacity-50"
       >
         Elimina
       </button>
+      <ConfirmDialog
+        open={confirmOpen}
+        onConfirm={handleDelete}
+        onCancel={() => setConfirmOpen(false)}
+        title="Eliminare iscritto?"
+        message="L'iscritto verrà rimosso dalla newsletter."
+        confirmLabel="Elimina"
+        variant="danger"
+      />
     </div>
   );
 }

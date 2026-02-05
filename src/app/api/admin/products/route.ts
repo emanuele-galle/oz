@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAdminUser } from '@/lib/admin/auth';
+import { logActivity } from '@/lib/admin/log-activity';
 
 export async function POST(request: NextRequest) {
   try {
@@ -55,6 +56,8 @@ export async function POST(request: NextRequest) {
         },
       },
     });
+
+    await logActivity(user.id, 'product.created', { type: 'product', id: product.id }, { name: product.name });
 
     return NextResponse.json({ success: true, product });
   } catch (error: any) {

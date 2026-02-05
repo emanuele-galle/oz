@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface OrderActionsProps {
   orderId: string;
@@ -19,11 +20,9 @@ export function OrderActions({ orderId, currentStatus, trackingNumber, carrier, 
   const [carrierInput, setCarrierInput] = useState(carrier || '');
   const [notes, setNotes] = useState(adminNotes || '');
   const [isSaving, setIsSaving] = useState(false);
-  const [message, setMessage] = useState('');
 
   const handleSave = async () => {
     setIsSaving(true);
-    setMessage('');
 
     try {
       const res = await fetch(`/api/admin/orders/${orderId}`, {
@@ -39,15 +38,14 @@ export function OrderActions({ orderId, currentStatus, trackingNumber, carrier, 
 
       if (!res.ok) {
         const data = await res.json();
-        setMessage(data.error || 'Errore durante il salvataggio');
+        toast.error(data.error || 'Errore durante il salvataggio');
         return;
       }
 
-      setMessage('Salvato con successo');
+      toast.success('Modifiche salvate');
       router.refresh();
-      setTimeout(() => setMessage(''), 3000);
     } catch {
-      setMessage('Errore di connessione');
+      toast.error('Errore di connessione');
     } finally {
       setIsSaving(false);
     }
@@ -107,12 +105,6 @@ export function OrderActions({ orderId, currentStatus, trackingNumber, carrier, 
             placeholder="Note visibili solo agli admin..."
           />
         </div>
-
-        {message && (
-          <p className={`text-xs ${message.includes('successo') ? 'text-green-400' : 'text-red-400'}`}>
-            {message}
-          </p>
-        )}
 
         <button
           onClick={handleSave}

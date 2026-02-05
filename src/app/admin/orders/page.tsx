@@ -1,5 +1,8 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
+import { OrderSearch } from './OrderSearch';
+import { EmptyState } from '../components/EmptyState';
+import { ShoppingBag } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -24,14 +27,23 @@ const statusLabels: Record<string, string> = {
 export default async function AdminOrdersPage({
   searchParams,
 }: {
-  searchParams: Promise<{ status?: string; page?: string }>;
+  searchParams: Promise<{ status?: string; page?: string; search?: string }>;
 }) {
   const params = await searchParams;
   const statusFilter = params.status;
+  const search = params.search || '';
   const page = parseInt(params.page || '1');
   const perPage = 20;
 
-  const where = statusFilter ? { status: statusFilter as any } : {};
+  const where: any = {};
+  if (statusFilter) where.status = statusFilter;
+  if (search) {
+    where.OR = [
+      { orderNumber: { contains: search, mode: 'insensitive' } },
+      { shippingName: { contains: search, mode: 'insensitive' } },
+      { email: { contains: search, mode: 'insensitive' } },
+    ];
+  }
 
   const [orders, total] = await Promise.all([
     prisma.order.findMany({
@@ -46,28 +58,51 @@ export default async function AdminOrdersPage({
 
   const totalPages = Math.ceil(total / perPage);
 
+  // Build URL params preserving search and status
+  const buildUrl = (extra: Record<string, string | undefined> = {}) => {
+    const p = new URLSearchParams();
+    if (extra.status !== undefined) {
+      if (extra.status) p.set('status', extra.status);
+    } else if (statusFilter) {
+      p.set('status', statusFilter);
+    }
+    if (search) p.set('search', search);
+    if (extra.page) p.set('page', extra.page);
+    const qs = p.toString();
+    return `/admin/orders${qs ? `?${qs}` : ''}`;
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-8">
         <h1 className="font-cinzel text-2xl text-white">Ordini</h1>
-        <span className="text-stone-400 text-sm font-inter">{total} ordini totali</span>
+        <div className="flex items-center gap-3">
+          <OrderSearch />
+          <a
+            href="/api/admin/orders/export"
+            className="px-4 py-2 border border-stone-700 text-stone-300 text-sm font-inter rounded hover:border-gold-500 hover:text-gold-500 transition-colors"
+          >
+            Esporta CSV
+          </a>
+          <span className="text-stone-400 text-sm font-inter">{total} ordini</span>
+        </div>
       </div>
 
       {/* Status Filters */}
       <div className="flex gap-2 mb-6 flex-wrap">
-        <FilterLink href="/admin/orders" label="Tutti" active={!statusFilter} />
+        <FilterLink href={buildUrl({ status: '' })} label="Tutti" active={!statusFilter} />
         {Object.entries(statusLabels).map(([key, label]) => (
           <FilterLink
             key={key}
-            href={`/admin/orders?status=${key}`}
+            href={buildUrl({ status: key })}
             label={label}
             active={statusFilter === key}
           />
         ))}
       </div>
 
-      {/* Orders Table */}
-      <div className="bg-stone-900 border border-stone-800 rounded-lg overflow-hidden">
+      {/* Orders Table — Desktop */}
+      <div className="bg-stone-900 border border-stone-800 rounded-lg overflow-hidden hidden md:block">
         <table className="w-full">
           <thead>
             <tr className="border-b border-stone-800">
@@ -96,22 +131,50 @@ export default async function AdminOrdersPage({
                   </span>
                 </td>
                 <td className="px-6 py-4 text-right text-sm text-white font-inter">
-                  €{Number(order.total).toFixed(2)}
+                  &euro;{Number(order.total).toFixed(2)}
                 </td>
                 <td className="px-6 py-4 text-right text-sm text-stone-400 font-inter">
                   {new Date(order.createdAt).toLocaleDateString('it-IT')}
                 </td>
               </tr>
             ))}
-            {orders.length === 0 && (
-              <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-stone-500 text-sm">
-                  Nessun ordine trovato
-                </td>
-              </tr>
-            )}
           </tbody>
         </table>
+        {orders.length === 0 && (
+          <EmptyState
+            icon={ShoppingBag}
+            title={search ? `Nessun ordine per "${search}"` : 'Nessun ordine'}
+            description={search ? 'Prova con una ricerca diversa.' : 'Gli ordini appariranno qui.'}
+          />
+        )}
+      </div>
+
+      {/* Orders — Mobile Card View */}
+      <div className="space-y-3 md:hidden">
+        {orders.map((order) => (
+          <Link key={order.id} href={`/admin/orders/${order.id}`} className="block bg-stone-900 border border-stone-800 rounded-lg p-4 hover:border-stone-700 transition-colors">
+            <div className="flex items-center justify-between mb-2">
+              <span className="font-mono text-gold-500 text-sm">{order.orderNumber}</span>
+              <span className={`px-2 py-0.5 text-xs font-inter font-medium rounded-full border ${statusColors[order.status]}`}>
+                {statusLabels[order.status]}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-white text-sm">{order.shippingName}</p>
+                <p className="text-stone-500 text-xs">{new Date(order.createdAt).toLocaleDateString('it-IT')}</p>
+              </div>
+              <span className="text-white text-sm font-inter font-semibold">&euro;{Number(order.total).toFixed(2)}</span>
+            </div>
+          </Link>
+        ))}
+        {orders.length === 0 && (
+          <EmptyState
+            icon={ShoppingBag}
+            title={search ? `Nessun ordine per "${search}"` : 'Nessun ordine'}
+            description={search ? 'Prova con una ricerca diversa.' : 'Gli ordini appariranno qui.'}
+          />
+        )}
       </div>
 
       {/* Pagination */}
@@ -120,7 +183,7 @@ export default async function AdminOrdersPage({
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <Link
               key={p}
-              href={`/admin/orders?${statusFilter ? `status=${statusFilter}&` : ''}page=${p}`}
+              href={buildUrl({ page: String(p) })}
               className={`px-3 py-1 text-sm rounded ${
                 p === page ? 'bg-gold-500 text-black' : 'bg-stone-800 text-stone-400 hover:text-white'
               }`}

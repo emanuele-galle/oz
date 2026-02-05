@@ -2,6 +2,8 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { motion } from 'framer-motion';
+import { Lock, AlertCircle } from 'lucide-react';
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -40,15 +42,27 @@ export default function AdminLoginPage() {
 
   return (
     <div className="min-h-screen bg-stone-950 flex items-center justify-center px-4">
-      <div className="w-full max-w-sm">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: 'easeOut' }}
+        className="w-full max-w-sm"
+      >
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-4">
+            <div className="w-12 h-12 rounded-full bg-gold-500/10 border border-gold-500/30 flex items-center justify-center">
+              <Lock className="w-5 h-5 text-gold-500" />
+            </div>
+          </div>
           <h1 className="font-cinzel text-3xl text-gold-500 mb-2">OZ Extrait</h1>
           <p className="text-stone-400 text-sm font-inter">Pannello Amministrazione</p>
+          <div className="w-12 h-0.5 bg-gold-500/40 mx-auto mt-4" />
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
-            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm text-center">
+            <div className="p-3 bg-red-500/10 border border-red-500/30 rounded text-red-400 text-sm text-center flex items-center justify-center gap-2">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
               {error}
             </div>
           )}
@@ -85,7 +99,11 @@ export default function AdminLoginPage() {
             {isLoading ? 'Accesso in corso...' : 'Accedi'}
           </button>
         </form>
-      </div>
+
+        <p className="text-center text-stone-600 text-xs font-inter mt-8">
+          OZ Extrait &copy; {new Date().getFullYear()}
+        </p>
+      </motion.div>
     </div>
   );
 }

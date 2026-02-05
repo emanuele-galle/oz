@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { NewsletterActions } from './NewsletterActions';
+import { EmptyState } from '../components/EmptyState';
+import { Mail } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,6 +37,12 @@ export default async function AdminNewsletterPage({
           <h1 className="font-cinzel text-2xl text-white">Newsletter</h1>
           <p className="text-stone-500 text-sm font-inter mt-1">{totalCount} iscritti totali</p>
         </div>
+        <a
+          href="/api/admin/newsletter/export"
+          className="px-4 py-2 border border-stone-700 text-stone-300 text-sm font-inter rounded hover:border-gold-500 hover:text-gold-500 transition-colors"
+        >
+          Esporta CSV
+        </a>
       </div>
 
       {/* Filters */}
@@ -58,8 +66,8 @@ export default async function AdminNewsletterPage({
         ))}
       </div>
 
-      {/* Table */}
-      <div className="bg-stone-900 border border-stone-800 rounded-lg overflow-hidden">
+      {/* Desktop Table */}
+      <div className="bg-stone-900 border border-stone-800 rounded-lg overflow-hidden hidden md:block">
         <table className="w-full">
           <thead>
             <tr className="border-b border-stone-800">
@@ -92,13 +100,37 @@ export default async function AdminNewsletterPage({
             ))}
           </tbody>
         </table>
-
-        {subscribers.length === 0 && (
-          <div className="text-center py-12 text-stone-500 text-sm">
-            Nessun iscritto{filter === 'active' ? ' attivo' : filter === 'inactive' ? ' disattivato' : ''}
-          </div>
-        )}
       </div>
+
+      {/* Mobile Card View */}
+      <div className="space-y-3 md:hidden">
+        {subscribers.map((sub) => (
+          <div key={sub.id} className="bg-stone-900 border border-stone-800 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-white text-sm font-inter truncate">{sub.email}</span>
+              <span className={`px-2 py-0.5 text-xs rounded-full flex-shrink-0 ${
+                sub.active ? 'bg-green-500/10 text-green-400' : 'bg-red-500/10 text-red-400'
+              }`}>
+                {sub.active ? 'Attivo' : 'Disattivato'}
+              </span>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="text-stone-500 text-xs font-inter">
+                {sub.source} · {new Date(sub.createdAt).toLocaleDateString('it-IT')}
+              </p>
+              <NewsletterActions subscriberId={sub.id} active={sub.active} />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {subscribers.length === 0 && (
+        <EmptyState
+          icon={Mail}
+          title="Nessun iscritto"
+          description={filter === 'active' ? 'Nessun iscritto attivo.' : filter === 'inactive' ? 'Nessun iscritto disattivato.' : 'Gli iscritti alla newsletter appariranno qui.'}
+        />
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (

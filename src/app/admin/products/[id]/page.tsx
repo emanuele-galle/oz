@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { ProductForm } from '../components/ProductForm';
+import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,9 +32,11 @@ export default async function AdminProductEditPage({
 
   return (
     <div>
-      <Link href="/admin/products" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-4 inline-block">
-        ← Torna ai Prodotti
-      </Link>
+      <Breadcrumbs items={[
+        { label: 'Dashboard', href: '/admin' },
+        { label: 'Prodotti', href: '/admin/products' },
+        { label: product.name },
+      ]} />
       <h1 className="font-cinzel text-2xl text-white mb-8">Modifica: {product.name}</h1>
       <ProductForm product={serialized} />
     </div>
