@@ -100,6 +100,18 @@ export default function PrivacyPage() {
               protette da crittografia SSL/TLS.
             </p>
           </section>
+          <section className="border-t border-stone-200 pt-8">
+            <h2 className="font-cinzel text-2xl text-stone-900 mb-4">Sviluppo e Gestione Tecnica del Sito</h2>
+            <p>Questo sito web è stato realizzato e viene gestito da:</p>
+            <p className="mt-2">
+              <strong className="text-stone-900">FODI S.r.l. – Startup Innovativa</strong><br />
+              Via Santicelli 18/A, 88068 Soverato (CZ)<br />
+              P.IVA: 03856160793<br />
+              Email: <a href="mailto:info@fodisrl.it" className="text-gold-600 hover:underline">info@fodisrl.it</a><br />
+              Tel: +39 0963 576433<br />
+              Web: <a href="https://www.fodisrl.it" target="_blank" rel="noopener noreferrer" className="text-gold-600 hover:underline">www.fodisrl.it</a>
+            </p>
+          </section>
         </div>
       </div>
     </div>
