@@ -220,6 +220,11 @@ export function Footer() {
                         Termini e Condizioni
                       </Link>
                     </li>
+                    <li>
+                      <Link href="/cookie" className="font-inter text-[12px] text-white/35 hover:text-gold-400 transition-colors duration-300 block min-h-[44px] sm:min-h-0 flex items-center sm:block">
+                        Cookie Policy
+                      </Link>
+                    </li>
                   </ul>
                 </div>
               </FooterSection>
@@ -231,7 +236,8 @@ export function Footer() {
         <div className="py-5 border-t border-white/[0.05]">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <p className="text-white/35 text-[11px] font-inter tracking-wide text-center sm:text-left">
-              &copy; {currentYear} OZ Extrait. Tutti i diritti riservati.
+              &copy; {currentYear} OZ Extrait. Tutti i diritti riservati. — Realizzato da{" "}
+              <a href="https://www.fodisrl.it" target="_blank" rel="noopener noreferrer" className="hover:text-gold-400 transition-colors duration-300">Fodi S.r.l.</a>
             </p>
             <PaymentIcons />
           </div>
