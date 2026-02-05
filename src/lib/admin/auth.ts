@@ -2,7 +2,8 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import bcrypt from 'bcryptjs';
 
-const SESSION_COOKIE = 'oz_admin_session';
+const ADMIN_SESSION_COOKIE = 'oz_admin_session';
+const ACCOUNT_SESSION_COOKIE = 'oz_session';
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
 export async function hashPassword(password: string): Promise<string> {
@@ -29,7 +30,7 @@ export async function createAdminSession(userId: string): Promise<string> {
   });
 
   const cookieStore = await cookies();
-  cookieStore.set(SESSION_COOKIE, token, {
+  cookieStore.set(ADMIN_SESSION_COOKIE, token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
     sameSite: 'lax',
@@ -41,12 +42,17 @@ export async function createAdminSession(userId: string): Promise<string> {
 }
 
 /**
- * Get current admin user from session cookie
- * Returns null if not authenticated or not admin/staff
+ * Get current admin user from session cookie.
+ * Checks admin cookie first, then falls back to account cookie.
+ * This allows users logged in via the site to access admin without separate login.
  */
 export async function getAdminUser() {
   const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value;
+
+  // Try admin session first, then fall back to account session
+  const token =
+    cookieStore.get(ADMIN_SESSION_COOKIE)?.value ||
+    cookieStore.get(ACCOUNT_SESSION_COOKIE)?.value;
 
   if (!token) return null;
 
@@ -56,7 +62,6 @@ export async function getAdminUser() {
   });
 
   if (!session || session.expires < new Date()) {
-    // Clean up expired session
     if (session) {
       await prisma.session.delete({ where: { sessionToken: token } }).catch(() => {});
     }
@@ -76,10 +81,10 @@ export async function getAdminUser() {
  */
 export async function destroyAdminSession() {
   const cookieStore = await cookies();
-  const token = cookieStore.get(SESSION_COOKIE)?.value;
+  const token = cookieStore.get(ADMIN_SESSION_COOKIE)?.value;
 
   if (token) {
     await prisma.session.delete({ where: { sessionToken: token } }).catch(() => {});
-    cookieStore.delete(SESSION_COOKIE);
+    cookieStore.delete(ADMIN_SESSION_COOKIE);
   }
 }

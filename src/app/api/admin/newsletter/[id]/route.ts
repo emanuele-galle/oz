@@ -13,6 +13,12 @@ export async function PATCH(
     }
 
     const { id } = await params;
+
+    const existing = await prisma.newsletterSubscriber.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Iscritto non trovato' }, { status: 404 });
+    }
+
     const { active } = await request.json();
 
     const subscriber = await prisma.newsletterSubscriber.update({
@@ -38,6 +44,11 @@ export async function DELETE(
     }
 
     const { id } = await params;
+
+    const existing = await prisma.newsletterSubscriber.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Iscritto non trovato' }, { status: 404 });
+    }
 
     await prisma.newsletterSubscriber.delete({ where: { id } });
 

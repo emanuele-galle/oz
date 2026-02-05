@@ -1,10 +1,15 @@
 'use client';
 
 /**
- * HOMEPAGE HERO — Scroll-Driven Frame Animation
- * Design: Apple-style sticky canvas that plays video frames on scroll
- * 81 frames from Scintilla video — golden bottle reveal with splash
- * @version 3.0
+ * HOMEPAGE HERO — Scroll-Driven Frame Animation (v5 rebuild)
+ * Apple-style sticky canvas that plays 81 frames on scroll.
+ *
+ * Key design decisions:
+ *  - Section bg is cream (#FBF8F3) to match next section — NO black gaps
+ *  - Static first frame loads instantly (no JS wait)
+ *  - Canvas activates on first frame load, progressive frame loading
+ *  - Fade-to-cream at end of scroll for seamless section transition
+ *  - Uses 100dvh for sticky viewport (handles mobile browser chrome)
  */
 
 import React, { useEffect, useRef, useState, useCallback } from 'react';
@@ -14,171 +19,149 @@ import { ChevronDown } from 'lucide-react';
 
 const TOTAL_FRAMES = 81;
 const FRAME_PATH = '/uploads/frames/scintilla/frame-';
+const CREAM = '#FBF8F3';
 
-function getFrameSrc(index: number): string {
-  const num = String(Math.min(Math.max(index, 1), TOTAL_FRAMES)).padStart(3, '0');
-  return `${FRAME_PATH}${num}.jpg`;
+function frameSrc(i: number): string {
+  return `${FRAME_PATH}${String(Math.min(Math.max(i, 1), TOTAL_FRAMES)).padStart(3, '0')}.jpg`;
 }
 
 export function HomepageHeroLuxury() {
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<HTMLImageElement[]>([]);
-  const [imagesLoaded, setImagesLoaded] = useState(0);
-  const [isReady, setIsReady] = useState(false);
-  const currentFrameRef = useRef(0);
-  const rafRef = useRef<number>(0);
+  const [canvasReady, setCanvasReady] = useState(false);
+  const frameRef = useRef(0);
+  const rafRef = useRef(0);
   const router = useRouter();
 
-  // Scroll progress across the tall section
+  /* ── scroll tracking ─────────────────────────────────── */
   const { scrollYProgress } = useScroll({
-    target: sectionRef,
+    target: containerRef,
     offset: ['start start', 'end end'],
   });
 
-  // Text opacity transforms based on scroll
-  const overlayOpacity = useTransform(scrollYProgress, [0, 0.08], [0.7, 0]);
-  const titleOpacity = useTransform(scrollYProgress, [0, 0.05, 0.35, 0.45], [1, 1, 1, 0]);
-  const titleY = useTransform(scrollYProgress, [0, 0.05, 0.35, 0.45], [0, 0, 0, -60]);
-  const subtitleOpacity = useTransform(scrollYProgress, [0.08, 0.15, 0.35, 0.45], [0, 1, 1, 0]);
-  const taglineOpacity = useTransform(scrollYProgress, [0.4, 0.5, 0.7, 0.78], [0, 1, 1, 0]);
-  const descOpacity = useTransform(scrollYProgress, [0.75, 0.85, 1], [0, 1, 1]);
-  const ctaOpacity = useTransform(scrollYProgress, [0.82, 0.92, 1], [0, 1, 1]);
-  const scrollIndicatorOpacity = useTransform(scrollYProgress, [0, 0.05, 0.9, 1], [1, 1, 1, 0]);
+  // Frame animation uses first 90% of scroll, last 10% is fade-out
+  const frameProgress = useTransform(scrollYProgress, [0, 0.88], [0, 1], { clamp: true });
 
-  // Preload all frames
+  /* ── text layers ─────────────────────────────────────── */
+  const logoOpacity    = useTransform(scrollYProgress, [0, 0.05, 0.30, 0.38], [1, 1, 1, 0]);
+  const logoY          = useTransform(scrollYProgress, [0.30, 0.38], [0, -50]);
+  const subtitleOpacity= useTransform(scrollYProgress, [0, 0.01, 0.30, 0.38], [1, 1, 1, 0]);
+  const taglineOpacity = useTransform(scrollYProgress, [0.35, 0.45, 0.62, 0.70], [0, 1, 1, 0]);
+  const descOpacity    = useTransform(scrollYProgress, [0.62, 0.72, 0.88], [0, 1, 1]);
+  const ctaOpacity     = useTransform(scrollYProgress, [0.68, 0.78, 0.88], [0, 1, 1]);
+  const arrowOpacity   = useTransform(scrollYProgress, [0, 0.04, 0.82, 0.88], [1, 1, 1, 0]);
+
+  // Fade to cream at end — short and tight, no wasted space
+  const fadeToCreem    = useTransform(scrollYProgress, [0.92, 1], [0, 1]);
+
+  /* ── frame preloading ────────────────────────────────── */
   useEffect(() => {
-    const images: HTMLImageElement[] = [];
-    let loaded = 0;
-
+    const imgs: HTMLImageElement[] = [];
     for (let i = 1; i <= TOTAL_FRAMES; i++) {
       const img = new window.Image();
-      img.src = getFrameSrc(i);
-      img.onload = () => {
-        loaded++;
-        setImagesLoaded(loaded);
-        if (loaded === TOTAL_FRAMES) {
-          setIsReady(true);
-        }
-      };
-      img.onerror = () => {
-        loaded++;
-        setImagesLoaded(loaded);
-        if (loaded === TOTAL_FRAMES) setIsReady(true);
-      };
-      images[i - 1] = img;
+      img.src = frameSrc(i);
+      if (i === 1) img.onload = () => setCanvasReady(true);
+      imgs[i - 1] = img;
     }
-
-    imagesRef.current = images;
+    imagesRef.current = imgs;
   }, []);
 
-  // Draw frame on canvas
-  const drawFrame = useCallback((frameIndex: number) => {
+  /* ── canvas drawing ──────────────────────────────────── */
+  const draw = useCallback((idx: number) => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
-    const img = imagesRef.current[frameIndex];
-    if (!canvas || !ctx || !img || !img.complete) return;
+    const img = imagesRef.current[idx];
+    if (!canvas || !ctx || !img?.complete) return;
 
-    // Set canvas to match display size
-    const dpr = typeof window !== 'undefined' ? Math.min(window.devicePixelRatio, 2) : 1;
-    const rect = canvas.getBoundingClientRect();
-    if (canvas.width !== rect.width * dpr || canvas.height !== rect.height * dpr) {
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
+    const dpr = Math.min(window.devicePixelRatio, 2);
+    const { width: cw, height: ch } = canvas.getBoundingClientRect();
+
+    if (canvas.width !== cw * dpr || canvas.height !== ch * dpr) {
+      canvas.width = cw * dpr;
+      canvas.height = ch * dpr;
       ctx.scale(dpr, dpr);
     }
 
-    // Draw with cover behavior
-    const cw = rect.width;
-    const ch = rect.height;
-    const iw = img.naturalWidth;
-    const ih = img.naturalHeight;
-    const scale = Math.max(cw / iw, ch / ih);
-    const sw = iw * scale;
-    const sh = ih * scale;
-    const sx = (cw - sw) / 2;
-    const sy = (ch - sh) / 2;
+    // Cover behavior
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const s = Math.max(cw / iw, ch / ih);
+    const dw = iw * s, dh = ih * s;
 
     ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, sx, sy, sw, sh);
+    ctx.drawImage(img, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
   }, []);
 
-  // Update frame on scroll
-  useMotionValueEvent(scrollYProgress, 'change', (progress) => {
-    const frameIndex = Math.min(
-      Math.floor(progress * (TOTAL_FRAMES - 1)),
-      TOTAL_FRAMES - 1
-    );
-    if (frameIndex !== currentFrameRef.current) {
-      currentFrameRef.current = frameIndex;
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = requestAnimationFrame(() => drawFrame(frameIndex));
+  /* ── scroll → frame mapping ──────────────────────────── */
+  useMotionValueEvent(frameProgress, 'change', (p) => {
+    const target = Math.min(Math.floor(p * (TOTAL_FRAMES - 1)), TOTAL_FRAMES - 1);
+    if (target === frameRef.current) return;
+
+    // Find closest loaded frame
+    let idx = target;
+    if (!imagesRef.current[target]?.complete) {
+      for (let off = 1; off < 10; off++) {
+        if (target - off >= 0 && imagesRef.current[target - off]?.complete) {
+          idx = target - off;
+          break;
+        }
+      }
     }
+
+    frameRef.current = idx;
+    cancelAnimationFrame(rafRef.current);
+    rafRef.current = requestAnimationFrame(() => draw(idx));
   });
 
-  // Draw first frame when ready & handle resize
+  /* ── init & resize ───────────────────────────────────── */
   useEffect(() => {
-    if (isReady) {
-      drawFrame(0);
+    if (!canvasReady) return;
+    draw(0);
+    const onResize = () => {
+      const c = canvasRef.current;
+      if (c) { c.width = 0; c.height = 0; }
+      draw(frameRef.current);
+    };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [canvasReady, draw]);
 
-      const handleResize = () => {
-        const canvas = canvasRef.current;
-        if (canvas) {
-          // Reset canvas dimensions on resize
-          canvas.width = 0;
-          canvas.height = 0;
-        }
-        drawFrame(currentFrameRef.current);
-      };
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, [isReady, drawFrame]);
+  const scrollToProducts = () =>
+    document.getElementById('products')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  const scrollToProducts = () => {
-    const element = document.getElementById('products');
-    element?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  const loadProgress = Math.round((imagesLoaded / TOTAL_FRAMES) * 100);
-
+  /* ── render ──────────────────────────────────────────── */
   return (
-    <section ref={sectionRef} className="relative h-[180vh] md:h-[400vh] bg-stone-950">
-      {/* Sticky viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Canvas */}
-        <canvas
-          ref={canvasRef}
-          className="absolute inset-0 w-full h-full"
-          style={{ display: isReady ? 'block' : 'none' }}
+    <section
+      ref={containerRef}
+      className="relative"
+      style={{ height: '180vh', backgroundColor: CREAM, zIndex: 0 }}
+    >
+      {/* Sticky full-screen viewport — 100dvh handles mobile browser chrome */}
+      <div className="sticky top-0 w-full overflow-hidden" style={{ height: '100dvh' }}>
+
+        {/* BG 1: Static first frame — instant, no JS */}
+        <img
+          src={frameSrc(1)}
+          alt=""
+          aria-hidden
+          className="absolute inset-0 h-full w-full object-cover"
+          fetchPriority="high"
         />
 
-        {/* Loading state — first frame as fallback */}
-        {!isReady && (
-          <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-amber-700/60 to-amber-900/80 flex items-center justify-center">
-            <div className="text-center">
-              <img
-                src="/uploads/images/logo.png"
-                alt="OZ Extrait"
-                className="h-20 md:h-28 lg:h-36 w-auto mx-auto drop-shadow-[0_0_40px_rgba(212,175,55,0.3)]"
-              />
-              <div className="mt-8 w-48 h-[2px] bg-white/10 mx-auto rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-gold-500 transition-all duration-300 rounded-full"
-                  style={{ width: `${loadProgress}%` }}
-                />
-              </div>
-            </div>
-          </div>
-        )}
+        {/* BG 2: Canvas — crossfades over static image */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 h-full w-full transition-opacity duration-500"
+          style={{ opacity: canvasReady ? 1 : 0 }}
+        />
 
-        {/* Gradient — only at bottom for text area, keeps video clean */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/70 pointer-events-none" />
+        {/* Gradient for text readability */}
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-black/15 via-transparent via-50% to-black/60" />
 
-        {/* Logo — centered, visible at start, fades before bottle */}
+        {/* Logo — centered */}
         <motion.div
-          style={{ opacity: titleOpacity, y: titleY }}
           className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none"
+          style={{ opacity: logoOpacity, y: logoY }}
         >
           <img
             src="/uploads/images/logo.png"
@@ -187,32 +170,32 @@ export function HomepageHeroLuxury() {
           />
         </motion.div>
 
-        {/* Bottom text area — all content pinned to bottom, doesn't cover the bottle */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-8">
-          <div className="max-w-4xl mx-auto text-center">
+        {/* Bottom text content */}
+        <div className="absolute inset-x-0 bottom-0 z-10 px-6 pb-10 md:pb-14">
+          <div className="mx-auto max-w-3xl text-center">
 
-            {/* Extrait subtitle — appears as video starts */}
+            {/* Subtitle — visible immediately at scroll 0 */}
             <motion.p
               style={{ opacity: subtitleOpacity }}
-              className="font-playfair text-2xl md:text-3xl text-white/90 italic font-light tracking-wider mb-4 drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
+              className="font-playfair text-xl md:text-2xl lg:text-3xl text-white/90 italic font-light tracking-wider drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]"
             >
               Extrait de Parfum
             </motion.p>
 
-            {/* Tagline — appears during full reveal */}
-            <motion.div style={{ opacity: taglineOpacity }} className="mb-4">
-              <p className="font-playfair text-xl md:text-2xl lg:text-3xl text-white/95 italic font-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
+            {/* Tagline — appears mid-scroll */}
+            <motion.div style={{ opacity: taglineOpacity }} className="mt-3">
+              <p className="font-playfair text-lg md:text-2xl lg:text-3xl text-white/95 italic font-light drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)]">
                 Extrait de Parfum. Extrait d&apos;Âme.
               </p>
-              <p className="font-inter text-xs md:text-sm text-white/50 mt-2 tracking-wide font-light">
+              <p className="font-inter text-[11px] md:text-sm text-white/45 mt-1.5 tracking-wide font-light">
                 Estratto di Profumo. Estratto d&apos;Anima.
               </p>
             </motion.div>
 
-            {/* Description — appears at the end */}
+            {/* Description */}
             <motion.p
               style={{ opacity: descOpacity }}
-              className="font-inter text-sm md:text-base text-white/60 max-w-xl mx-auto leading-relaxed font-light mb-6 drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+              className="mt-4 font-inter text-sm md:text-base text-white/55 max-w-xl mx-auto leading-relaxed font-light drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
             >
               Tre fragranze artigianali al 40% di concentrazione.
               <span className="hidden md:inline"> Heritage veronese. Visione contemporanea.</span>
@@ -221,7 +204,7 @@ export function HomepageHeroLuxury() {
             {/* CTAs */}
             <motion.div
               style={{ opacity: ctaOpacity }}
-              className="flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <button
                 onClick={scrollToProducts}
@@ -229,7 +212,6 @@ export function HomepageHeroLuxury() {
               >
                 Scopri le Fragranze
               </button>
-
               <button
                 onClick={() => router.push('/zoe-cristofoli')}
                 className="px-8 py-3 bg-white/15 backdrop-blur-sm border border-white/50 text-white font-inter text-xs font-medium uppercase tracking-[0.15em] hover:bg-white/25 hover:border-white/70 transition-all duration-300"
@@ -240,20 +222,28 @@ export function HomepageHeroLuxury() {
           </div>
         </div>
 
-        {/* Scroll indicator — top of bottom area */}
+        {/* Scroll indicator */}
         <motion.div
-          style={{ opacity: scrollIndicatorOpacity }}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 z-20 pb-2"
+          style={{ opacity: arrowOpacity }}
+          className="absolute bottom-2 left-1/2 -translate-x-1/2 z-20"
         >
           <motion.div
             animate={{ y: [0, 6, 0] }}
             transition={{ duration: 1.5, repeat: Infinity, ease: 'easeInOut' }}
           >
-            <ChevronDown className="w-4 h-4 text-gold-500/40" />
+            <ChevronDown className="w-5 h-5 text-white/30" />
           </motion.div>
         </motion.div>
-      </div>
 
+        {/* Fade-to-cream overlay — covers everything at end of scroll */}
+        <motion.div
+          style={{ opacity: fadeToCreem }}
+          className="absolute inset-0 z-30 pointer-events-none"
+          aria-hidden
+        >
+          <div className="h-full w-full" style={{ backgroundColor: CREAM }} />
+        </motion.div>
+      </div>
     </section>
   );
 }
