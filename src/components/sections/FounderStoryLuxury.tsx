@@ -70,7 +70,7 @@ export function FounderStoryLuxury() {
                 whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="relative aspect-[16/9] overflow-hidden mt-4"
+                className="relative aspect-[4/3] overflow-hidden mt-4"
               >
                 <Image
                   src="/uploads/images/Zoe-3.jpeg"
