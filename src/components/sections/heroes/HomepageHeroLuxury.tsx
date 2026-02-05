@@ -134,7 +134,7 @@ export function HomepageHeroLuxury() {
     <section
       ref={containerRef}
       className="relative"
-      style={{ height: '180vh', backgroundColor: CREAM, zIndex: 0 }}
+      style={{ height: '280vh', backgroundColor: CREAM, zIndex: 0 }}
     >
       {/* Sticky full-screen viewport — 100dvh handles mobile browser chrome */}
       <div className="sticky top-0 w-full overflow-hidden" style={{ height: '100dvh' }}>

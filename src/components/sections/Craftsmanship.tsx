@@ -83,9 +83,9 @@ export function Craftsmanship() {
                   <ImageReveal
                     src={step.image}
                     alt={step.imageAlt}
-                    width={640}
-                    height={480}
-                    className="aspect-[4/3] w-full"
+                    width={600}
+                    height={600}
+                    className="aspect-square w-full"
                   />
                 </div>
 
