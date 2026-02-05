@@ -1,22 +1,30 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { ReviewActions } from './ReviewActions';
+import { ReviewList } from './ReviewList';
+import { EmptyState } from '../components/EmptyState';
+import { Star } from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminReviewsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ filter?: string; page?: string }>;
+  searchParams: Promise<{ filter?: string; page?: string; product?: string; rating?: string }>;
 }) {
   const params = await searchParams;
   const filter = params.filter || 'pending';
   const page = parseInt(params.page || '1');
   const perPage = 20;
+  const productFilter = params.product || '';
+  const ratingFilter = params.rating ? parseInt(params.rating) : 0;
 
-  const where = filter === 'pending' ? { approved: false } : filter === 'approved' ? { approved: true } : {};
+  const where: any = {};
+  if (filter === 'pending') where.approved = false;
+  else if (filter === 'approved') where.approved = true;
+  if (productFilter) where.productId = productFilter;
+  if (ratingFilter) where.rating = ratingFilter;
 
-  const [reviews, totalCount] = await Promise.all([
+  const [reviews, totalCount, products] = await Promise.all([
     prisma.review.findMany({
       where,
       include: {
@@ -28,9 +36,32 @@ export default async function AdminReviewsPage({
       take: perPage,
     }),
     prisma.review.count({ where }),
+    prisma.product.findMany({
+      select: { id: true, name: true },
+      orderBy: { name: 'asc' },
+    }),
   ]);
 
   const totalPages = Math.ceil(totalCount / perPage);
+
+  // Serialize dates for client component
+  const serializedReviews = reviews.map((r) => ({
+    ...r,
+    createdAt: r.createdAt.toISOString(),
+  }));
+
+  const buildUrl = (extra: Record<string, string | undefined> = {}) => {
+    const p = new URLSearchParams();
+    const f = extra.filter !== undefined ? extra.filter : filter;
+    if (f) p.set('filter', f);
+    const prod = extra.product !== undefined ? extra.product : productFilter;
+    if (prod) p.set('product', prod);
+    const rat = extra.rating !== undefined ? extra.rating : (ratingFilter ? String(ratingFilter) : '');
+    if (rat) p.set('rating', rat);
+    if (extra.page) p.set('page', extra.page);
+    const qs = p.toString();
+    return `/admin/reviews${qs ? `?${qs}` : ''}`;
+  };
 
   return (
     <div>
@@ -40,7 +71,7 @@ export default async function AdminReviewsPage({
       </div>
 
       {/* Filters */}
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-4">
         {[
           { key: 'pending', label: 'Da Approvare' },
           { key: 'approved', label: 'Approvate' },
@@ -48,7 +79,7 @@ export default async function AdminReviewsPage({
         ].map((f) => (
           <Link
             key={f.key}
-            href={`/admin/reviews?filter=${f.key}`}
+            href={buildUrl({ filter: f.key })}
             className={`px-4 py-2 text-xs font-inter uppercase tracking-wide rounded-full border transition-colors ${
               filter === f.key
                 ? 'border-gold-500 bg-gold-500/10 text-gold-500'
@@ -60,44 +91,49 @@ export default async function AdminReviewsPage({
         ))}
       </div>
 
-      {/* Reviews */}
-      <div className="space-y-4">
-        {reviews.map((review) => (
-          <div key={review.id} className="bg-stone-900 border border-stone-800 rounded-lg p-6">
-            <div className="flex items-start justify-between mb-3">
-              <div>
-                <div className="flex items-center gap-3 mb-1">
-                  <span className="text-gold-500 text-sm">{'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}</span>
-                  <span className="text-white font-inter text-sm">{review.user.name || review.user.email}</span>
-                  <span className={`px-2 py-0.5 text-xs rounded-full ${review.approved ? 'bg-green-500/10 text-green-400' : 'bg-yellow-500/10 text-yellow-400'}`}>
-                    {review.approved ? 'Approvata' : 'In Attesa'}
-                  </span>
-                </div>
-                <p className="text-stone-500 text-xs font-inter">
-                  {review.product.name} · {new Date(review.createdAt).toLocaleDateString('it-IT')}
-                </p>
-              </div>
-              <ReviewActions reviewId={review.id} approved={review.approved} />
-            </div>
+      {/* Advanced Filters */}
+      <div className="flex flex-wrap gap-3 mb-6">
+        {/* Product filter */}
+        <div className="flex items-center gap-2">
+          <label className="text-stone-500 text-xs font-inter">Prodotto:</label>
+          <select
+            defaultValue={productFilter}
+            onChange={(e) => { window.location.href = buildUrl({ product: e.target.value || undefined, page: undefined }); }}
+            className="px-3 py-1.5 bg-stone-800 border border-stone-700 rounded text-white text-xs font-inter focus:outline-none focus:border-gold-500"
+          >
+            <option value="">Tutti</option>
+            {products.map((p) => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+        </div>
 
-            {review.title && <h4 className="text-white text-sm font-semibold mb-1">{review.title}</h4>}
-            <p className="text-stone-300 text-sm">{review.comment}</p>
-
-            {review.adminReply && (
-              <div className="mt-3 pl-4 border-l-2 border-gold-500/30">
-                <p className="text-xs text-stone-500 mb-1">Risposta admin:</p>
-                <p className="text-stone-400 text-sm">{review.adminReply}</p>
-              </div>
-            )}
-          </div>
-        ))}
-
-        {reviews.length === 0 && (
-          <div className="text-center py-12 text-stone-500 text-sm">
-            Nessuna recensione{filter === 'pending' ? ' da approvare' : ''}
-          </div>
-        )}
+        {/* Rating filter */}
+        <div className="flex items-center gap-2">
+          <label className="text-stone-500 text-xs font-inter">Rating:</label>
+          <select
+            defaultValue={ratingFilter || ''}
+            onChange={(e) => { window.location.href = buildUrl({ rating: e.target.value || undefined, page: undefined }); }}
+            className="px-3 py-1.5 bg-stone-800 border border-stone-700 rounded text-white text-xs font-inter focus:outline-none focus:border-gold-500"
+          >
+            <option value="">Tutti</option>
+            {[5, 4, 3, 2, 1].map((r) => (
+              <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>
+            ))}
+          </select>
+        </div>
       </div>
+
+      {/* Reviews with bulk selection */}
+      {serializedReviews.length > 0 ? (
+        <ReviewList reviews={serializedReviews} />
+      ) : (
+        <EmptyState
+          icon={Star}
+          title="Nessuna recensione"
+          description="Le recensioni appariranno qui quando i clienti le invieranno."
+        />
+      )}
 
       {/* Pagination */}
       {totalPages > 1 && (
@@ -105,7 +141,7 @@ export default async function AdminReviewsPage({
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((p) => (
             <Link
               key={p}
-              href={`/admin/reviews?filter=${filter}&page=${p}`}
+              href={buildUrl({ page: String(p) })}
               className={`px-3 py-1 text-sm rounded ${
                 p === page ? 'bg-gold-500 text-black' : 'bg-stone-800 text-stone-400 hover:text-white'
               }`}

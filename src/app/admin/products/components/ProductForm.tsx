@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 interface ProductSize {
   id?: string;
@@ -235,14 +236,18 @@ export function ProductForm({ product }: ProductFormProps) {
 
       if (!res.ok) {
         const data = await res.json();
-        setError(data.error || 'Errore durante il salvataggio');
+        const msg = data.error || 'Errore durante il salvataggio';
+        setError(msg);
+        toast.error(msg);
         return;
       }
 
+      toast.success(isEdit ? 'Prodotto aggiornato' : 'Prodotto creato');
       router.push('/admin/products');
       router.refresh();
     } catch {
       setError('Errore di connessione');
+      toast.error('Errore di connessione');
     } finally {
       setIsSaving(false);
     }

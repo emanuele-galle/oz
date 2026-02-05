@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getAdminUser } from '@/lib/admin/auth';
+import { logActivity } from '@/lib/admin/log-activity';
 
 export async function PUT(
   request: NextRequest,
@@ -13,6 +14,12 @@ export async function PUT(
     }
 
     const { id } = await params;
+
+    const existing = await prisma.product.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Prodotto non trovato' }, { status: 404 });
+    }
+
     const body = await request.json();
     const { name, slug, tagline, description, story, basePrice, concentration, season, gender, active, featured, sizes, olfactoryNotes, images } = body;
 
@@ -94,6 +101,8 @@ export async function PUT(
       }
     }
 
+    await logActivity(user.id, 'product.updated', { type: 'product', id }, { name: product.name });
+
     return NextResponse.json({ success: true, product });
   } catch (error: any) {
     console.error('Product update error:', error);
@@ -116,7 +125,13 @@ export async function DELETE(
 
     const { id } = await params;
 
+    const existing = await prisma.product.findUnique({ where: { id } });
+    if (!existing) {
+      return NextResponse.json({ error: 'Prodotto non trovato' }, { status: 404 });
+    }
+
     await prisma.product.delete({ where: { id } });
+    await logActivity(user.id, 'product.deleted', { type: 'product', id }, { name: existing.name });
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

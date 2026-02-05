@@ -131,6 +131,7 @@ model User {
   cart          Cart?
   wishlist      Wishlist?
   addresses     Address[]
+  activityLogs  ActivityLog[]
 
   // Timestamps
   createdAt     DateTime  @default(now())
@@ -420,4 +421,22 @@ model NewsletterSubscriber {
   @@index([email])
   @@index([active])
   @@index([unsubscribeToken])
+}
+
+// ============================================
+// ACTIVITY LOG
+// ============================================
+
+model ActivityLog {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action     String   // "product.created", "order.status_changed"
+  targetType String?
+  targetId   String?
+  details    String?  @db.Text // JSON string
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([userId])
 }

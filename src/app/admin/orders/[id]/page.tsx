@@ -2,6 +2,8 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import { OrderActions } from './OrderActions';
+import { OrderTimeline } from '../../components/OrderTimeline';
+import { Breadcrumbs } from '../../components/Breadcrumbs';
 
 export const dynamic = 'force-dynamic';
 
@@ -30,20 +32,27 @@ export default async function AdminOrderDetailPage({
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <Link href="/admin/orders" className="text-stone-400 text-sm hover:text-gold-500 font-inter mb-2 inline-block">
-            ← Torna agli Ordini
-          </Link>
-          <h1 className="font-cinzel text-2xl text-white">
-            Ordine {order.orderNumber}
-          </h1>
-        </div>
-      </div>
+      <Breadcrumbs items={[
+        { label: 'Dashboard', href: '/admin' },
+        { label: 'Ordini', href: '/admin/orders' },
+        { label: order.orderNumber },
+      ]} />
+
+      <h1 className="font-cinzel text-2xl text-white mb-8">
+        Ordine {order.orderNumber}
+      </h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Order Details */}
         <div className="lg:col-span-2 space-y-6">
+          {/* Timeline */}
+          <OrderTimeline
+            status={order.status}
+            createdAt={order.createdAt.toISOString()}
+            shippedAt={order.shippedAt?.toISOString() || null}
+            deliveredAt={order.deliveredAt?.toISOString() || null}
+          />
+
           {/* Items */}
           <div className="bg-stone-900 border border-stone-800 rounded-lg p-6">
             <h3 className="text-white font-inter text-sm font-semibold uppercase tracking-wide mb-4">Prodotti</h3>
@@ -52,15 +61,15 @@ export default async function AdminOrderDetailPage({
                 <div key={item.id} className="flex items-center justify-between py-2 border-b border-stone-800/50 last:border-0">
                   <div>
                     <p className="text-white text-sm">{item.productName}</p>
-                    <p className="text-stone-500 text-xs">{item.sizeVolume}ml × {item.quantity}</p>
+                    <p className="text-stone-500 text-xs">{item.sizeVolume}ml &times; {item.quantity}</p>
                   </div>
-                  <p className="text-white text-sm font-inter">€{Number(item.subtotal).toFixed(2)}</p>
+                  <p className="text-white text-sm font-inter">&euro;{Number(item.subtotal).toFixed(2)}</p>
                 </div>
               ))}
               <div className="pt-3 space-y-1">
                 <div className="flex justify-between text-stone-400 text-sm">
                   <span>Subtotale</span>
-                  <span>€{Number(order.subtotal).toFixed(2)}</span>
+                  <span>&euro;{Number(order.subtotal).toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between text-stone-400 text-sm">
                   <span>Spedizione</span>
@@ -68,7 +77,7 @@ export default async function AdminOrderDetailPage({
                 </div>
                 <div className="flex justify-between text-gold-500 font-bold text-lg pt-2 border-t border-stone-800">
                   <span>Totale</span>
-                  <span>€{Number(order.total).toFixed(2)}</span>
+                  <span>&euro;{Number(order.total).toFixed(2)}</span>
                 </div>
               </div>
             </div>
