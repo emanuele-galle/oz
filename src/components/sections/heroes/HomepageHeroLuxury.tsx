@@ -201,10 +201,23 @@ export function HomepageHeroLuxury() {
               <span className="hidden md:inline"> Heritage veronese. Visione contemporanea.</span>
             </motion.p>
 
-            {/* CTAs */}
+            {/* Mobile CTA — visible immediately, no scroll needed */}
+            <motion.div
+              style={{ opacity: subtitleOpacity }}
+              className="mt-6 flex lg:hidden flex-col items-center justify-center gap-3"
+            >
+              <button
+                onClick={scrollToProducts}
+                className="px-8 py-3 bg-gold-500 text-stone-950 font-inter text-xs font-semibold uppercase tracking-[0.15em] hover:bg-gold-400 transition-all duration-500"
+              >
+                Scopri le Fragranze
+              </button>
+            </motion.div>
+
+            {/* Desktop CTAs — scroll-driven cinematic reveal */}
             <motion.div
               style={{ opacity: ctaOpacity }}
-              className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4"
+              className="mt-6 hidden lg:flex flex-col sm:flex-row items-center justify-center gap-4"
             >
               <button
                 onClick={scrollToProducts}

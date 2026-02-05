@@ -71,9 +71,9 @@ export function ProductCardLuxury({
             </span>
           </div>
 
-          {/* Hover CTA */}
+          {/* CTA — always visible on mobile, hover on desktop */}
           <div
-            className={`absolute inset-x-0 bottom-6 flex justify-center transition-all duration-400 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}
+            className={`absolute inset-x-0 bottom-6 flex justify-center transition-all duration-400 ${isHovered ? 'opacity-100 translate-y-0' : 'max-lg:opacity-100 max-lg:translate-y-0 opacity-0 translate-y-4'}`}
           >
             <div className="px-8 py-3 bg-gold-500 text-stone-950">
               <span className="font-inter text-xs uppercase tracking-[0.15em] font-semibold">

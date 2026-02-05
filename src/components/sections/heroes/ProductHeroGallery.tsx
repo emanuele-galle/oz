@@ -10,7 +10,7 @@
  * @version 2.0 - Luxury redesign
  */
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Product, ProductSize } from '@/types/product';
@@ -25,10 +25,24 @@ interface ProductHeroGalleryProps {
 export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [selectedSize, setSelectedSize] = useState(0);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+  const addToCartRef = useRef<HTMLButtonElement>(null);
   const { addItem } = useCartStore();
 
   const currentSize = product.sizes[selectedSize];
   const currentImage = product.images[selectedImageIndex];
+
+  // Show sticky bar when main add-to-cart button scrolls out of view
+  useEffect(() => {
+    const btn = addToCartRef.current;
+    if (!btn) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setShowStickyBar(!entry.isIntersecting),
+      { threshold: 0 }
+    );
+    observer.observe(btn);
+    return () => observer.disconnect();
+  }, []);
 
   const handleAddToCart = () => {
     addItem(product, currentSize, 1);
@@ -231,6 +245,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
 
               {/* Add to Cart — Primary action */}
               <button
+                ref={addToCartRef}
                 onClick={handleAddToCart}
                 className="
                   w-full
@@ -326,6 +341,26 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
           </div>
         </div>
       </div>
+
+      {/* Sticky add-to-cart bar — mobile only, appears when main button scrolls away */}
+      {showStickyBar && (
+        <div className="fixed bottom-0 inset-x-0 z-50 lg:hidden bg-white/95 backdrop-blur-sm border-t border-stone-200 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] px-4 py-3"
+          style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
+        >
+          <div className="flex items-center gap-3 max-w-lg mx-auto">
+            <div className="flex-1 min-w-0">
+              <p className="font-cinzel text-sm text-stone-900 truncate">{product.name}</p>
+              <p className="font-cinzel text-lg text-gold-600">€{currentSize.price}</p>
+            </div>
+            <button
+              onClick={handleAddToCart}
+              className="px-6 py-3 bg-gold-500 text-midnight font-inter text-sm font-bold uppercase tracking-wide rounded-sm shadow-[0_4px_16px_rgba(212,175,55,0.25)] hover:bg-gold-400 active:scale-[0.98] transition-all"
+            >
+              Aggiungi
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
