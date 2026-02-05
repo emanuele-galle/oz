@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     siteName: "OZ Extrait",
     images: [
       {
-        url: "/uploads/images/Logo su sfondo gold.jpeg",
+        url: "/uploads/images/og-cover.jpg",
         width: 1200,
         height: 630,
         alt: "OZ Extrait Logo",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "OZ Extrait - Profumi di Lusso",
     description: "Profumi di lusso Extrait de Parfum by Zoe Cristofoli",
-    images: ["/uploads/images/Logo su sfondo gold.jpeg"],
+    images: ["/uploads/images/og-cover.jpg"],
   },
   robots: {
     index: true,
@@ -87,6 +87,9 @@ export default function RootLayout({
   return (
     <html lang="it" className={`${cinzel.variable} ${playfair.variable} ${inter.variable}`}>
       <body className="font-inter antialiased scrollbar-gutter">
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-gold-500 focus:text-stone-950 focus:font-inter focus:text-sm focus:font-semibold">
+          Vai al contenuto principale
+        </a>
         <ClientEffects />
         <Toaster />
         <LayoutShell>{children}</LayoutShell>

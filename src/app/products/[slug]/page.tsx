@@ -5,8 +5,7 @@ import { ProductStoryBlock } from '@/components/product';
 import { OlfactoryJourney } from '@/components/sections/OlfactoryJourney';
 import { ProductSchema, BreadcrumbSchema } from '@/components/JsonLd';
 
-export const revalidate = 3600; // Rivalidare ogni ora (ISR)
-export const dynamic = 'force-dynamic'; // Skip SSG during build, use ISR at runtime
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   // Return empty array durante build per skip SSG
@@ -35,9 +34,15 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   }
 
   return {
-    title: `${product.name} - ${product.tagline || ''} | OZ Extrait`,
+    title: `${product.name} — ${product.tagline || 'Extrait de Parfum'}`,
     description: product.description,
     openGraph: {
+      title: `${product.name} - OZ Extrait`,
+      description: product.description,
+      images: [product.images[0].url],
+    },
+    twitter: {
+      card: 'summary_large_image',
       title: `${product.name} - OZ Extrait`,
       description: product.description,
       images: [product.images[0].url],

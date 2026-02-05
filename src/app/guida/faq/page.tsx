@@ -3,7 +3,7 @@ import { BreadcrumbSchema } from '@/components/JsonLd';
 import { FAQAccordion } from '@/components/sections/FAQAccordion';
 
 export const metadata: Metadata = {
-  title: 'FAQ — Domande Frequenti | OZ Extrait',
+  title: 'FAQ — Domande Frequenti',
   description: 'Risposte a tutte le domande su OZ Extrait: spedizioni, ingredienti, fragranze, pagamenti, conservazione del profumo e molto altro.',
 };
 
