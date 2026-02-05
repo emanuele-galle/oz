@@ -12,6 +12,7 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Product, ProductSize } from '@/types/product';
 import { useCartStore } from '@/store/cartStore';
 import { toast } from 'sonner';
@@ -38,10 +39,10 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
   };
 
   return (
-    <section className="relative min-h-screen bg-cream-50">
+    <section className="relative min-h-screen bg-cream-50 overflow-hidden">
       <div className="grid lg:grid-cols-[60%_40%] min-h-screen">
         {/* LEFT: Gallery — 60% width */}
-        <div className="relative bg-stone-100">
+        <div className="relative bg-stone-100 min-w-0">
           {/* Main Image — sticky on desktop, fixed height on mobile */}
           <div className="lg:sticky lg:top-0 h-[60vh] lg:h-screen flex flex-col">
             {/* Large Image Area */}
@@ -67,7 +68,7 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
             </div>
 
             {/* Thumbnail Strip — Bottom */}
-            <div className="bg-white/95 backdrop-blur-sm border-t border-stone-200 p-4">
+            <div className="bg-white/95 backdrop-blur-sm border-t border-stone-200 p-4 overflow-hidden">
               <div className="flex gap-2 overflow-x-auto scrollbar-hide">
                 {product.images.map((image, index) => (
                   <button
@@ -103,18 +104,18 @@ export function ProductHeroGallery({ product }: ProductHeroGalleryProps) {
         </div>
 
         {/* RIGHT: Product Info — 40% width, sticky */}
-        <div className="relative bg-cream-50">
-          <div className="sticky top-0 h-screen overflow-y-auto py-12 px-6 md:px-12">
+        <div className="relative bg-cream-50 min-w-0">
+          <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-y-auto py-8 px-4 sm:px-6 md:px-12">
             <div className="max-w-xl space-y-8">
               {/* Breadcrumb */}
               <nav className="flex items-center gap-2 text-sm font-inter text-stone-600">
-                <a href="/" className="hover:text-gold-600 transition-colors">
+                <Link href="/" className="hover:text-gold-600 transition-colors">
                   Home
-                </a>
+                </Link>
                 <span>/</span>
-                <a href="/fragranze" className="hover:text-gold-600 transition-colors">
+                <Link href="/fragranze" className="hover:text-gold-600 transition-colors">
                   Fragranze
-                </a>
+                </Link>
                 <span>/</span>
                 <span className="text-stone-700">{product.name}</span>
               </nav>

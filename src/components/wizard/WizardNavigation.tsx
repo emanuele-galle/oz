@@ -52,8 +52,8 @@ export function WizardNavigation({
           className={cn(
             'px-8 py-3 font-inter text-sm font-semibold uppercase tracking-[0.15em] transition-all duration-500',
             nextDisabled
-              ? 'bg-white/10 text-white/20 cursor-not-allowed'
-              : 'bg-gold-500 text-stone-950 hover:bg-gold-400 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]'
+              ? 'bg-white/[0.08] text-white/25 border border-white/10 cursor-not-allowed'
+              : 'bg-gold-500 text-stone-950 hover:bg-gold-400 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]'
           )}
         >
           {nextLabel}

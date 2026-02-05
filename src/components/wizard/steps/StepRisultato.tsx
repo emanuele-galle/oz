@@ -5,6 +5,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { fragranceResults, type FragranceId } from '@/data/fragrance-wizard';
 import { ShinyText } from '@/components/effects/ShinyText';
+import { SplitText } from '@/components/effects/SplitText';
+import { TextReveal } from '@/components/effects/TextReveal';
 import { AuraEffect } from '../effects/AuraEffect';
 import { WizardParticles } from '../effects/WizardParticles';
 import { WizardProgress } from '../WizardProgress';
@@ -19,9 +21,12 @@ export function StepRisultato({ fragranceId, onExploreAll, onRestart }: StepRisu
   const fragrance = fragranceResults[fragranceId];
 
   return (
-    <div className="relative flex flex-col items-center justify-center min-h-[80vh] px-6 py-12">
-      <AuraEffect color={`${fragrance.accentColor}22`} />
-      <WizardParticles color={`${fragrance.accentColor}66`} count={20} speed={0.15} />
+    <div className="relative flex flex-col items-center justify-center min-h-screen px-6 py-16">
+      <AuraEffect color={`${fragrance.accentColor}18`} />
+      <WizardParticles color={`${fragrance.accentColor}55`} count={20} speed={0.15} />
+
+      {/* Decorative border lines */}
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-gold-500/20 to-transparent" />
 
       <div className="relative z-10 w-full max-w-lg space-y-6 text-center">
         {/* Teaser text */}
@@ -46,37 +51,51 @@ export function StepRisultato({ fragranceId, onExploreAll, onRestart }: StepRisu
           transition={{ delay: 0.5, duration: 1, ease: [0.19, 1.0, 0.22, 1.0] }}
           className="relative mx-auto w-56 h-72 md:w-64 md:h-80"
         >
+          {/* Glow behind image */}
+          <div
+            className="absolute inset-0 -m-8 blur-3xl opacity-30 rounded-full"
+            style={{ background: `radial-gradient(circle, ${fragrance.accentColor}40, transparent 70%)` }}
+          />
           <Image
             src={fragrance.image}
             alt={fragrance.name}
             fill
-            className="object-cover"
+            className="object-cover relative z-10"
             sizes="(max-width: 768px) 224px, 256px"
             priority
           />
         </motion.div>
 
-        {/* Name — letter by letter */}
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.6 }}
-          className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-white"
+        {/* Decorative divider */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ delay: 1, duration: 0.6 }}
+          className="flex items-center justify-center gap-3"
         >
-          {fragrance.name}
-        </motion.h2>
+          <div className="h-px w-12 bg-gradient-to-r from-transparent to-gold-500/40" />
+          <div className="w-1.5 h-1.5 bg-gold-500/50 rotate-45" />
+          <div className="h-px w-12 bg-gradient-to-l from-transparent to-gold-500/40" />
+        </motion.div>
 
-        {/* Tagline */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 0.6 }}
-          className="font-playfair text-xl md:text-2xl text-white/70 italic"
+        {/* Name — letter-by-letter SplitText reveal */}
+        <SplitText
+          text={fragrance.name}
+          className="font-cinzel text-4xl md:text-5xl lg:text-6xl text-white text-center justify-center"
+          delay={1.2}
+        />
+
+        {/* Tagline — blur-to-clear TextReveal */}
+        <TextReveal
+          className="font-playfair text-xl md:text-2xl text-white/70 italic justify-center"
+          delay={1.6}
+          animateBy="words"
+          direction="bottom"
         >
           {fragrance.tagline}
-        </motion.p>
+        </TextReveal>
 
-        {/* Details stagger */}
+        {/* Details */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -111,7 +130,7 @@ export function StepRisultato({ fragranceId, onExploreAll, onRestart }: StepRisu
           </Link>
           <button
             onClick={onExploreAll}
-            className="px-8 py-3 border border-white/20 text-white/70 font-inter text-sm font-medium uppercase tracking-[0.15em] hover:border-gold-500/50 hover:text-gold-400 transition-all duration-300"
+            className="px-8 py-3 border border-white/25 text-white/70 font-inter text-sm font-medium uppercase tracking-[0.15em] hover:border-gold-500/50 hover:text-gold-400 transition-all duration-300"
           >
             Vedi Tutte
           </button>
