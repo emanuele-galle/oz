@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { ReviewList } from './ReviewList';
+import { ReviewFilters } from './ReviewFilters';
 import { EmptyState } from '../components/EmptyState';
 import { Star } from 'lucide-react';
 
@@ -92,37 +93,12 @@ export default async function AdminReviewsPage({
       </div>
 
       {/* Advanced Filters */}
-      <div className="flex flex-wrap gap-3 mb-6">
-        {/* Product filter */}
-        <div className="flex items-center gap-2">
-          <label className="text-stone-500 text-xs font-inter">Prodotto:</label>
-          <select
-            defaultValue={productFilter}
-            onChange={(e) => { window.location.href = buildUrl({ product: e.target.value || undefined, page: undefined }); }}
-            className="px-3 py-1.5 bg-stone-800 border border-stone-700 rounded text-white text-xs font-inter focus:outline-none focus:border-gold-500"
-          >
-            <option value="">Tutti</option>
-            {products.map((p) => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* Rating filter */}
-        <div className="flex items-center gap-2">
-          <label className="text-stone-500 text-xs font-inter">Rating:</label>
-          <select
-            defaultValue={ratingFilter || ''}
-            onChange={(e) => { window.location.href = buildUrl({ rating: e.target.value || undefined, page: undefined }); }}
-            className="px-3 py-1.5 bg-stone-800 border border-stone-700 rounded text-white text-xs font-inter focus:outline-none focus:border-gold-500"
-          >
-            <option value="">Tutti</option>
-            {[5, 4, 3, 2, 1].map((r) => (
-              <option key={r} value={r}>{'★'.repeat(r)} ({r})</option>
-            ))}
-          </select>
-        </div>
-      </div>
+      <ReviewFilters
+        products={products}
+        productFilter={productFilter}
+        ratingFilter={ratingFilter}
+        filter={filter}
+      />
 
       {/* Reviews with bulk selection */}
       {serializedReviews.length > 0 ? (
