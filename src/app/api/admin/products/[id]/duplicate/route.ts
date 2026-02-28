@@ -62,9 +62,9 @@ export async function POST(
     });
 
     return NextResponse.json({ success: true, productId: newProduct.id });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Product duplicate error:', error);
-    if (error.code === 'P2002') {
+    if (error instanceof Object && 'code' in error && error.code === 'P2002') {
       return NextResponse.json({ error: 'Slug o SKU già esistente' }, { status: 400 });
     }
     return NextResponse.json({ error: 'Errore nella duplicazione' }, { status: 500 });

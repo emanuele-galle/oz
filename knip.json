@@ -1,0 +1,6 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": ["src/app/**/page.{ts,tsx}", "src/app/**/layout.{ts,tsx}", "src/app/**/route.{ts,tsx}", "src/app/**/loading.{ts,tsx}", "src/app/**/not-found.{ts,tsx}", "next.config.{js,mjs,ts}", "postcss.config.{js,mjs,ts}", "prisma/seed.{ts,js}"],
+  "project": ["src/**/*.{ts,tsx}", "prisma/**/*.ts"],
+  "ignoreDependencies": ["@types/*", "postcss-load-config"]
+}

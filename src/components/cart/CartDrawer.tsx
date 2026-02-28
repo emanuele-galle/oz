@@ -13,7 +13,7 @@ export function CartDrawer() {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   // Lock body scroll when drawer is open

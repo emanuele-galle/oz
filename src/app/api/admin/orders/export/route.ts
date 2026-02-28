@@ -26,7 +26,7 @@ export async function GET() {
         'Content-Disposition': `attachment; filename="ordini-${new Date().toISOString().slice(0, 10)}.csv"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Orders export error:', error);
     return NextResponse.json({ error: 'Errore nell\'esportazione' }, { status: 500 });
   }

@@ -30,7 +30,7 @@ function useReducedMotion() {
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
-    setPrefersReduced(mq.matches);
+    setPrefersReduced(mq.matches); // eslint-disable-line react-hooks/set-state-in-effect
     const handler = (e: MediaQueryListEvent) => setPrefersReduced(e.matches);
     mq.addEventListener('change', handler);
     return () => mq.removeEventListener('change', handler);

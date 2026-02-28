@@ -19,6 +19,7 @@ const mainLinks = [
   { href: '/guida/scegliere-fragranza', label: 'Guida' },
 ];
 
+// eslint-disable-next-line sonarjs/cognitive-complexity -- Header has inherent complexity from responsive states (scroll, mobile menu, dark hero)
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -29,7 +30,7 @@ export function Header() {
   const isDarkHero = DARK_HERO_PAGES.includes(pathname);
 
   useEffect(() => {
-    setIsMounted(true);
+    setIsMounted(true); // eslint-disable-line react-hooks/set-state-in-effect
   }, []);
 
   useEffect(() => {
@@ -50,7 +51,7 @@ export function Header() {
 
   // Close mobile menu on route change
   useEffect(() => {
-    setIsMobileMenuOpen(false);
+    setIsMobileMenuOpen(false); // eslint-disable-line react-hooks/set-state-in-effect
   }, [pathname]);
 
   const isLinkActive = (href: string) => pathname === href;
@@ -268,7 +269,7 @@ export function Header() {
                 transition={{ delay: 0.55 }}
                 className="absolute bottom-10 font-playfair text-sm italic text-stone-400"
               >
-                Extrait de Parfum. Extrait d'Âme.
+                Extrait de Parfum. Extrait d&apos;Âme.
               </motion.p>
             </nav>
           </motion.div>

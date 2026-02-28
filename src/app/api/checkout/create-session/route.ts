@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
     // 2. Calculate totals and validate stock
     let subtotal = 0;
-    const lineItems: any[] = [];
+    const lineItems: Record<string, unknown>[] = [];
 
     for (const item of items) {
       const product = products.find((p) => p.id === item.productId);
@@ -193,11 +193,11 @@ export async function POST(request: NextRequest) {
       orderId: order.id,
       orderNumber: order.orderNumber,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Checkout session creation error:', error);
 
     return NextResponse.json(
-      { error: 'Errore durante la creazione della sessione di pagamento', details: error.message },
+      { error: 'Errore durante la creazione della sessione di pagamento', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

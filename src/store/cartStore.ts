@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { Product, ProductSize } from '@/types/product';
 
-export interface CartItem {
+interface CartItem {
   product: Product;
   size: ProductSize;
   quantity: number;

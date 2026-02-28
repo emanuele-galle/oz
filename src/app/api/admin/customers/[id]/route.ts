@@ -37,7 +37,7 @@ export async function PATCH(
     });
 
     return NextResponse.json({ success: true, user: { id: updated.id, role: updated.role } });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Customer role update error:', error);
     return NextResponse.json({ error: 'Errore nell\'aggiornamento' }, { status: 500 });
   }

@@ -26,7 +26,7 @@ export async function PATCH(request: NextRequest) {
     });
 
     return NextResponse.json({ success: true, size });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Stock update error:', error);
     return NextResponse.json({ error: 'Errore nell\'aggiornamento stock' }, { status: 500 });
   }

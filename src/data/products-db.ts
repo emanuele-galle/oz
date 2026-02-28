@@ -64,7 +64,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 /**
  * Get product by ID
  */
-export async function getProductById(id: string): Promise<Product | null> {
+async function getProductById(id: string): Promise<Product | null> {
   const dbProduct = await prisma.product.findUnique({
     where: { id },
     include: {
@@ -96,7 +96,7 @@ export async function getAllProductSlugs(): Promise<string[]> {
 /**
  * Check product availability (stock)
  */
-export async function checkProductAvailability(productId: string, sizeId: string): Promise<{ available: boolean; stock: number }> {
+async function checkProductAvailability(productId: string, sizeId: string): Promise<{ available: boolean; stock: number }> {
   const size = await prisma.productSize.findUnique({
     where: { id: sizeId },
   });

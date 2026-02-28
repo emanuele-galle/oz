@@ -26,7 +26,7 @@ export async function GET() {
         'Content-Disposition': `attachment; filename="newsletter-${new Date().toISOString().slice(0, 10)}.csv"`,
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Newsletter export error:', error);
     return NextResponse.json({ error: 'Errore nell\'esportazione' }, { status: 500 });
   }

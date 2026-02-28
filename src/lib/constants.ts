@@ -1,8 +1,8 @@
 // OZ Extrait - Business Constants
 
 export const FREE_SHIPPING_THRESHOLD = 200; // EUR
-export const CURRENCY = 'EUR';
-export const BRAND_NAME = 'OZ Extrait';
+const CURRENCY = 'EUR';
+const BRAND_NAME = 'OZ Extrait';
 export const SITE_URL = 'https://oz.fodivps2.cloud';
 
 // Shipping costs by zone

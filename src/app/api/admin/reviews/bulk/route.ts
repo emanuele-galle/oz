@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ success: true, count: ids.length });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Bulk review action error:', error);
     return NextResponse.json({ error: 'Errore nell\'operazione' }, { status: 500 });
   }

@@ -22,7 +22,7 @@ export default function PrivacyPage() {
             <p>
               Il Titolare del trattamento dei dati personali è OZ Extrait, con sede a Verona, Italia.
               Per qualsiasi informazione relativa al trattamento dei dati personali è possibile
-              contattarci all'indirizzo email: <a href="mailto:privacy@oz.fodivps2.cloud" className="text-gold-600 hover:underline">privacy@oz.fodivps2.cloud</a>.
+              contattarci all&apos;indirizzo email: <a href="mailto:privacy@oz.fodivps2.cloud" className="text-gold-600 hover:underline">privacy@oz.fodivps2.cloud</a>.
             </p>
           </section>
 
@@ -31,7 +31,7 @@ export default function PrivacyPage() {
             <p>Raccogliamo i seguenti dati personali:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li><strong>Dati di navigazione:</strong> indirizzo IP, tipo di browser, pagine visitate, orario di accesso.</li>
-              <li><strong>Dati forniti volontariamente:</strong> nome, email, indirizzo di spedizione, numero di telefono forniti durante il checkout o l'iscrizione alla newsletter.</li>
+              <li><strong>Dati forniti volontariamente:</strong> nome, email, indirizzo di spedizione, numero di telefono forniti durante il checkout o l&apos;iscrizione alla newsletter.</li>
               <li><strong>Dati di pagamento:</strong> elaborati direttamente da Stripe Inc. Non conserviamo numeri di carta di credito sui nostri server.</li>
             </ul>
           </section>
@@ -52,18 +52,18 @@ export default function PrivacyPage() {
             <h2 className="font-cinzel text-2xl text-stone-900 mb-4">4. Base Giuridica</h2>
             <p>
               Il trattamento dei dati si basa su: esecuzione del contratto di vendita,
-              consenso dell'interessato (per newsletter), obbligo legale, legittimo interesse
+              consenso dell&apos;interessato (per newsletter), obbligo legale, legittimo interesse
               del titolare (per sicurezza e miglioramento del servizio).
             </p>
           </section>
 
           <section>
-            <h2 className="font-cinzel text-2xl text-stone-900 mb-4">5. Diritti dell'Interessato</h2>
+            <h2 className="font-cinzel text-2xl text-stone-900 mb-4">5. Diritti dell&apos;Interessato</h2>
             <p>Ai sensi del GDPR (Regolamento UE 2016/679), hai diritto a:</p>
             <ul className="list-disc pl-6 space-y-2">
               <li>Accedere ai tuoi dati personali.</li>
               <li>Rettificare dati inesatti o incompleti.</li>
-              <li>Cancellare i tuoi dati ("diritto all'oblio").</li>
+              <li>Cancellare i tuoi dati (&ldquo;diritto all&apos;oblio&rdquo;).</li>
               <li>Limitare il trattamento dei dati.</li>
               <li>Opporti al trattamento.</li>
               <li>Richiedere la portabilità dei dati.</li>

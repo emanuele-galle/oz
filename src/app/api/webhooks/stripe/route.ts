@@ -27,8 +27,8 @@ export async function POST(request: NextRequest) {
     let event: Stripe.Event;
     try {
       event = verifyStripeSignature(body, signature);
-    } catch (err: any) {
-      console.error('Webhook signature verification failed:', err.message);
+    } catch (err: unknown) {
+      console.error('Webhook signature verification failed:', err instanceof Error ? err.message : err);
       return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
     }
 
@@ -53,10 +53,10 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ received: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Webhook handler error:', error);
     return NextResponse.json(
-      { error: 'Webhook handler failed', details: error.message },
+      { error: 'Webhook handler failed', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks';
 
-export interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectProps extends React.SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   error?: string;
   helperText?: string;
@@ -24,7 +24,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     // Shake animation on error change
     useEffect(() => {
       if (error && !shouldReduceMotion) {
-        setShouldShake(true);
+        setShouldShake(true); // eslint-disable-line react-hooks/set-state-in-effect
         const timer = setTimeout(() => setShouldShake(false), 500);
         return () => clearTimeout(timer);
       }

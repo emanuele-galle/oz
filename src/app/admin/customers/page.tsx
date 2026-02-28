@@ -29,7 +29,7 @@ export default async function AdminCustomersPage({
   const page = parseInt(params.page || '1');
   const perPage = 20;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
   if (filter === 'customers') where.role = 'CUSTOMER';
   if (filter === 'staff') where.role = 'STAFF';
   if (filter === 'admin') where.role = 'ADMIN';

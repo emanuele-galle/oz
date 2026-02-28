@@ -68,7 +68,7 @@ export default async function AdminActivityPage({
       ) : (
         <div className="space-y-2">
           {logs.map((log) => {
-            let details: Record<string, any> = {};
+            let details: Record<string, unknown> = {};
             try { if (log.details) details = JSON.parse(log.details); } catch {}
 
             return (
@@ -78,9 +78,9 @@ export default async function AdminActivityPage({
                     <span className={`text-sm font-inter font-medium ${actionColors[log.action] || 'text-stone-300'}`}>
                       {actionLabels[log.action] || log.action}
                     </span>
-                    {log.targetType && details.name && (
+                    {log.targetType && !!details.name && (
                       <span className="text-stone-400 text-sm font-inter truncate">
-                        — {details.name}
+                        — {String(details.name)}
                       </span>
                     )}
                   </div>

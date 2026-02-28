@@ -42,7 +42,7 @@ export async function POST(request: NextRequest) {
       success: true,
       url: `/uploads/images/${filename}`,
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Upload error:', error);
     return NextResponse.json({ error: 'Errore durante l\'upload' }, { status: 500 });
   }

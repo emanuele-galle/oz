@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
         active: active ?? true,
         featured: featured ?? false,
         sizes: {
-          create: sizes?.map((s: any) => ({
+          create: sizes?.map((s: { volume: number; price: number; sku?: string; stockQuantity?: number; lowStockThreshold?: number }) => ({
             volume: s.volume,
             price: s.price,
             sku: s.sku || `${slug}-${s.volume}ml`,
@@ -40,14 +40,14 @@ export async function POST(request: NextRequest) {
           })) || [],
         },
         olfactoryNotes: {
-          create: olfactoryNotes?.map((n: any) => ({
+          create: olfactoryNotes?.map((n: { category: string; note: string; order?: number }) => ({
             category: n.category,
             note: n.note,
             order: n.order ?? 0,
           })) || [],
         },
         images: {
-          create: images?.map((img: any) => ({
+          create: images?.map((img: { url: string; alt?: string; isPrimary?: boolean; order?: number }) => ({
             url: img.url,
             alt: img.alt || '',
             isPrimary: img.isPrimary ?? false,
@@ -60,9 +60,9 @@ export async function POST(request: NextRequest) {
     await logActivity(user.id, 'product.created', { type: 'product', id: product.id }, { name: product.name });
 
     return NextResponse.json({ success: true, product });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Product create error:', error);
-    if (error.code === 'P2002') {
+    if (error instanceof Object && 'code' in error && error.code === 'P2002') {
       return NextResponse.json({ error: 'Slug o SKU già esistente' }, { status: 400 });
     }
     return NextResponse.json({ error: 'Errore nella creazione' }, { status: 500 });

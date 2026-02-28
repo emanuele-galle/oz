@@ -35,7 +35,7 @@ export default async function AdminOrdersPage({
   const page = parseInt(params.page || '1');
   const perPage = 20;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
   if (statusFilter) where.status = statusFilter;
   if (search) {
     where.OR = [
@@ -78,6 +78,7 @@ export default async function AdminOrdersPage({
         <h1 className="font-cinzel text-2xl text-white">Ordini</h1>
         <div className="flex items-center gap-3">
           <OrderSearch />
+          {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- CSV download link, not a navigation */}
           <a
             href="/api/admin/orders/export"
             className="px-4 py-2 border border-stone-700 text-stone-300 text-sm font-inter rounded hover:border-gold-500 hover:text-gold-500 transition-colors"

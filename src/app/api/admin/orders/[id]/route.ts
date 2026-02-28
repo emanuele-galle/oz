@@ -6,6 +6,7 @@ import { logActivity } from '@/lib/admin/log-activity';
 
 const VALID_STATUSES = ['PENDING', 'PROCESSING', 'SHIPPED', 'DELIVERED', 'CANCELLED', 'REFUNDED'];
 
+// eslint-disable-next-line sonarjs/cognitive-complexity -- Order update handles status transitions, email notifications and timestamps
 export async function PATCH(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -31,7 +32,7 @@ export async function PATCH(
       return NextResponse.json({ error: 'Ordine non trovato' }, { status: 404 });
     }
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
 
     if (status) updateData.status = status;
     if (trackingNumber !== undefined) updateData.trackingNumber = trackingNumber;
@@ -87,7 +88,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ success: true, order });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Order update error:', error);
     return NextResponse.json({ error: 'Errore nell\'aggiornamento' }, { status: 500 });
   }

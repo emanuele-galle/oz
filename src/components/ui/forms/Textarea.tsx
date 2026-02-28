@@ -8,7 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { useReducedMotion } from '@/hooks';
 
-export interface TextareaProps
+interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   error?: string;
@@ -18,6 +18,7 @@ export interface TextareaProps
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
+  // eslint-disable-next-line sonarjs/cognitive-complexity -- Form component needs multiple state handlers for validation, focus, char count
   ({ className, label, error, helperText, showCharCount, showSuccess, value, maxLength, ...props }, ref) => {
     const [isFocused, setIsFocused] = useState(false);
     const [hasValue, setHasValue] = useState(false);
@@ -28,14 +29,14 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     // Track value state
     useEffect(() => {
       const currentValue = (value || props.defaultValue || '') as string;
-      setHasValue(!!currentValue);
-      setCharCount(currentValue.length);
+      setHasValue(!!currentValue); // eslint-disable-line react-hooks/set-state-in-effect
+      setCharCount(currentValue.length); // eslint-disable-line react-hooks/set-state-in-effect
     }, [value, props.defaultValue]);
 
     // Shake animation on error change
     useEffect(() => {
       if (error && !shouldReduceMotion) {
-        setShouldShake(true);
+        setShouldShake(true); // eslint-disable-line react-hooks/set-state-in-effect
         const timer = setTimeout(() => setShouldShake(false), 500);
         return () => clearTimeout(timer);
       }

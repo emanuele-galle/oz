@@ -22,7 +22,7 @@ export async function PATCH(
 
     const { action, adminReply } = await request.json();
 
-    const updateData: any = {};
+    const updateData: Record<string, unknown> = {};
 
     if (action === 'approve') updateData.approved = true;
     if (action === 'reject') updateData.approved = false;
@@ -46,7 +46,7 @@ export async function PATCH(
     }
 
     return NextResponse.json({ success: true, review });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Review update error:', error);
     return NextResponse.json({ error: 'Errore nell\'aggiornamento' }, { status: 500 });
   }
@@ -73,7 +73,7 @@ export async function DELETE(
     await logActivity(user.id, 'review.deleted', { type: 'review', id });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Review delete error:', error);
     return NextResponse.json({ error: 'Errore nell\'eliminazione' }, { status: 500 });
   }

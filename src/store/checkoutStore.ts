@@ -5,7 +5,7 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import type { ShippingAddress } from '@/lib/validations/checkout';
 
-export type CheckoutStep = 'cart' | 'shipping' | 'payment' | 'confirmation';
+type CheckoutStep = 'cart' | 'shipping' | 'payment' | 'confirmation';
 
 interface CheckoutState {
   // Current step

@@ -25,8 +25,8 @@ export function verifyStripeSignature(
 
   try {
     return stripe.webhooks.constructEvent(payload, signature, webhookSecret);
-  } catch (err: any) {
-    throw new Error(`Webhook signature verification failed: ${err.message}`);
+  } catch (err: unknown) {
+    throw new Error(`Webhook signature verification failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
   }
 }
 
@@ -37,6 +37,6 @@ export function formatAmountForStripe(amount: number, currency: string = 'eur'):
 }
 
 // Format amount from Stripe (cents to euros)
-export function formatAmountFromStripe(amount: number, currency: string = 'eur'): number {
+function formatAmountFromStripe(amount: number, currency: string = 'eur'): number {
   return amount / 100;
 }

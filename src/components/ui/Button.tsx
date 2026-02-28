@@ -37,7 +37,7 @@ interface Ripple {
   y: number;
 }
 
-export interface ButtonProps
+interface ButtonProps
   extends Omit<HTMLMotionProps<'button'>, 'ref'>,
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
@@ -98,7 +98,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         whileHover={disabled || loading ? undefined : "hover"}
         whileTap={disabled || loading ? undefined : "tap"}
         style={shouldReduceMotion || disableMagnetic ? undefined : { x, y }}
-        {...(restProps as any)}
+        {...(restProps as Record<string, unknown>)}
       >
         {/* Ripple effect overlay */}
         {ripples.map((ripple) => (
@@ -141,4 +141,4 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
 Button.displayName = "Button";
 
-export { Button, buttonVariants };
+export { Button };

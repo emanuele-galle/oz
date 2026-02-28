@@ -27,7 +27,7 @@ export async function PATCH(
     });
 
     return NextResponse.json({ success: true, subscriber });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Newsletter update error:', error);
     return NextResponse.json({ error: 'Errore nell\'aggiornamento' }, { status: 500 });
   }
@@ -53,7 +53,7 @@ export async function DELETE(
     await prisma.newsletterSubscriber.delete({ where: { id } });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Newsletter delete error:', error);
     return NextResponse.json({ error: 'Errore nell\'eliminazione' }, { status: 500 });
   }

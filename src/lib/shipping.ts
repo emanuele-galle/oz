@@ -2,9 +2,9 @@
 
 import { SHIPPING_COSTS, EU_COUNTRIES, FREE_SHIPPING_THRESHOLD } from './constants';
 
-export type ShippingZone = 'IT' | 'EU' | 'EXTRA_EU';
+type ShippingZone = 'IT' | 'EU' | 'EXTRA_EU';
 
-export function getShippingZone(countryCode: string): ShippingZone {
+function getShippingZone(countryCode: string): ShippingZone {
   if (countryCode === 'IT') return 'IT';
   if ((EU_COUNTRIES as readonly string[]).includes(countryCode)) return 'EU';
   return 'EXTRA_EU';
