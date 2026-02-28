@@ -3,6 +3,7 @@
 export const dynamic = 'force-dynamic';
 
 import React, { useState, Suspense } from 'react';
+import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
 function UnsubscribeContent() {
@@ -93,12 +94,12 @@ function UnsubscribeContent() {
             </div>
             <h1 className="font-cinzel text-3xl text-white mb-4">Disiscrizione Completata</h1>
             <p className="text-white/60 mb-8">{message}</p>
-            <a
+            <Link
               href="/"
               className="inline-block px-8 py-3 bg-gold text-black font-inter text-sm uppercase tracking-wider hover:bg-gold/90 transition-all duration-300"
             >
               Torna alla Home
-            </a>
+            </Link>
           </>
         )}
 

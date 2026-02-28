@@ -21,13 +21,13 @@ export const shippingAddressSchema = z.object({
 export type ShippingAddress = z.infer<typeof shippingAddressSchema>;
 
 // Order Item Schema (per validazione checkout)
-export const orderItemSchema = z.object({
+const orderItemSchema = z.object({
   productId: z.string().cuid(),
   sizeId: z.string().cuid(),
   quantity: z.number().int().min(1).max(10),
 });
 
-export type OrderItem = z.infer<typeof orderItemSchema>;
+type OrderItem = z.infer<typeof orderItemSchema>;
 
 // Checkout Session Create Schema
 export const createCheckoutSessionSchema = z.object({
@@ -36,10 +36,10 @@ export const createCheckoutSessionSchema = z.object({
   customerNotes: z.string().max(500).optional(),
 });
 
-export type CreateCheckoutSession = z.infer<typeof createCheckoutSessionSchema>;
+type CreateCheckoutSession = z.infer<typeof createCheckoutSessionSchema>;
 
 // Payment Intent Metadata Schema
-export const paymentIntentMetadataSchema = z.object({
+const paymentIntentMetadataSchema = z.object({
   orderId: z.string().cuid(),
   userId: z.string().cuid().optional(),
   email: z.string().email(),

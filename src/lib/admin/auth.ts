@@ -6,7 +6,7 @@ const ADMIN_SESSION_COOKIE = 'oz_admin_session';
 const ACCOUNT_SESSION_COOKIE = 'oz_session';
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7; // 7 days
 
-export async function hashPassword(password: string): Promise<string> {
+async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
 }
 

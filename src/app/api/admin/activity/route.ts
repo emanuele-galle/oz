@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
     ]);
 
     return NextResponse.json({ logs, total, page, perPage });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Activity log error:', error);
     return NextResponse.json({ error: 'Errore nel caricamento' }, { status: 500 });
   }

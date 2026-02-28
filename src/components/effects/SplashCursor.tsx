@@ -509,7 +509,7 @@ export function SplashCursor({
 
     function applyInputs() { for (const p of pointers) { if (p.moved) { p.moved = false; splatPointer(p); } } }
 
-    function step(dt: number) {
+    function step(dt: number) { // eslint-disable-line sonarjs/cognitive-complexity -- WebGL fluid simulation requires sequential pipeline steps
       gl.disable(gl.BLEND);
       curlProgram.bind();
       if (curlProgram.uniforms.texelSize) gl.uniform2f(curlProgram.uniforms.texelSize, velocity.texelSizeX, velocity.texelSizeY);

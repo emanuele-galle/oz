@@ -4,7 +4,7 @@ export async function logActivity(
   userId: string,
   action: string,
   target?: { type: string; id: string },
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 ) {
   try {
     await prisma.activityLog.create({

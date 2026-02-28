@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export function BulkReviewActions({ reviewIds }: { reviewIds: string[] }) {
+function BulkReviewActions({ reviewIds }: { reviewIds: string[] }) {
   const router = useRouter();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const [isLoading, setIsLoading] = useState(false);

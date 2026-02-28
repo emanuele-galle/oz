@@ -125,7 +125,9 @@ interface AuroraProps {
 function AuroraInner({ colorStops = ['#D4AF37', '#E8D48B', '#FEFDFB'], amplitude = 1.0, blend = 0.5, speed = 1.0 }: AuroraProps) {
   const ctnDom = useRef<HTMLDivElement>(null);
   const propsRef = useRef({ colorStops, amplitude, blend, speed });
-  propsRef.current = { colorStops, amplitude, blend, speed };
+  useEffect(() => {
+    propsRef.current = { colorStops, amplitude, blend, speed };
+  });
 
   useEffect(() => {
     const ctn = ctnDom.current;
@@ -142,19 +144,6 @@ function AuroraInner({ colorStops = ['#D4AF37', '#E8D48B', '#FEFDFB'], amplitude
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
     gl.canvas.style.backgroundColor = 'transparent';
 
-    let program: Program | undefined;
-
-    function resize() {
-      if (!ctn) return;
-      const width = ctn.offsetWidth;
-      const height = ctn.offsetHeight;
-      renderer.setSize(width, height);
-      if (program) {
-        program.uniforms.uResolution.value = [width, height];
-      }
-    }
-    window.addEventListener('resize', resize);
-
     const geometry = new Triangle(gl);
     if (geometry.attributes.uv) {
       delete geometry.attributes.uv;
@@ -165,7 +154,7 @@ function AuroraInner({ colorStops = ['#D4AF37', '#E8D48B', '#FEFDFB'], amplitude
       return [c.r, c.g, c.b];
     });
 
-    program = new Program(gl, {
+    const program = new Program(gl, {
       vertex: VERT,
       fragment: FRAG,
       uniforms: {
@@ -176,6 +165,15 @@ function AuroraInner({ colorStops = ['#D4AF37', '#E8D48B', '#FEFDFB'], amplitude
         uBlend: { value: blend },
       },
     });
+
+    function resize() {
+      if (!ctn) return;
+      const width = ctn.offsetWidth;
+      const height = ctn.offsetHeight;
+      renderer.setSize(width, height);
+      program.uniforms.uResolution.value = [width, height];
+    }
+    window.addEventListener('resize', resize);
 
     const mesh = new Mesh(gl, { geometry, program });
     ctn.appendChild(gl.canvas);

@@ -96,7 +96,7 @@ export function ProductForm({ product }: ProductFormProps) {
 
   const updateSize = (index: number, field: keyof ProductSize, value: string | number) => {
     const updated = [...sizes];
-    (updated[index] as any)[field] = value;
+    updated[index] = { ...updated[index], [field]: value };
     setSizes(updated);
   };
 
@@ -174,12 +174,12 @@ export function ProductForm({ product }: ProductFormProps) {
     }
   };
 
-  const updateImage = (index: number, field: keyof ProductImage, value: any) => {
+  const updateImage = (index: number, field: keyof ProductImage, value: string | boolean | number) => {
     const updated = [...images];
     if (field === 'isPrimary' && value === true) {
       updated.forEach((img, i) => { img.isPrimary = i === index; });
     } else {
-      (updated[index] as any)[field] = value;
+      updated[index] = { ...updated[index], [field]: value };
     }
     setImages(updated);
   };
@@ -209,11 +209,11 @@ export function ProductForm({ product }: ProductFormProps) {
       concentration, season, gender, active, featured,
       sizes: sizes.map((s) => ({
         id: s.id,
-        volume: typeof s.volume === 'string' ? parseInt(s.volume as any) : s.volume,
-        price: typeof s.price === 'string' ? parseFloat(s.price as any) : s.price,
+        volume: typeof s.volume === 'string' ? parseInt(String(s.volume)) : s.volume,
+        price: typeof s.price === 'string' ? parseFloat(String(s.price)) : s.price,
         sku: s.sku,
-        stockQuantity: typeof s.stockQuantity === 'string' ? parseInt(s.stockQuantity as any) : s.stockQuantity,
-        lowStockThreshold: typeof s.lowStockThreshold === 'string' ? parseInt(s.lowStockThreshold as any) : s.lowStockThreshold,
+        stockQuantity: typeof s.stockQuantity === 'string' ? parseInt(String(s.stockQuantity)) : s.stockQuantity,
+        lowStockThreshold: typeof s.lowStockThreshold === 'string' ? parseInt(String(s.lowStockThreshold)) : s.lowStockThreshold,
       })),
       olfactoryNotes,
       images: images.map((img, i) => ({

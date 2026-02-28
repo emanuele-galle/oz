@@ -29,7 +29,7 @@ const inputVariants = cva(
   }
 );
 
-export interface InputProps
+interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
     VariantProps<typeof inputVariants> {
   label?: string;
@@ -47,13 +47,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     // Track value state
     useEffect(() => {
-      setHasValue(!!value || !!props.defaultValue);
+      setHasValue(!!value || !!props.defaultValue); // eslint-disable-line react-hooks/set-state-in-effect
     }, [value, props.defaultValue]);
 
     // Shake animation on error change
     useEffect(() => {
       if (error && !shouldReduceMotion) {
-        setShouldShake(true);
+        setShouldShake(true); // eslint-disable-line react-hooks/set-state-in-effect
         const timer = setTimeout(() => setShouldShake(false), 500);
         return () => clearTimeout(timer);
       }
@@ -154,4 +154,4 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 );
 Input.displayName = 'Input';
 
-export { Input, inputVariants };
+export { Input };

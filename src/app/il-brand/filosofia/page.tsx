@@ -6,6 +6,7 @@ import { BreadcrumbSchema } from '@/components/JsonLd';
 import { ImageReveal } from '@/components/effects/ImageReveal';
 import { CountUp } from '@/components/effects/CountUp';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'La Nostra Filosofia — OZ Extrait',
@@ -313,12 +314,12 @@ export default function FilosofiaPage() {
               Autentiche, artigianali, indimenticabili.
             </Body>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <a
+              <Link
                 href="/#products"
                 className="px-10 py-4 bg-gold-500 text-stone-950 font-inter text-sm font-semibold uppercase tracking-[0.15em] hover:bg-gold-400 hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] transition-all duration-500"
               >
                 Scopri le Fragranze
-              </a>
+              </Link>
               <a
                 href="/zoe-cristofoli"
                 className="px-10 py-4 border border-white/30 text-white/90 font-inter text-sm font-medium uppercase tracking-[0.15em] hover:border-gold-500 hover:text-gold-400 transition-all duration-300"

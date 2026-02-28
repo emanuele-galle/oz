@@ -19,7 +19,7 @@ export default async function AdminReviewsPage({
   const productFilter = params.product || '';
   const ratingFilter = params.rating ? parseInt(params.rating) : 0;
 
-  const where: any = {};
+  const where: Record<string, unknown> = {};
   if (filter === 'pending') where.approved = false;
   else if (filter === 'approved') where.approved = true;
   if (productFilter) where.productId = productFilter;

@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getAdminUser } from '@/lib/admin/auth';
 import { logActivity } from '@/lib/admin/log-activity';
 
+// eslint-disable-next-line sonarjs/cognitive-complexity -- Product update handles sizes, notes, and images upsert
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -75,7 +76,7 @@ export async function PUT(
       await prisma.olfactoryNote.deleteMany({ where: { productId: id } });
       if (olfactoryNotes.length > 0) {
         await prisma.olfactoryNote.createMany({
-          data: olfactoryNotes.map((n: any) => ({
+          data: olfactoryNotes.map((n: { category: string; note: string; order?: number }) => ({
             productId: id,
             category: n.category,
             note: n.note,
@@ -90,7 +91,7 @@ export async function PUT(
       await prisma.productImage.deleteMany({ where: { productId: id } });
       if (images.length > 0) {
         await prisma.productImage.createMany({
-          data: images.map((img: any) => ({
+          data: images.map((img: { url: string; alt?: string; isPrimary?: boolean; order?: number }) => ({
             productId: id,
             url: img.url,
             alt: img.alt || '',
@@ -104,9 +105,9 @@ export async function PUT(
     await logActivity(user.id, 'product.updated', { type: 'product', id }, { name: product.name });
 
     return NextResponse.json({ success: true, product });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Product update error:', error);
-    if (error.code === 'P2002') {
+    if (error instanceof Object && 'code' in error && error.code === 'P2002') {
       return NextResponse.json({ error: 'Slug o SKU già esistente' }, { status: 400 });
     }
     return NextResponse.json({ error: 'Errore nell\'aggiornamento' }, { status: 500 });
@@ -134,7 +135,7 @@ export async function DELETE(
     await logActivity(user.id, 'product.deleted', { type: 'product', id }, { name: existing.name });
 
     return NextResponse.json({ success: true });
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Product delete error:', error);
     return NextResponse.json({ error: 'Errore nell\'eliminazione' }, { status: 500 });
   }

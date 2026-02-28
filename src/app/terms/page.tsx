@@ -20,9 +20,9 @@ export default function TermsPage() {
           <section>
             <h2 className="font-cinzel text-2xl text-stone-900 mb-4">1. Informazioni Generali</h2>
             <p>
-              Le presenti condizioni generali di vendita regolano l'acquisto di prodotti attraverso
+              Le presenti condizioni generali di vendita regolano l&apos;acquisto di prodotti attraverso
               il sito web oz.fodivps2.cloud, gestito da OZ Extrait con sede a Verona, Italia.
-              Effettuando un ordine, l'utente accetta integralmente le presenti condizioni.
+              Effettuando un ordine, l&apos;utente accetta integralmente le presenti condizioni.
             </p>
           </section>
 
@@ -31,7 +31,7 @@ export default function TermsPage() {
             <p>
               I prodotti venduti sono profumi Extrait de Parfum artigianali. Le immagini e le
               descrizioni dei prodotti sono il più possibile fedeli alla realtà. Piccole variazioni
-              nel colore o nel packaging possono verificarsi tra un lotto e l'altro a causa della
+              nel colore o nel packaging possono verificarsi tra un lotto e l&apos;altro a causa della
               natura artigianale della produzione.
             </p>
           </section>
@@ -39,7 +39,7 @@ export default function TermsPage() {
           <section>
             <h2 className="font-cinzel text-2xl text-stone-900 mb-4">3. Prezzi e Pagamenti</h2>
             <ul className="list-disc pl-6 space-y-2">
-              <li>Tutti i prezzi sono espressi in Euro (EUR) e includono l'IVA.</li>
+              <li>Tutti i prezzi sono espressi in Euro (EUR) e includono l&apos;IVA.</li>
               <li>I pagamenti sono gestiti tramite Stripe, piattaforma di pagamento sicura certificata PCI-DSS.</li>
               <li>Metodi di pagamento accettati: carte di credito/debito (Visa, Mastercard, American Express).</li>
               <li>OZ Extrait si riserva il diritto di modificare i prezzi in qualsiasi momento, senza preavviso.</li>
@@ -53,7 +53,7 @@ export default function TermsPage() {
               <li>Tempi di consegna: 3-5 giorni lavorativi in Italia.</li>
               <li>Spedizioni internazionali disponibili su richiesta.</li>
               <li>Tutti i pacchi sono assicurati e tracciabili.</li>
-              <li>Il packaging è curato nei minimi dettagli per garantire un'esperienza luxury.</li>
+              <li>Il packaging è curato nei minimi dettagli per garantire un&apos;esperienza luxury.</li>
             </ul>
           </section>
 
@@ -90,7 +90,7 @@ export default function TermsPage() {
             <h2 className="font-cinzel text-2xl text-stone-900 mb-4">7. Proprietà Intellettuale</h2>
             <p>
               Tutti i contenuti del sito (testi, immagini, loghi, grafica, design) sono di proprietà
-              esclusiva di OZ Extrait e sono protetti dalle leggi sul diritto d'autore. È vietata
+              esclusiva di OZ Extrait e sono protetti dalle leggi sul diritto d&apos;autore. È vietata
               qualsiasi riproduzione senza autorizzazione scritta.
             </p>
           </section>

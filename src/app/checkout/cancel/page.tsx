@@ -43,7 +43,7 @@ export default function CheckoutCancelPage() {
           <p className="text-white/80 mb-4">Cosa è successo?</p>
           <ul className="space-y-2 text-white/70 text-sm">
             <li>• Hai chiuso la finestra di pagamento</li>
-            <li>• Hai cliccato su "Indietro"</li>
+            <li>• Hai cliccato su &ldquo;Indietro&rdquo;</li>
             <li>• La sessione di pagamento è scaduta</li>
           </ul>
         </div>

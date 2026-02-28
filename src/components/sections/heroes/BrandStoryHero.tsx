@@ -37,9 +37,9 @@ export function BrandStoryHero() {
             <div className="h-[2px] w-16 bg-gold-500" />
 
             <p className="font-playfair text-2xl md:text-3xl text-white/90 leading-[1.4] max-w-xl">
-              Dalla passione per l'arte
+              Dalla passione per l&apos;arte
               <br />
-              all'universo della profumeria di lusso
+              all&apos;universo della profumeria di lusso
             </p>
 
             <p className="font-inter text-base md:text-lg text-white/70 leading-relaxed max-w-lg">

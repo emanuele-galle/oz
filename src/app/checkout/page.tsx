@@ -56,7 +56,7 @@ function OrderSummary({
   compact = false,
   hideItems = false,
 }: {
-  items: any[];
+  items: Array<{ product: { id: string; name: string; images?: Array<{ url: string; isPrimary?: boolean }> }; size: { volume: string; price: number; isTester?: boolean }; quantity: number }>;
   subtotal: number;
   shippingCost: number;
   orderTotal: number;
@@ -77,7 +77,7 @@ function OrderSummary({
         <div className="space-y-3">
           {items.map((item) => {
             const primaryImage =
-              item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
+              item.product.images?.find((img: { isPrimary?: boolean }) => img.isPrimary) || item.product.images?.[0];
             return (
               <div key={`${item.product.id}-${item.size.volume}`} className="flex gap-3">
                 {primaryImage && (
@@ -221,7 +221,7 @@ export default function CheckoutPage() {
       <div className="space-y-3">
         {items.map((item) => {
           const primaryImage =
-            item.product.images?.find((img: any) => img.isPrimary) || item.product.images?.[0];
+            item.product.images?.find((img: { isPrimary?: boolean }) => img.isPrimary) || item.product.images?.[0];
           return (
             <div key={`${item.product.id}-${item.size.volume}`} className="glass-card-dark p-4 flex gap-4">
               {primaryImage && (
@@ -419,8 +419,8 @@ export default function CheckoutPage() {
       if (!stripe) throw new Error('Stripe non inizializzato');
 
       window.location.href = url;
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Errore sconosciuto');
       setIsSubmitting(false);
     }
   };

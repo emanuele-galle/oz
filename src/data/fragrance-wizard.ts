@@ -4,7 +4,7 @@
 
 export type FragranceId = 'cristallo' | 'scintilla' | 'potion-damour';
 
-export interface WizardOption {
+interface WizardOption {
   id: string;
   label: string;
   description: string;
@@ -12,14 +12,14 @@ export interface WizardOption {
   scores: Record<FragranceId, number>;
 }
 
-export interface WizardStep {
+interface WizardStep {
   id: string;
   title: string;
   subtitle: string;
   options: WizardOption[];
 }
 
-export interface FragranceResult {
+interface FragranceResult {
   id: FragranceId;
   name: string;
   tagline: string;
@@ -130,7 +130,7 @@ export const stepNote: WizardStep = {
   ],
 };
 
-export const wizardSteps = [stepMomento, stepEnergia, stepNote];
+const wizardSteps = [stepMomento, stepEnergia, stepNote];
 
 // Fragrance results data
 export const fragranceResults: Record<FragranceId, FragranceResult> = {

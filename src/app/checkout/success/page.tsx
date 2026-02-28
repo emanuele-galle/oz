@@ -38,7 +38,7 @@ function CheckoutSuccessContent() {
     if (sessionId && !isCleared) {
       clearCart();
       resetCheckout();
-      setIsCleared(true);
+      setIsCleared(true); // eslint-disable-line react-hooks/set-state-in-effect
 
       // Fetch order details
       fetch(`/api/checkout/order/${sessionId}`)

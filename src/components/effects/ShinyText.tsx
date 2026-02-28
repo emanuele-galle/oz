@@ -39,6 +39,7 @@ export function ShinyText({
   const animationDuration = speed * 1000;
   const delayDuration = delay * 1000;
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity -- React Bits community component, animation logic is inherently complex
   useAnimationFrame((time) => {
     if (disabled || isPaused) {
       lastTimeRef.current = null;

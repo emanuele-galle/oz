@@ -37,6 +37,7 @@ export default async function AdminNewsletterPage({
           <h1 className="font-cinzel text-2xl text-white">Newsletter</h1>
           <p className="text-stone-500 text-sm font-inter mt-1">{totalCount} iscritti totali</p>
         </div>
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages -- CSV download link, not a navigation */}
         <a
           href="/api/admin/newsletter/export"
           className="px-4 py-2 border border-stone-700 text-stone-300 text-sm font-inter rounded hover:border-gold-500 hover:text-gold-500 transition-colors"

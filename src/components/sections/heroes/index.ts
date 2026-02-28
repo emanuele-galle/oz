@@ -14,10 +14,7 @@
  * - Accessibility-compliant (reduced motion, ARIA)
  */
 
-export { HomepageHero } from './HomepageHero';
 export { ProductHeroGallery } from './ProductHeroGallery';
 export { BrandStoryHero } from './BrandStoryHero';
 export { BrandPhilosophyHero } from './BrandPhilosophyHero';
-export { GuideHero } from './GuideHero';
 export { ShopHero } from './ShopHero';
-export { ReviewsHero } from './ReviewsHero';

@@ -54,7 +54,7 @@ export const OrderConfirmationEmail = ({
           {/* Header */}
           <Section style={header}>
             <Heading style={h1}>OZ Extrait</Heading>
-            <Text style={tagline}>L'Arte della Profumeria Italiana</Text>
+            <Text style={tagline}>L&apos;Arte della Profumeria Italiana</Text>
           </Section>
 
           {/* Main Content */}
@@ -159,7 +159,6 @@ export const OrderConfirmationEmail = ({
   );
 };
 
-export default OrderConfirmationEmail;
 
 // Styles
 const main = {
